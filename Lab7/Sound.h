@@ -12,5 +12,6 @@
 //Methods
 void Sound_Init(void);
 void Sound_Play(unsigned short); //note is a pitch (frequency)
-
+void Demo(void);
+void Delay(int);
 

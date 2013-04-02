@@ -42,3 +42,7 @@ void Demo(){
 	Sound_Play(D4);
 	Sound_Play(D4);
 }
+
+void Delay(int microseconds){
+	return;
+}
