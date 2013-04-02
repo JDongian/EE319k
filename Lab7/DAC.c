@@ -9,7 +9,7 @@ void DAC_Init(void){
 	
 }
 void DAC_Out(char amplitude){
-	GPIO_PORTF_DIR_R = amplitude ;
+	GPIO_PORTF_DATA_R = amplitude ;
 }
 	
 
