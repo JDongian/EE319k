@@ -34,7 +34,7 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 
-int main(void){       // bus clock at 50 MHz
+int main(void){ 	// bus clock at 50 MHz
   SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                  SYSCTL_XTAL_8MHZ);
   SysTick_Init(50000);     // initialize SysTick timer
