@@ -27,6 +27,8 @@
 #include "driverlib/sysctl.h"
 #include "SysTickInts.h"
 #include "Sound.h"
+#include "Piano.h"
+#include "DAC.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -39,8 +41,11 @@ int main(void){ 	// bus clock at 50 MHz
                  SYSCTL_XTAL_8MHZ);
   SysTick_Init(50000);     // initialize SysTick timer
   EnableInterrupts();
-
-  while(1){                // interrupts every 1ms
+	Sound_Init();
+	DAC_Init();
+	Piano_Init();
+  while(1){
+			Sound_Play(Piano_In());// interrupts every 1ms
     WaitForInterrupt();
   }
 }
