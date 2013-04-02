@@ -47,8 +47,6 @@ void Demo(){
 void Delay(int microseconds){
 	
 	long double curTime = SYS_TIME;
-	while(SYS_TIME - microseconds != curTime)
-	{}
-	
+	while(SYS_TIME - microseconds != curTime){}
 	return;
 }
