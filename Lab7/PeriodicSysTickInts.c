@@ -26,6 +26,7 @@
 #include "inc/hw_types.h"
 #include "driverlib/sysctl.h"
 #include "SysTickInts.h"
+#include "Sound.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
