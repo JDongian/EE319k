@@ -46,7 +46,6 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 volatile unsigned long Counts = 0;
-
 #define GPIO_PORTD0             (*((volatile unsigned long *)0x40007004))
 
 // **************SysTick_Init*********************

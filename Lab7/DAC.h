@@ -1,4 +1,5 @@
 
-void DAC_Init(void);
-void DAC_Out(char);
+//Methods
+void DAC_Init(void);		//Sets the output port F.
+void DAC_Out(char);			//Outputs values to port F.
 

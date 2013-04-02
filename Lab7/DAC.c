@@ -8,8 +8,8 @@ void DAC_Init(void){
 	//GPIO_PORTF_PUR_R |= 0x07;
 	
 }
-void DAC_Out(char amplitude){
-	GPIO_PORTF_DATA_R = amplitude ;
+void DAC_Out(char bitsOut){
+	GPIO_PORTF_DATA_R = bitsOut;
 }
 	
 
