@@ -19,7 +19,7 @@ void Sound_Init()
 void Sound_Play(unsigned short freq)
 {
 	int delay = 1/(TABLE_SIZE*freq);
-	int i;
+	int i = 0;
 	if (freq == 0){
 		DAC_Out(0);
 		return;
@@ -27,7 +27,7 @@ void Sound_Play(unsigned short freq)
 	while(i < TABLE_SIZE)
 	{
 		DAC_Out(table[i]);
-		//Delay
+		Delay(delay);
 		i++;
 	}
 }
