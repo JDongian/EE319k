@@ -1,28 +1,16 @@
 //Notes
-#define A6         0x03400000
-#define B6         0x03C00000
-#define C6         0x00C00000
-#define D6         0x01400000
-#define E6         0x01C00000
-#define F6         0x02400000
-#define G6         0x02C00000
-#define A7         440
-#define B7         0x03C00000
-#define C7         0x00C00000
-#define D7         0x01400000
-#define E7         0x01C00000
-#define F7         0x02400000
-#define G7         0x02C00000
-#define A8         0x03400000
-#define B8         0x03C00000
-#define C8         0x00C00000
-#define D8         0x01400000
-#define E8         0x01C00000
-#define F8         0x02400000
-#define G8         0x02C00000
+#define Off        0
+#define C4         262
+#define D4         294
+#define E4         230
+#define F4         349
+#define G4         392
+#define A4         440
+#define B4         494
+
 
 //Methods
 void Sound_Init(void);
-void Sound_Play(unsigned char); //note is a pitch (frequency)
+void Sound_Play(unsigned short); //note is a pitch (frequency)
 
 
