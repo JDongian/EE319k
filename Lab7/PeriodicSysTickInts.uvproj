@@ -136,6 +136,7 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>0</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>4</TargetSelection>
@@ -404,6 +405,21 @@
               <FileName>SysTickInts.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\SysTickInts.c</FilePath>
+            </File>
+            <File>
+              <FileName>DAC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DAC.c</FilePath>
+            </File>
+            <File>
+              <FileName>Sound.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sound.c</FilePath>
+            </File>
+            <File>
+              <FileName>Piano.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Piano.c</FilePath>
             </File>
           </Files>
         </Group>
