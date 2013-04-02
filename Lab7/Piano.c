@@ -35,7 +35,7 @@ int Piano_In(void){
 		//PLAY SOUND FOR SELECT BUTTON
 		return G4;
 	}
-	return 0;
+	return A4;
 }
 
 
