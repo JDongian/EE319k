@@ -22,5 +22,7 @@
 #define G8         0x02C00000
 
 //Methods
-public void Sound_Init(void);
-public void Sound_Play(note, accidental); //note is a pitch (frequency)
+//public void Sound_Init(void);
+//public void Sound_Play(note, accidental); //note is a pitch (frequency)
+
+
