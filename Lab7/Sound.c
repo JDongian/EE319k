@@ -3,6 +3,7 @@
 #include "DAC.h"
 #include <math.h>
 #include <lm3s1968.h>
+#include "SysTickInts.h"
 #define TAO 6.283185307179586
 #define TABLE_SIZE 100
 
@@ -44,5 +45,10 @@ void Demo(){
 }
 
 void Delay(int microseconds){
+	
+	long double curTime = SYS_TIME;
+	while(SYS_TIME - microseconds != curTime)
+	{}
+	
 	return;
 }
