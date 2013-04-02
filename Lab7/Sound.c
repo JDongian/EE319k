@@ -14,13 +14,14 @@ void Sound_Init()
 	}
 }
 
-void Sound_Play(unsigned char n)
+void Sound_Play(unsigned char freq)
 {
-	int delay = 1/(TABLE_SIZE*n);
+	int delay = 1/(TABLE_SIZE*freq);
 	int i;
 	while(i < TABLE_SIZE)
 	{
 		DAC_Out(table[i]);
+		i++;
 	}
 	
 	
