@@ -1,3 +1,4 @@
+
 #include "Sound.h"
 #include "DAC.h"
 #include <math.h>
@@ -20,6 +21,7 @@ void Sound_Play(unsigned short freq)
 	int delay = 1/(TABLE_SIZE*freq);
 	int i;
 	if (freq == 0){
+		DAC_Out(0);
 		return;
 	}
 	while(i < TABLE_SIZE)
