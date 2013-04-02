@@ -10,7 +10,7 @@ void Sound_Init()
 	int i;
 	for(i = 0; i<TABLE_SIZE; i++)
 	{
-		table[i] = 7*sin(TAO*i/TABLE_SIZE);
+		table[i] = 4.0*sin(TAO*i/TABLE_SIZE)+4.0;
 	}
 }
 
