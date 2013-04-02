@@ -1,3 +1,4 @@
+#include "Sound.h"
 #include <math.h>
 #include <lm3s1968.h>
 #define TAO 6.283185307179586

@@ -1,4 +1,4 @@
 
-public void DAC_Init(void);
-public void DAC_Out(void);
+void DAC_Init(void);
+void DAC_Out(void);
 
