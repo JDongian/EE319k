@@ -3,7 +3,7 @@
 #include <lm3s1968.h>
 
 void Piano_Init(void){
-	
+	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
 	GPIO_PORTG_DIR_R &= ~0x19;
 	GPIO_PORTG_AFSEL_R &= ~0x19;
 	GPIO_PORTG_DEN_R |= 0x19;
@@ -25,12 +25,12 @@ int Piano_In(void){
 		//PLAY SOUND FOR RIGHT BUTTON
 		return E4;
 	}
-	if((GPIO_PORTG_DATA_R & 0x04) == 0x04) //DOWN BUTTON
+	else if((GPIO_PORTG_DATA_R & 0x04) == 0x04) //DOWN BUTTON
 	{
 		//PLAY SOUND FOR DOWN	BUTTON
 		return F4;
 	}
-	if((GPIO_PORTG_DATA_R & 0x07) == 0x07) //SELECT BUTTON
+	else if((GPIO_PORTG_DATA_R & 0x07) == 0x07) //SELECT BUTTON
 	{
 		//PLAY SOUND FOR SELECT BUTTON
 		return G4;
