@@ -25,6 +25,7 @@
 // oscilloscope or LED connected to PD0 for period measurement
 #include "hw_types.h"
 #include "sysctl.h"
+#include "SysTickInts.h"
 // #include "lm3s1968.h"
 
 #define NVIC_SYS_PRI3_R         (*((volatile unsigned long *)0xE000ED20))  // Sys. Handlers 12 to 15 Priority
@@ -45,6 +46,7 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 volatile unsigned long Counts = 0;
+
 #define GPIO_PORTD0             (*((volatile unsigned long *)0x40007004))
 
 // **************SysTick_Init*********************
@@ -70,6 +72,7 @@ void SysTick_Init(unsigned long period){
 // Interrupt service routine
 // Executed every 20ns*(period)
 void SysTick_Handler(void){
+	SYS_TIME += 0.002;
   GPIO_PORTD0 ^= 0x01;        // toggle PD0
   Counts = Counts + 1;
 }

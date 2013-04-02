@@ -22,7 +22,7 @@
  http://users.ece.utexas.edu/~valvano/
  */
 
-
+static long double SYS_TIME = 0;
 
 // **************SysTick_Init*********************
 // Initialize Systick periodic interrupts
