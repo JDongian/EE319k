@@ -13,5 +13,6 @@
 *.dep
 *.crf
 *.uvopt
+*.uvproj
 *.__i
 ccs/
