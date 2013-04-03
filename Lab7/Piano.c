@@ -6,13 +6,14 @@ void Piano_Init(void){ int nop;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
 	nop = 0;
 	nop += 1;
-	GPIO_PORTG_DIR_R &= ~0x19;
-	GPIO_PORTG_AFSEL_R &= ~0x19;
-	GPIO_PORTG_DEN_R |= 0x19;
+	GPIO_PORTG_DIR_R |= 0x04;
+	GPIO_PORTG_DIR_R |= ~0xF8;
+	GPIO_PORTG_AFSEL_R |= 0xF8;
+	GPIO_PORTG_PUR_R |= 0xF8;
+	GPIO_PORTG_DEN_R |= 0xFF;
 }
 
 int Piano_In(void){
-	Sound_Play(A4);
 	if((GPIO_PORTG_DATA_R & 0x05) == 0x05) //LEFT BUTTON
 	{
 		//PLAY SOUND FOR LEFT BUTTON
