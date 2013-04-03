@@ -10,6 +10,7 @@ void Piano_Init(void){
 }
 
 int Piano_In(void){
+	return A4;
 	if((GPIO_PORTG_DATA_R & 0x05) == 0x05) //LEFT BUTTON
 	{
 		//PLAY SOUND FOR LEFT BUTTON

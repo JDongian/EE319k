@@ -41,12 +41,12 @@ int main(void){ 	// bus clock at 50 MHz
                  SYSCTL_XTAL_8MHZ);
   SysTick_Init(50000);     // initialize SysTick timer
   EnableInterrupts();
+	/*
 	Sound_Init();
 	DAC_Init();
 	Piano_Init();
-	Sound_Play(Off);
+	Sound_Play(Off);*/
   while(1){
-			Sound_Play(Piano_In());// interrupts every 1ms
     WaitForInterrupt();
   }
 }
