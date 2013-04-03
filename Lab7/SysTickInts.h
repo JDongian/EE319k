@@ -22,8 +22,6 @@
  http://users.ece.utexas.edu/~valvano/
  */
 
-static long double SYS_TIME = 0;
-
 // **************SysTick_Init*********************
 // Initialize Systick periodic interrupts
 // Input: interrupt period
@@ -31,5 +29,7 @@ static long double SYS_TIME = 0;
 //        Maximum is 2^24-1
 //        Minimum is determined by length of ISR
 // Output: none
-void SysTick_Init(unsigned long period);
+void SysTick_Init(unsigned long);
+void SysTick_Handler(void);
+void Set_SysTick_Period(double);		//SysTick to a given period.
 
