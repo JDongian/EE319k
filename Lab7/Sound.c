@@ -14,7 +14,16 @@ void Sound_Init() {
 }
 
 void Sound_Song() {
-		note MaryHadALittleLamb[] = {
+	note GreenHills[] = {
+		{A5, semiquaver}, {F5, semiquaver}, {A5, semiquaver}, {F5, semiquaver}, {B5, semiquaver}, {G5, semiquaver}, {B5, semiquaver}, {G5, semiquaver}, {C5, semiquaver}, {A5, semiquaver}, {C5, semiquaver}, {A5, semiquaver}, {D5, semiquaver}, {B5, semiquaver}, {D5, semiquaver}, {B5, semiquaver},
+		{G4, crotchet+quaver}, {F4, crotchet+quaver}, {G4, crotchet+quaver},
+		{F4, crotchet+quaver}, {G4, crotchet}, {F4, crotchet},
+		{A4, crotchet+quaver}, {G4, crotchet+quaver}, {F4, crotchet+semibreve},
+		{F4, crotchet+quaver}, {G4, crotchet+quaver}, {A4, quaver},
+		{F4, crotchet+quaver}, {G4, crotchet+quaver}, {A4, quaver},
+		{A4, 0}
+	};
+	note MaryHadALittleLamb[] = {
 		{E4, crotchet}, {D4, crotchet}, {C4, crotchet}, {D4, crotchet},
 		{E4, crotchet}, {E4, crotchet}, {E4, minim},
 		{D4, crotchet}, {D4, crotchet}, {D4, minim},

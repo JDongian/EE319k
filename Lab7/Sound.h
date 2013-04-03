@@ -10,12 +10,19 @@
 #define G4          392
 #define A4          440
 #define B4					494
+#define C5          524
+#define D5          588
+#define E5          460
+#define F5          698
+#define G5          784
+#define A5          880
+#define B5					988
 
 //Times
-#define semibreve		500
-#define minim				500
-#define crotchet		500
-#define quaver			500
+#define semibreve		16*semiquaver
+#define minim				8*semiquaver
+#define crotchet		4*semiquaver
+#define quaver			2*semiquaver
 #define semiquaver	500
 
 //Math
