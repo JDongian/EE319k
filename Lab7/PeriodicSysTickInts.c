@@ -43,12 +43,12 @@ int main(void){ 	// bus clock at 50 MHz
 	PLL_Init();
   SysTick_Init(50000);     // initialize SysTick timer
   EnableInterrupts();
-	Sound_Init();
 	DAC_Init();
+	Sound_Init();
 	Piano_Init();
-	Sound_Play(Off);
+	Sound_Play(A4);
   while(1){
-		Piano_In();
-    //WaitForInterrupt();
+		//Piano_In();
+    WaitForInterrupt();
   }
 }

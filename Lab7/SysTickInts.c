@@ -56,8 +56,10 @@ void WaitForInterrupt(void);  // low power mode
 //        Maximum is 2^24-1
 //        Minimum is determined by length of ISR
 // Output: none
-void SysTick_Init(unsigned long period){
+void SysTick_Init(unsigned long period){int nop;
   SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD; // activate port D
+	nop = 0;
+	nop += 1;
   GPIO_PORTD_DIR_R |= 0x01;   // make PD0 out
   GPIO_PORTD_DEN_R |= 0x01;   // enable digital I/O on PD0
   NVIC_ST_CTRL_R = 0;         // disable SysTick during setup

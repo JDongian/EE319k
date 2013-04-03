@@ -36,7 +36,7 @@ typedef struct note{
 } note;
 
 //Variables
-extern char waveform[TABLE_SIZE];
+extern unsigned int waveform[TABLE_SIZE];
 extern volatile int sampleIndex;
 
 //Methods
