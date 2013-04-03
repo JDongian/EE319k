@@ -23,7 +23,7 @@
 #define minim				8*semiquaver
 #define crotchet		4*semiquaver
 #define quaver			2*semiquaver
-#define semiquaver	500
+#define semiquaver	1000
 
 //Math
 #define TAO 6.283185307179586
@@ -44,4 +44,5 @@ void Sound_Init(void);							//Create the sin function table.
 void Sound_Play(unsigned short);		//Output to the DAC based on given frequency.
 void Sound_Play_Note(note);
 void Sound_Play_Song(note []);	//Plays a song that is ended by a note of time 0.
+void Sound_Song(void);	//Plays a song that is ended by a note of time 0.
 
