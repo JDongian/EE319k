@@ -29,6 +29,7 @@
 #include "Sound.h"
 #include "Piano.h"
 #include "DAC.h"
+#include "PLL.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -39,6 +40,7 @@ void WaitForInterrupt(void);  // low power mode
 int main(void){ 	// bus clock at 50 MHz
   SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                  SYSCTL_XTAL_8MHZ);
+	PLL_Init();
   SysTick_Init(50000);     // initialize SysTick timer
   EnableInterrupts();
 	Sound_Init();
