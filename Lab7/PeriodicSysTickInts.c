@@ -48,6 +48,7 @@ int main(void){ 	// bus clock at 50 MHz
 	Piano_Init();
 	Sound_Play(Off);
   while(1){
-    WaitForInterrupt();
+		Piano_In();
+    //WaitForInterrupt();
   }
 }

@@ -2,15 +2,17 @@
 #include "Sound.h"
 #include <lm3s1968.h>
 
-void Piano_Init(void){
+void Piano_Init(void){ int nop;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
+	nop = 0;
+	nop += 1;
 	GPIO_PORTG_DIR_R &= ~0x19;
 	GPIO_PORTG_AFSEL_R &= ~0x19;
 	GPIO_PORTG_DEN_R |= 0x19;
 }
 
 int Piano_In(void){
-	return A4;
+	Sound_Play(A4);
 	if((GPIO_PORTG_DATA_R & 0x05) == 0x05) //LEFT BUTTON
 	{
 		//PLAY SOUND FOR LEFT BUTTON

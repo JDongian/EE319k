@@ -6,9 +6,15 @@ volatile int sampleIndex = 0;
 int tempo = 120;
 
 void Sound_Init() {
-	//Global Variables
+		//Global Variables
 	int i = 0;
-	note MaryHadALittleLamb[] = {
+	for(; i<TABLE_SIZE; i++) {
+		waveform[i] = 7.0*sin(TAO*i/TABLE_SIZE)+7.0;
+	}
+}
+
+void Sound_Song() {
+		note MaryHadALittleLamb[] = {
 		{E4, crotchet}, {D4, crotchet}, {C4, crotchet}, {D4, crotchet},
 		{E4, crotchet}, {E4, crotchet}, {E4, minim},
 		{D4, crotchet}, {D4, crotchet}, {D4, minim},
@@ -20,10 +26,6 @@ void Sound_Init() {
 		{A4, 0}
 	};
 	Sound_Play_Song(MaryHadALittleLamb);
-	for(; i<TABLE_SIZE; i++) {
-		waveform[i] = 4.0*sin(TAO*i/TABLE_SIZE)+4.0;
-	}
-	
 }
 
 void Sound_Play(unsigned short freq) {
