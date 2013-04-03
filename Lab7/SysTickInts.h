@@ -31,5 +31,4 @@
 // Output: none
 void SysTick_Init(unsigned long);
 void SysTick_Handler(void);
-void Set_SysTick_Period(double);		//SysTick to a given period.
 

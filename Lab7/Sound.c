@@ -1,5 +1,5 @@
 #include "Sound.h"
-#include "SysTickInts.h"
+#include "systick.h"
 
 char waveform[TABLE_SIZE] = {0};
 volatile int sampleIndex = 0;
@@ -8,15 +8,28 @@ int tempo = 120;
 void Sound_Init() {
 	//Global Variables
 	int i = 0;
+	note MaryHadALittleLamb[] = {
+		{E4, crotchet}, {D4, crotchet}, {C4, crotchet}, {D4, crotchet},
+		{E4, crotchet}, {E4, crotchet}, {E4, minim},
+		{D4, crotchet}, {D4, crotchet}, {D4, minim},
+		{E4, crotchet}, {E4, crotchet}, {E4, minim},
+		{E4, crotchet}, {D4, crotchet}, {C4, crotchet}, {D4, crotchet},
+		{E4, crotchet}, {E4, crotchet}, {E4, crotchet}, {C4, crotchet},
+		{D4, crotchet}, {D4, crotchet}, {E4, crotchet}, {D4, crotchet},
+		{C4, semibreve},
+		{A4, 0}
+	};
+	Sound_Play_Song(MaryHadALittleLamb);
 	for(; i<TABLE_SIZE; i++) {
 		waveform[i] = 4.0*sin(TAO*i/TABLE_SIZE)+4.0;
-	}	
+	}
+	
 }
 
 void Sound_Play(unsigned short freq) {
-	double period = 1/(TABLE_SIZE*freq);
+	unsigned long period = 1000000/(TABLE_SIZE*freq);
 	sampleIndex = 0;
-	Set_SysTick_Period(period);
+	SysTickPeriodSet(period);
 }
 
 void Sound_Play_Note(note n) {

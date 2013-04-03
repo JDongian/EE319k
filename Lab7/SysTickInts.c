@@ -77,8 +77,3 @@ void SysTick_Handler(void){
 	GPIO_PORTD0 ^= 0x01;        // toggle PD0
 }
 
-
-void Set_SysTick_Period(double period) {
-	NVIC_ST_RELOAD_R = period*1000000;
-}
-

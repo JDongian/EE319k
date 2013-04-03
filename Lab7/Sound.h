@@ -2,14 +2,21 @@
 #include <lm3s1968.h>
 
 //Notes
-#define Off        0		
-#define C4         262
-#define D4         294
-#define E4         230
-#define F4         349
-#define G4         392
-#define A4         440
-#define B4         494
+#define Off         0		
+#define C4          262
+#define D4          294
+#define E4          230
+#define F4          349
+#define G4          392
+#define A4          440
+#define B4					494
+
+//Times
+#define semibreve		500
+#define minim				500
+#define crotchet		500
+#define quaver			500
+#define semiquaver	500
 
 //Math
 #define TAO 6.283185307179586

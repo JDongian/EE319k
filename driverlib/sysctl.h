@@ -457,7 +457,7 @@ extern unsigned long SysCtlI2SMClkSet(unsigned long ulInputClock,
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
-//
+//+
 //*****************************************************************************
 #ifdef __cplusplus
 }
