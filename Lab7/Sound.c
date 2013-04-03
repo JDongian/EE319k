@@ -14,7 +14,7 @@ void Sound_Init() {
 }
 
 void Sound_Play(unsigned short freq) {
-	unsigned long period = 0.75*50000000/(TABLE_SIZE*freq);
+	unsigned long period = SYS_TIME_CONST/(TABLE_SIZE*freq);
 	sampleIndex = 0;
 	SysTickPeriodSet(period);
 }

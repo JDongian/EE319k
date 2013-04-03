@@ -28,6 +28,7 @@
 //Math
 #define TAO 6.283185307179586
 #define TABLE_SIZE 100
+#define SYS_TIME_CONST 37500000
 
 //Structs
 typedef struct note{
