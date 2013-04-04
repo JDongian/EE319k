@@ -37,7 +37,7 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 int j;
-int main(void){ 	// bus clock at 50 MHz
+int main(void){unsigned int note; unsigned int tmp; 	// bus clock at 50 MHz
   SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                  SYSCTL_XTAL_8MHZ);
 	PLL_Init();
@@ -47,8 +47,13 @@ int main(void){ 	// bus clock at 50 MHz
 	Sound_Init();
 	Piano_Init();
 	Sound_Song();
+	note = Piano_In();
   while(1){
-		//Sound_Play(Piano_In());
-    WaitForInterrupt();
+		tmp = Piano_In();
+		if (note != tmp) {
+			note = tmp;
+			Sound_Play(note);
+		}
+    //WaitForInterrupt();
   }
 }
