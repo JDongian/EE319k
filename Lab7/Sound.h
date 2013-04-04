@@ -3,6 +3,9 @@
 
 //Notes
 #define Off         0		
+#define C3					131
+#define F3					174
+#define G3					196	
 #define C4          262
 #define D4          294
 #define E4          330

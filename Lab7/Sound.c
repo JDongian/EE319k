@@ -3,7 +3,7 @@
 
 unsigned int waveform[TABLE_SIZE];
 volatile int sampleIndex = 0;
-int tempo = 120;
+int tempo = 180;
 
 void Sound_Init() {
 		//Global Variables
@@ -37,12 +37,24 @@ void Sound_Play_Song(note song[]) {
 
 void Sound_Song(void) {
 	note GreenHills[] = {
-		{A5, semiquaver}, {F5, semiquaver}, {A5, semiquaver}, {F5, semiquaver}, {B5, semiquaver}, {G5, semiquaver}, {B5, semiquaver}, {G5, semiquaver}, {C5, semiquaver}, {A5, semiquaver}, {C5, semiquaver}, {A5, semiquaver}, {D5, semiquaver}, {B5, semiquaver}, {D5, semiquaver}, {B5, semiquaver},
-		{G4, crotchet+quaver}, {F4, crotchet+quaver}, {G4, crotchet+quaver},
-		{F4, crotchet+quaver}, {G4, crotchet}, {F4, crotchet},
-		{A4, crotchet+quaver}, {G4, crotchet+quaver}, {F4, crotchet+semibreve},
-		{F4, crotchet+quaver}, {G4, crotchet+quaver}, {A4, quaver},
-		{F4, crotchet+quaver}, {G4, crotchet+quaver}, {A4, quaver},
+		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 
+		{A4, quaver}, {E5, quaver}, {D5, crotchet}, {C5, quaver},
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+crotchet+quaver},
+		
+		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 		
+		{A4, crotchet}, {F4, crotchet}, {A4, quaver},
+		{G4, crotchet}, {A4, quaver}, {G4, crotchet},	{C4, minim+crotchet},
+		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 
+		{A4, quaver}, {E5, quaver}, {D5, crotchet}, {C5, quaver},
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+crotchet+quaver},
+		
+		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
+		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 		
+		{A4, crotchet}, {F4, crotchet}, {A4, quaver},
+		{G4, crotchet}, {A4, quaver}, {G4, crotchet},	{C4, minim+crotchet},
 		{A4, 0}
 	};
 		note MaryHadALittleLamb[] = {
@@ -65,5 +77,6 @@ void Sound_Song(void) {
 	//	Sound_Play_Song(CScale);
 	//Sound_Play_Song(MaryHadALittleLamb);
 	Sound_Play_Song(GreenHills);
+	Sound_Play(Off);
 }
 
