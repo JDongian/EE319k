@@ -45,7 +45,6 @@ int main(void){unsigned int note; unsigned int tmp; 	// bus clock at 50 MHz
   EnableInterrupts();
 	DAC_Init();
 	Sound_Init();
-	Piano_Init();
 	Sound_Song();
 	note = Piano_In();
   while(1){

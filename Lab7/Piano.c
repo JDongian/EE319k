@@ -2,9 +2,6 @@
 #include "Sound.h"
 #include <lm3s1968.h>
 
-void Piano_Init(void){ 
-}
-
 //LEFT 0b11011000		RIGHT 0b10111000		UP	0b11110000		DOWN	0b11101000			SELECT 0b01110000
 int Piano_In(void){
 	unsigned long key = GPIO_PORTG_DATA_R;
