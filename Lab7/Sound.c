@@ -23,9 +23,9 @@ void Sound_Play_Note(note n) {
 	double i;
 	if (n.frequency == 0) { Sound_Play(Off);
 	} else { Sound_Play(n.frequency); }
-	for (i = 0.0; i < n.time*1000000/tempo; i++) {}
-	Sound_Play(Off);
-	for (i = 0.0; i < 10; i++) {}
+	for (i = 0.0; i < n.time*200000/tempo; i++) {}
+	//Sound_Play(Off);
+	//for (i = 0.0; i < 10; i++) {}
 }
 
 void Sound_Play_Song(note song[]) {
@@ -56,7 +56,14 @@ void Sound_Song(void) {
 		{C4, semibreve},
 		{A4, 0}
 	};
-	Sound_Play_Song(MaryHadALittleLamb);
+	note CScale[] = {
+		{C4, crotchet}, {D4, crotchet}, {E4, crotchet}, {F4, crotchet},
+		{G4, crotchet}, {A4, crotchet}, {B4, crotchet},
+		{C5, semibreve}, {C4, semibreve},
+		{A4, 0}
+	};
+	//	Sound_Play_Song(CScale);
+	//Sound_Play_Song(MaryHadALittleLamb);
 	Sound_Play_Song(GreenHills);
 }
 

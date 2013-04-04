@@ -5,14 +5,14 @@
 #define Off         0		
 #define C4          262
 #define D4          294
-#define E4          230
+#define E4          330
 #define F4          349
 #define G4          392
 #define A4          440
 #define B4					494
 #define C5          524
 #define D5          588
-#define E5          460
+#define E5          660
 #define F5          698
 #define G5          784
 #define A5          880
@@ -23,7 +23,7 @@
 #define minim				8*semiquaver
 #define crotchet		4*semiquaver
 #define quaver			2*semiquaver
-#define semiquaver	1000
+#define semiquaver	10
 
 //Math
 #define TAO 6.283185307179586
