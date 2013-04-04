@@ -59,7 +59,7 @@ void WaitForInterrupt(void);  // low power mode
 void SysTick_Init(unsigned long period){int timingop;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
 	timingop = 0;
-	timingop = 1;
+	timingop += 1;
 	GPIO_PORTG_DIR_R &= 0x07;
 	GPIO_PORTG_DIR_R |= 0x04;
 	GPIO_PORTG_AFSEL_R |= 0xF8;
@@ -76,9 +76,11 @@ void SysTick_Init(unsigned long period){int timingop;
 // Interrupt service routine
 // Executed every 20ns*(period)
 void SysTick_Handler(void){
-	DAC_Out(waveform[sampleIndex]);
-	sampleIndex++;
-	if (sampleIndex >= TABLE_SIZE) { sampleIndex = 0; }
+	if (play) {
+		DAC_Out(waveform[sampleIndex]);
+		sampleIndex++;
+		if (sampleIndex >= TABLE_SIZE) { sampleIndex = 0; }
+	}
 	GPIO_PORTG2 ^= 0x04;        // toggle PD0
 }
 

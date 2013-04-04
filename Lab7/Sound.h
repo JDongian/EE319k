@@ -46,9 +46,12 @@ typedef struct note{
 	unsigned int time;
 } note;
 
+typedef int bool;
+
 //Variables
 extern unsigned int waveform[TABLE_SIZE];
 extern volatile int sampleIndex;
+extern bool play;
 
 //Methods
 void Sound_Init(void);							//Create the sin function table.
