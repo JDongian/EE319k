@@ -3,11 +3,18 @@
 
 //Notes
 #define Off         0		
+#define As2					117
 #define C3					131
+#define D3					147
+#define Ds3					156
+#define E3					165
 #define F3					174
-#define G3					196	
+#define G3					196
+#define Gs3					208
+#define As3					233
 #define C4          262
 #define D4          294
+#define Ds4					311
 #define E4          330
 #define F4          349
 #define G4          392

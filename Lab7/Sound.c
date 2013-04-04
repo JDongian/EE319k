@@ -57,7 +57,7 @@ void Sound_Song(void) {
 		{G4, crotchet}, {A4, quaver}, {G4, crotchet},	{C4, minim+crotchet},
 		{A4, 0}
 	};
-		note MaryHadALittleLamb[] = {
+	note MaryHadALittleLamb[] = {
 		{E4, crotchet}, {D4, crotchet}, {C4, crotchet}, {D4, crotchet},
 		{E4, crotchet}, {E4, crotchet}, {E4, minim},
 		{D4, crotchet}, {D4, crotchet}, {D4, minim},
@@ -74,9 +74,23 @@ void Sound_Song(void) {
 		{C5, semibreve}, {C4, semibreve},
 		{A4, 0}
 	};
-	//	Sound_Play_Song(CScale);
+	note GuilesTheme[] = {
+		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
+		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
+		{Ds4, semiquaver}, {D4, quaver}, {Ds4, semiquaver}, {Off, semiquaver}, {D4, quaver}, {F4, semiquaver}, {Off, semiquaver}, {F4, semiquaver}, {Ds4, quaver}, {D4, quaver}, {As3, quaver},
+		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
+		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
+		{Ds4, semiquaver}, {D4, quaver}, {Ds4, semiquaver}, {Off, semiquaver}, {D4, quaver}, {F4, semiquaver}, {Off, semiquaver}, {F4, semiquaver}, {Ds4, quaver}, {D4, quaver}, {As3, quaver},
+		{C3, minim+quaver}, {D3, quaver}, {Ds3, semiquaver}, {F3, quaver+semiquaver},
+		{G3, quaver+semiquaver}, {G3, semiquaver}, {F3, quaver}, {As3, quaver+quaver}, {Gs3, quaver}, {G3, semiquaver}, {Gs3, quaver+semiquaver},
+		{D3, quaver+semiquaver}, {Ds3, semiquaver+quaver}, {F3, quaver}, {Off, quaver}, {As2, quaver}, {D3, quaver}, {F3, quaver},
+		{Gs3, quaver+semiquaver}, {As3, semiquaver+quaver}, {G3, quaver}, {Off, quaver}, {G3, quaver}, {F3, quaver}, {E3, quaver},
+		{C3, semibreve},
+		{A4, 0}
+	};
+	//Sound_Play_Song(CScale);
 	//Sound_Play_Song(MaryHadALittleLamb);
-	Sound_Play_Song(GreenHills);
+	//Sound_Play_Song(GreenHills);
 	Sound_Play(Off);
 }
 
