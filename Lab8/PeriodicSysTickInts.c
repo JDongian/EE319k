@@ -27,6 +27,8 @@
 #include "driverlib/sysctl.h"
 #include "SysTickInts.h"
 #include "PLL.h"
+#include "ADC.h"
+#include "Driver.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -40,6 +42,8 @@ int main(void){// bus clock at 50 MHz
 	PLL_Init();
   SysTick_Init(50000);     // initialize SysTick timer
   EnableInterrupts();
+	ADCInit();
+	LCDInit();
 	while(1){
     WaitForInterrupt();
   }

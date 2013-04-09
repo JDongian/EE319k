@@ -1,5 +1,10 @@
 #include "ADC.h"
 
+//Variables
+double zeroVoltage;
+double maxVoltage;
+double scaleFactor;
+
 void ADCInit(void){
 	zeroVoltage = 0;
 	maxVoltage = 5;

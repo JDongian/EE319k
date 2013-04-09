@@ -1,8 +1,4 @@
 
-//Variables
-double zeroVoltage;
-double maxVoltage;
-double scaleFactor;
 
 //Methods
 void ADCInit(void);			//Sets some default values.
