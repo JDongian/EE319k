@@ -1,7 +1,6 @@
-#include "lm3s1968.h"
 #include "Driver.h"
-	int nop = 0;
-	int temp = 0;
+int temp = 0;
+int nop = 0;
 
 void LCDInit(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
@@ -13,16 +12,17 @@ void LCDInit(void){
 
 }
 void LCDOutNibble(unsigned char data){
-	GPIO_LCD_CTRL_F = data;
+	//GPIO_LCD_CTRL_F = data;
+	GPIO_PORTF_DATA_R = data;
 	Delay(125);
-	GPIO_LCD_E = 0xFF;
+	//GPIO_LCD_E = 0xFF;
 	Delay(70);
-	GPIO_LCD_E = 0;
+	//GPIO_LCD_E = 0;
 	Delay(90);
 
 }
 void LCDOutByte(unsigned char data){
-		GPIO_LCD_RS = 0x20;
+	//GPIO_LCD_RS = 0x20;
 	temp = data;
 	data = data >> 4;
 	LCDOutNibble(data);
@@ -32,7 +32,7 @@ void LCDOutByte(unsigned char data){
 
 }
 void LCDOutCommand(unsigned char cmd){
-	GPIO_LCD_RS = 0;
+	//GPIO_LCD_RS = 0;
 	temp = cmd;
 	cmd = cmd >> 4;
 	LCDOutNibble(cmd);
@@ -57,7 +57,7 @@ void LCDOutString(unsigned char str[]){
 
 }
 void LCDClear(void){
-	GPIO_LCD_RS = 0;
+	//GPIO_LCD_RS = 0;
 	LCDOutCommand(1);
 	Delay(1640);
 	LCDOutCommand(2);
@@ -67,7 +67,7 @@ void LCDClear(void){
 }
 void LCDSetCursor(unsigned int pos){
 	
-	GPIO_LCD_RS = 0;
+	//GPIO_LCD_RS = 0;
 	pos &= 0x47;
 	if(pos == 0)
 	{return;}
@@ -77,3 +77,10 @@ void LCDSetCursor(unsigned int pos){
 }
 void LCDOutFix(unsigned int num){
 }
+
+
+void Delay(int time){
+}
+
+
+
