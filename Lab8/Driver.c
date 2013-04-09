@@ -1,29 +1,29 @@
 
 
-extern void LCDInit(void){
+void LCDInit(void){
 
 }
-extern void LCDOutNibble(unsigned char){
+void LCDOutNibble(unsigned char data){
 
 }
-extern void LCDOutByte(unsigned char){
+void LCDOutByte(unsigned char data){
 
 }
-extern void LCDOutCommand(unsigned char){
+void LCDOutCommand(unsigned char cmd){
 
 }
-extern void LCDOutData(unsigned int){
+void LCDOutData(unsigned int data){
 
 }
-extern void LCDOutString(unsigned char []){
+void LCDOutString(unsigned char str[]){
 
 }
-extern void LCDClear(void){
+void LCDClear(void){
 
 }
-extern void LCDSetCursor(unsigned int){
+void LCDSetCursor(unsigned int pos){
 
 }
-extern void LCDOutFix(unsigned int){
+void LCDOutFix(unsigned int num){
 
 }
