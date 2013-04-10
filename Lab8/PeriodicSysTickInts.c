@@ -40,7 +40,7 @@ int main(void){// bus clock at 50 MHz
   SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                  SYSCTL_XTAL_8MHZ);
 	PLL_Init();
-  SysTick_Init(50000);     // initialize SysTick timer
+  SysTick_Init(50);     // initialize SysTick timer
   EnableInterrupts();
 	ADCInit();
 	LCDInit();

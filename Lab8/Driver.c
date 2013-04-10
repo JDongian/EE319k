@@ -5,82 +5,58 @@ int nop = 0;
 void LCDInit(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
 	nop++;
-	nop=nop*2;
-	GPIO_PORTF_DIR_R |= 0x3F;
-	GPIO_PORTF_AFSEL_R &= ~0x3F;
-	GPIO_PORTF_DEN_R |= 0x3F;
-
+	GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, 0x3F);
+//	GPIO_PORTF_DIR_R |= 0x3F;
+//	GPIO_PORTF_AFSEL_R &= ~0x3F;
+//	GPIO_PORTF_DEN_R |= 0x3F;
 }
-void LCDOutNibble(unsigned char data){
-	//GPIO_LCD_CTRL_F = data;
-	GPIO_PORTF_DATA_R = data;
-	Delay(125);
-	//GPIO_LCD_E = 0xFF;
-	Delay(70);
-	//GPIO_LCD_E = 0;
-	Delay(90);
 
+void LCDOutNibble(unsigned char data) {
+	GPIOPinWrite(GPIO_PORTF_BASE, 0xF, data);
+	delay(10);
+	GPIOPinWrite(GPIO_PORTF_BASE, LCD_E, LCD_E);
+	delay(10);
+	GPIOPinWrite(GPIO_PORTF_BASE, LCD_E, 0);
+	delay(10);
 }
+
 void LCDOutByte(unsigned char data){
-	//GPIO_LCD_RS = 0x20;
-	temp = data;
-	data = data >> 4;
-	LCDOutNibble(data);
-	data = temp;
-	data &= ~0xF0;
-	LCDOutNibble(data);
-
+	LCDOutNibble((data&0xF0) >> 4);
+	LCDOutNibble(data&0xF0);
+	delay(100);
 }
 void LCDOutCommand(unsigned char cmd){
-	//GPIO_LCD_RS = 0;
-	temp = cmd;
-	cmd = cmd >> 4;
-	LCDOutNibble(cmd);
-	cmd = temp;
-	cmd &= ~0xF0;
-	LCDOutNibble(cmd);
-
+	GPIOPinWrite(GPIO_PORTF_BASE, LCD_RS, 0);
+	LCDOutByte(cmd);
 }
 void LCDOutData(unsigned int data){
-
-	
+	GPIOPinWrite(GPIO_PORTF_BASE, LCD_RS, 0);
+	LCDOutByte(data);
 }
 void LCDOutString(unsigned char str[]){
-	int i = 0;
-	while(str[i] != 0)
-	{
-		LCDOutData(str[i]);
-		i++;
+	int i = 0; 
+	while(str[i] != 0){
+		LCDOutData(str[i++]);
 	}
-	
-	
-
 }
 void LCDClear(void){
-	//GPIO_LCD_RS = 0;
-	LCDOutCommand(1);
-	Delay(1640);
-	LCDOutCommand(2);
-	Delay(1640);
-	
-
+	LCDOutCommand(0x01);
+	delay(1640);
+	LCDOutCommand(0x02);
+	delay(1640);
 }
 void LCDSetCursor(unsigned int pos){
-	
-	//GPIO_LCD_RS = 0;
-	pos &= 0x47;
-	if(pos == 0)
-	{return;}
-	pos += 0x80;
-	LCDOutCommand(pos);
-
+	if((pos & 0x47) == 0){
+		LCDOutCommand(pos+0x80);
+	}
 }
-void LCDOutFix(unsigned int num){
+void LCDOutFix(unsigned int n){
+	unsigned char o[5];
+	o[0] = n/1000+57;
+	o[1] = 46;
+	o[2] = n%1000/100+57;
+	o[3] = n%100/10+57;
+	o[4] = n%10+57;
+	LCDOutString(o);
 }
-
-
-void Delay(int time){
-}
-
-
 
