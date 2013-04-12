@@ -2,6 +2,8 @@
 #define MAX 1020
 #define MIN 80
 #define LENGTH 2000
+#include "pll.h" 
+#include "ADC.h"
 
 int main(void){
 	init();
@@ -46,5 +48,54 @@ char* convert(int input)
 	return output;
 	
 }
-
+unsigned long Data; 
+#define N 256 
+int main2(void){ int i; unsigned long sum; 
+ PLL_Init(); // Bus clock is 50 MHz 
+ LCD_Open(); 
+ LCD_Clear(); 
+ ADC_Init(2); // turn on ADC, set channel to 2, sequencer 3 
+ while(1){ 
+ sum = 0; 
+ for(i=0; i<N; i++){ // take N samples and perform the average 
+ sum = sum+ADC_In(); // sample 10-bit channel 2 
+ } 
+ Data = sum/N; // noise reducing filter 
+ LCD_GoTo(0);  
+ LCD_OutDec(Data); LCD_OutString(" "); 
+ } 
+}
+unsigned long Data; // 10-bit ADC 
+unsigned long Position; // 16-bit fixed-point 0.001 cm 
+#define N 256 
+int main3(void){ int i; unsigned long sum; 
+ PLL_Init(); // Bus clock is 50 MHz 
+ LCD_Open(); 
+ LCD_Clear(); 
+ ADC_Init(2); // turn on ADC, set channel to 2, sequencer 3 
+ while(1){ 
+ sum = 0; 
+ for(i=0; i<N; i++){ // take N samples and perform the average 
+ sum = sum+ADC_In(); // sample 10-bit channel 2 
+ } 
+ Data = sum/N; // noise reducing filter 
+ Position = Convert(Data); // you write this function 
+ LCD_GoTo(0); 
+ LCD_OutFix(Position); }}
+ 
+ int main4(void)
+ {
+	 PLL_Init();
+	 LCD_Open();
+	 LCD_Clear();
+	 SysTick_Init(20000000);
+	 while(1){
+	 while(ADCStatus==0)
+	 {
+	 }
+	 ADCStatus = 0;
+	 LCD_GoTo(0);
+	 LCD_OutString(convert(ADCMail));
+	 LCD_OutString(" cm");
+ }}
 
