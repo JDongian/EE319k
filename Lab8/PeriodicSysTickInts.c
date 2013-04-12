@@ -28,7 +28,7 @@
 #include "SysTickInts.h"
 #include "PLL.h"
 #include "ADC.h"
-#include "Driver.h"
+#include "LCD.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
