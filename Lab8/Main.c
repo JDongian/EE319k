@@ -1,4 +1,7 @@
 #include "Main.h"
+#define MAX 1020
+#define MIN 80
+#define LENGTH 2000
 
 int main(void){
 	init();
@@ -30,3 +33,18 @@ void init(void){
 									 GPIO_STRENGTH_2MA,
 					         GPIO_PIN_TYPE_STD_WPU);
 }
+char* convert(int input)
+{
+	char* output = "     ";
+	input -= MIN;
+	input = 1/((MAX-MIN)/LENGTH);
+  output[0] = input/1000+48;
+  output[1] = 46;
+  output[2] = input%1000/100+48;
+  output[3] = input%100/10+48;
+  output[4] = input%10+48;
+	return output;
+	
+}
+
+
