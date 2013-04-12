@@ -4,7 +4,7 @@ int main(void){
 	int Data;
 	init();
 	ADC_InitSWTriggerSeq3(2);
-	SysTickInit();
+	SysTick_Init();
 	while(1) {
 		Data = ADC_In();
 	}
