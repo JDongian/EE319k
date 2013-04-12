@@ -35,6 +35,7 @@ void init(void){
 									 GPIO_STRENGTH_2MA,
 					         GPIO_PIN_TYPE_STD_WPU);
 }
+
 char* convert(int input)
 {
 	char* output = "     ";
@@ -46,7 +47,6 @@ char* convert(int input)
   output[3] = input%100/10+48;
   output[4] = input%10+48;
 	return output;
-	
 }
 unsigned long Data; 
 #define N 256 
