@@ -8,3 +8,5 @@ extern unsigned long ADC_In(void);
 void Timer0A_Handler(void);
 
 #endif // __ADCDRIVER_H__
+#define ADCStatus								(*((volatile unsigned long *)0x00000000))
+#define ADCMail									(*((volatile unsigned long *)0x00000000))

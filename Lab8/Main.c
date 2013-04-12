@@ -4,8 +4,11 @@
 #define LENGTH 2000
 #include "pll.h" 
 #include "ADC.h"
+#include "LCD.h"
+#include "lm3s1968.h"
 
 int main(void){
+	int Data;
 	init();
 	ADC_InitSWTriggerSeq3(2);
 	SysTickInit();
@@ -54,7 +57,7 @@ int main2(void){ int i; unsigned long sum;
  PLL_Init(); // Bus clock is 50 MHz 
  LCD_Open(); 
  LCD_Clear(); 
- ADC_Init(2); // turn on ADC, set channel to 2, sequencer 3 
+ ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
  while(1){ 
  sum = 0; 
  for(i=0; i<N; i++){ // take N samples and perform the average 
@@ -66,22 +69,22 @@ int main2(void){ int i; unsigned long sum;
  } 
 }
 unsigned long Data; // 10-bit ADC 
-unsigned long Position; // 16-bit fixed-point 0.001 cm 
+char* Position; // 16-bit fixed-point 0.001 cm 
 #define N 256 
 int main3(void){ int i; unsigned long sum; 
  PLL_Init(); // Bus clock is 50 MHz 
  LCD_Open(); 
  LCD_Clear(); 
- ADC_Init(2); // turn on ADC, set channel to 2, sequencer 3 
+ ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
  while(1){ 
  sum = 0; 
  for(i=0; i<N; i++){ // take N samples and perform the average 
  sum = sum+ADC_In(); // sample 10-bit channel 2 
  } 
  Data = sum/N; // noise reducing filter 
- Position = Convert(Data); // you write this function 
+ Position = convert(Data); // you write this function 
  LCD_GoTo(0); 
- LCD_OutFix(Position); }}
+ LCD_OutString(Position); }}
  
  int main4(void)
  {

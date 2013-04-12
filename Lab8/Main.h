@@ -5,4 +5,4 @@
 
 void SysTickIntHandler(void);
 void init(void);
-char[] convert(int input);
+char* convert(int input);

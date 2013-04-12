@@ -30,8 +30,8 @@
 #include "globals.h"
 #include "ADC.h"
 
-#define ADCStatus								(*((volatile unsigned long *)0x00000000))
-#define ADCMail									(*((volatile unsigned long *)0x00000000))
+//#define ADCStatus								(*((volatile unsigned long *)0x00000000))
+//#define ADCMail									(*((volatile unsigned long *)0x00000000))
 
 #define ADC_ACTSS_R             (*((volatile unsigned long *)0x40038000))
 #define ADC0_RIS_R              (*((volatile unsigned long *)0x40038004))
@@ -209,7 +209,7 @@ void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;    // acknowledge timer0A timeout
   GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
   ADCvalue = ADC_In();
-	//HWREGBITW(&gFlags, FLAG_ADC_VALUE) = 1;
+	ADCStatus = 1;
   GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 void ADC_Init(void){
