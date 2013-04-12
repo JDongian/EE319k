@@ -1,14 +1,13 @@
-#include "LCD.s"
 
 //Methods
-extern void LCDInit(void);
-extern void LCDOutNibble(unsigned char);
-extern void LCDOutByte(unsigned char);
-extern void LCDOutCommand(unsigned char);
-extern void LCDOutData(unsigned int);
-extern void LCDOutString(unsigned char []);
-extern void LCDClear(void);
-extern void LCDSetCursor(unsigned int);
-extern void LCDOutFix(unsigned int);
+extern void LCD_Open(void);
+extern void LCD_OutNibble(unsigned char);
+extern void LCD_OutByte(unsigned char);
+extern void LCD_OutCommand(unsigned char);
+extern void LCD_OutData(unsigned int);
+extern void LCD_OutString(unsigned char []);
+extern void LCD_Clear(void);
+extern void LCD_SetCursor(unsigned int);
+
 
 

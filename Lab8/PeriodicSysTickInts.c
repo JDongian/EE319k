@@ -42,8 +42,8 @@ int main(void){// bus clock at 50 MHz
 	PLL_Init();
   SysTick_Init(50);     // initialize SysTick timer
   EnableInterrupts();
-	ADCInit();
-	LCDInit();
+	//ADCInit();
+	LCD_Open();
 	while(1){
     WaitForInterrupt();
   }
