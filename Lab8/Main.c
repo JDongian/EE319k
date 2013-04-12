@@ -2,7 +2,7 @@
 
 int main(void){
 	int Data;
-	init();
+	//init();
 	ADC_InitSWTriggerSeq3(2);
 	SysTick_Init();
 	while(1) {
@@ -10,7 +10,7 @@ int main(void){
 	}
 }
 
-void init(void){
+/*void init(void){
 	int nop = 0;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
 	nop++;
@@ -30,7 +30,7 @@ void init(void){
 	                 GPIO_PIN_7),
 									 GPIO_STRENGTH_2MA,
 					         GPIO_PIN_TYPE_STD_WPU);
-}
+}*/
 
 char* convert(int input)
 {
