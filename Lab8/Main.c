@@ -1,11 +1,4 @@
 #include "Main.h"
-#define MAX 1020
-#define MIN 80
-#define LENGTH 2000
-#include "pll.h" 
-#include "ADC.h"
-#include "LCD.h"
-#include "lm3s1968.h"
 
 int main(void){
 	int Data;
