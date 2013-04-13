@@ -8,7 +8,7 @@ int main(void){
 	int Data;
 	//init();
 	ADC_InitSWTriggerSeq3(2);
-	SysTick_Init();
+	SysTick_Init(20000000);
 	while(1) {
 		Data = ADC_In();
 	}
@@ -84,15 +84,15 @@ int main4(void){
 					         GPIO_PIN_TYPE_STD_WPU);
 }*/
 
-char* convert(int input)
+unsigned char* convert(int input)
 {
-	char* output = "     ";
-	input -= MIN;
+	unsigned char* output = "     ";
+	/*input -= MIN;
 	input = 1/((MAX-MIN)/LENGTH);
   output[0] = input/1000+48;
   output[1] = 46;
   output[2] = input%1000/100+48;
   output[3] = input%100/10+48;
   output[4] = input%10+48;
-	return output;
+	*/return output;
 }

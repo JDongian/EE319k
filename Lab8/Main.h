@@ -8,6 +8,7 @@
 #include "PLL.h" 
 #include "ADC.h"
 #include "LCD.h"
+#include "SysTickInts.h"
 
 #define MAX 1020
 #define MIN 80
@@ -15,4 +16,4 @@
 
 void SysTickIntHandler(void);
 void init(void);
-char* convert(int input);
+unsigned char* convert(int input);

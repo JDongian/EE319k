@@ -8,6 +8,8 @@ extern void LCD_OutData(unsigned int);
 extern void LCD_OutString(unsigned char []);
 extern void LCD_Clear(void);
 extern void LCD_SetCursor(unsigned int);
+extern void LCD_GoTo(unsigned int);
+extern void LCD_OutDec(unsigned int);
 
 
 
