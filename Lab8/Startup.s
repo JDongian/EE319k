@@ -105,7 +105,7 @@ __Vectors
         DCD     DebugMon_Handler            ; Debug Monitor Handler
         DCD     0                           ; Reserved
         DCD     PendSV_Handler              ; PendSV Handler
-        DCD     SysTickIntHandler           ; SysTick Handler
+        DCD     SysTick_Handler             ; SysTick Handler
         DCD     GPIOPortA_Handler           ; GPIO Port A
         DCD     GPIOPortB_Handler           ; GPIO Port B
         DCD     GPIOPortC_Handler           ; GPIO Port C
@@ -231,9 +231,8 @@ PendSV_Handler  PROC
                 EXPORT  PendSV_Handler            [WEAK]
                 B       .
                 ENDP
-SysTickIntHandler\
-                PROC
-                EXPORT  SysTickIntHandler           [WEAK]
+SysTick_Handler PROC
+                EXPORT  SysTick_Handler           [WEAK]
                 B       .
                 ENDP
 IntDefaultHandler\

@@ -22,7 +22,7 @@
  http://users.ece.utexas.edu/~valvano/
  */
 
-// oscilloscope or LED connected to PD0 for period measurement
+// oscilloscope or LED connected to PD0 for period measurementa
 #include "SysTickInts.h"
 #include "Main.h"
 
