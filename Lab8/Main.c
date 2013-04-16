@@ -31,7 +31,7 @@ int main2(void){ int i; unsigned long sum;
 	} 
 }
 
-int main3(void){ int i; unsigned long sum; 
+int main(void){ int i; unsigned long sum; 
 	PLL_Init(); // Bus clock is 50 MHz 
 	LCD_Open(); 
 	LCD_Clear(); 
@@ -49,7 +49,7 @@ int main3(void){ int i; unsigned long sum;
 	}
 }
 	
-int main(void){
+int main4(void){
 	PLL_Init();
 	LCD_Open();
 	LCD_Clear();

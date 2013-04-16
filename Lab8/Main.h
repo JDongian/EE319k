@@ -11,7 +11,7 @@
 #include "SysTickInts.h"
 
 #define MAX 1020
-#define MIN 80
+#define MIN 85
 #define LENGTH 2000
 
 void SysTickIntHandler(void);

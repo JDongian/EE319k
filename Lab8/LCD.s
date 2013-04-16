@@ -68,7 +68,7 @@ retMod
 ; Output: none
 ; This is a public function
 Wait
-	MOV R1, #0x0A
+	MOV R1, #0x10
 	MUL R0, R0, R1
 loopWait
 	SUBS R0, R0, #0x01
@@ -96,7 +96,7 @@ outCsrNibble
 	
 	MOV R3, #0xFF	;Set E to 1 and wait 9 microseconds
 	STR R3, [R2]
-	MOV R0, #70
+	MOV R0, #9
 	BL Wait
 	MOV R3, #0x00
 	STR R3, [R2]

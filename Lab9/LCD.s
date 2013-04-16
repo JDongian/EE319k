@@ -291,7 +291,6 @@ LCD_Clear
 ; This is a public function
 ; Invariables: This function must not permanently modify registers R4 to R11
 LCD_GoTo
-    PUSH {R1-R4,LR}
 ;0) save any registers that will be destroyed by pushing on the stack
 ;1) go to step 3 if DDaddr is 0x08 to 0x3F or 0x48 to 0xFF
 
@@ -299,16 +298,11 @@ LCD_GoTo
 	MOV R1, #0x00
 	STR R1, [R2]
 
-	MOV R1, R0
-	AND R0, R1, #0x47
-	CMP R0, #0x00
-	BEQ outOfBounds
-;2) outCsr(DDaddr+0x80)
-	ADD R0, R0, #0x80
-	BL outCsr
-;3) restore the registers by pulling off the stack
-outOfBounds
-    POP  {R1-R4,PC}
+	MOV	R1, R0
+	ADD	R0, #0x80
+	BICS	R1, #0x47
+	BEQ	outCsr
+	BX	LR
 
 ; ---------------------LCD_OutString-------------
 ; Output character string to LCD display, terminated by a NULL(0)
