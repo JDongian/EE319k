@@ -299,15 +299,10 @@ LCD_GoTo
 	MOV R1, #0x00
 	STR R1, [R2]
 
-	MOV R1, R0
-	AND R0, R1, #0x47
-	CMP R0, #0x00
-	BEQ outOfBounds
-;2) outCsr(DDaddr+0x80)
-	ADD R0, R0, #0x80
-	BL outCsr
-;3) restore the registers by pulling off the stack
-outOfBounds
+	MOV	R1, R0
+	ADD	R0, #0x80
+	BICS	R1, #0x47
+	BEQ	outCsr
     POP  {R1-R4,PC}
 
 ; ---------------------LCD_OutString-------------

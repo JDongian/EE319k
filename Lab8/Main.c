@@ -2,6 +2,7 @@
 #define N 256 
 
 unsigned long Data; // 10-bit ADC 
+char output[5];
 char* Position; // 16-bit fixed-point 0.001 cm 
 
 int maint(void){
@@ -54,7 +55,7 @@ int main(void){
 	ADC_InitSWTriggerSeq3(2);
 	SysTick_Init(20000000);
 	while(1){
-		while(ADCStatus==0){}
+		while(ADCStatus==0){ }
 		ADCStatus = 0;
 		LCD_GoTo(0);
 		LCD_OutString(convert(ADCMail));
@@ -87,14 +88,10 @@ int main(void){
 
 char* convert(int input)
 {
-	char* output;
-	output = " ";
-	
-	output[0] = 49;output[1] = 56;
 	input -= MIN;
 	input = input*(LENGTH/(MAX-MIN));
   output[0] = input/1000+48;
-  output[1] = 46;
+  output[1] = '.';
   output[2] = input%1000/100+48;
   output[3] = input%100/10+48;
   output[4] = input%10+48;
