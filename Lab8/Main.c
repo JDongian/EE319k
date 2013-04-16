@@ -42,7 +42,8 @@ int main3(void){ int i; unsigned long sum;
 			sum = sum+ADC_In(); // sample 10-bit channel 2 
 		} 
 		Data = sum/N; // noise reducing filter 
-		Position = convert(Data); // you write this function 
+		convert(Data); // you write this function 
+		Position = output;
 		LCD_GoTo(0); 
 		LCD_OutString(Position);
 	}
@@ -58,7 +59,8 @@ int main(void){
 		while(ADCStatus==0){ }
 		ADCStatus = 0;
 		LCD_GoTo(0);
-		LCD_OutString(convert(ADCMail));
+		convert(ADCMail);
+		LCD_OutString(output);
 		LCD_OutString(" cm");
 	}
 }
@@ -86,14 +88,13 @@ int main(void){
 					         GPIO_PIN_TYPE_STD_WPU);
 }*/
 
-char* convert(int input)
+void convert(unsigned int input)
 {
 	input -= MIN;
 	input = input*(LENGTH/(MAX-MIN));
   output[0] = input/1000+48;
   output[1] = '.';
-  output[2] = input%1000/100+48;
-  output[3] = input%100/10+48;
-  output[4] = input%10+48;
-	return output;
+  output[2] = (input%1000)/100+48;
+  output[3] = (input%100)/10+48;
+  output[4] = (input%10)+48;
 }
