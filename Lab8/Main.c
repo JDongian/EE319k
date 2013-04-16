@@ -88,14 +88,14 @@ char* convert(int input)
 {
 	char* output;
 	output = " ";
-	/*
+	
 	output[0] = 49;output[1] = 56;
 	input -= MIN;
-	input = 1/((MAX-MIN)/LENGTH);
+	input = input*(LENGTH/(MAX-MIN));
   output[0] = input/1000+48;
   output[1] = 46;
   output[2] = input%1000/100+48;
   output[3] = input%100/10+48;
-  output[4] = input%10+48;*/
+  output[4] = input%10+48;
 	return output;
 }
