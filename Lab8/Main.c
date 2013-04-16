@@ -2,9 +2,9 @@
 #define N 256 
 
 unsigned long Data; // 10-bit ADC 
-unsigned char* Position; // 16-bit fixed-point 0.001 cm 
+char* Position; // 16-bit fixed-point 0.001 cm 
 
-int main(void){
+int maint(void){
 	int Data;
 	//init();
 	ADC_InitSWTriggerSeq3(2);
@@ -47,7 +47,7 @@ int main3(void){ int i; unsigned long sum;
 	}
 }
 	
-int main4(void){
+int main(void){
 	PLL_Init();
 	LCD_Open();
 	LCD_Clear();
@@ -84,15 +84,18 @@ int main4(void){
 					         GPIO_PIN_TYPE_STD_WPU);
 }*/
 
-unsigned char* convert(int input)
+char* convert(int input)
 {
-	unsigned char* output = "     ";
-	/*input -= MIN;
+	char* output;
+	output = " ";
+	/*
+	output[0] = 49;output[1] = 56;
+	input -= MIN;
 	input = 1/((MAX-MIN)/LENGTH);
   output[0] = input/1000+48;
   output[1] = 46;
   output[2] = input%1000/100+48;
   output[3] = input%100/10+48;
-  output[4] = input%10+48;
-	*/return output;
+  output[4] = input%10+48;*/
+	return output;
 }

@@ -16,4 +16,4 @@
 
 void SysTickIntHandler(void);
 void init(void);
-unsigned char* convert(int input);
+char* convert(int input);

@@ -99,6 +99,12 @@
 // SS3 triggering event: software trigger
 // SS3 1st sample source: programmable using variable 'channelNum' [0:3]
 // SS3 interrupts: enabled but not promoted to controller
+
+
+
+volatile unsigned int ADCStatus;
+volatile unsigned long ADCMail;
+
 void ADC_InitSWTriggerSeq3(unsigned char channelNum){
   // channelNum must be 0-3 (inclusive) corresponding to ADC0 through ADC3
   if(channelNum > 3){
