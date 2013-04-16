@@ -51,6 +51,7 @@ int main(void){
 	PLL_Init();
 	LCD_Open();
 	LCD_Clear();
+	ADC_InitSWTriggerSeq3(2);
 	SysTick_Init(20000000);
 	while(1){
 		while(ADCStatus==0){}
