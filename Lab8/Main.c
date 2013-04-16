@@ -2,8 +2,8 @@
 #define N 256 
 
 unsigned long Data; // 10-bit ADC 
-char output[5];
 char* Position; // 16-bit fixed-point 0.001 cm 
+char output[5] = "     ";
 
 int maint(void){
 	int Data;
