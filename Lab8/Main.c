@@ -90,8 +90,15 @@ int main(void){
 
 void convert(unsigned int input)
 {
-	input -= MIN;
-	input = input*(LENGTH/(MAX-MIN));
+	if(input < MIN)
+	{
+		input = 0;
+	}
+	else
+	{
+		input -= MIN;
+	}
+	input = (input*(LENGTH))/(MAX-MIN);
   output[0] = input/1000+48;
   output[1] = '.';
   output[2] = (input%1000)/100+48;
