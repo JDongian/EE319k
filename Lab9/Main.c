@@ -37,7 +37,7 @@ char* convert(unsigned int input)
 	return output;
 }
 
-void main(void){
+int main(void){
 	int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
