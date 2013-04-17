@@ -47,7 +47,8 @@ int main(void){
 	LCD_Open();
 	LCD_Clear();
 	RxFifo_Init();
-	
+	UART_Enable();
+
 	while(1) {
 		while((RxFifo_Get(temp))==0){}
 		if(flag) {
