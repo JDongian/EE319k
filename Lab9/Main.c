@@ -16,9 +16,8 @@ void maint(void){
 	while(1){ }
 }
 
-char* convert(unsigned int input)
+char convert(unsigned int input)
 {
-	char* output;
 	if(input < MIN)
 	{
 		input = 0;
@@ -38,8 +37,7 @@ char* convert(unsigned int input)
 	return output;
 }
 
-
-int main(void){int i; char flag;char* temp;
+void main(void){int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
 	
