@@ -19,6 +19,7 @@ void UART_Init(void){
 	debugLoops = 0;
 	errors = 0;
   SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART1; // activate UART1
+	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD; // activate port D
 	delay(10);
   UART1_CTL_R &= ~UART_CTL_UARTEN;      // disable UART
   UART1_IBRD_R = 27;                    // IBRD = int(50,000,000 / (16 * 115,200)) = int(27.1267)
