@@ -3,7 +3,7 @@
 
 unsigned long Data; // 10-bit ADC 
 char* Position; // 16-bit fixed-point 0.001 cm 
-char output[6] = "      ";
+//char output[6] = "      ";
 
 void maint(void){
 	PLL_Init(); // Bus clock is 50 MHz 
@@ -16,28 +16,29 @@ void maint(void){
 	while(1){ }
 }
 
-char convert(unsigned int input)
+char* convert(unsigned int input)
 {
-	if(input < MIN)
-	{
+	char* output;
+	
+	if(input < MIN){
 		input = 0;
-	}
-	else
-	{
+	}	else {
 		input -= MIN;
 	}
 	input = (input*(LENGTH))/(MAX-MIN);
   
-	output[0] = input/1000+48;
-  output[1] = '.';
-  output[2] = (input%1000)/100+48;
-  output[3] = (input%100)/10+48;
-  output[4] = (input%10)+48;
+	*output = input/1000+48;
+  *(output+1) = '.';
+  *(output+2) = (input%1000)/100+48;
+  *(output+3) = (input%100)/10+48;
+  *(output+4) = (input%10)+48;
+	*(output+5) = 0;
 
 	return output;
 }
 
-void main(void){int i; char flag;char* temp;
+void main(void){
+	int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
 	
@@ -49,21 +50,19 @@ void main(void){int i; char flag;char* temp;
 	
 	while(1){
 		while((RxFifo_Get(temp))==0){}
-			if(temp == "2")
-			{
-				flag = 1;
-			}
-		if(flag)
-		{
+		if(temp == "2"){
+			flag = 1;
+		}
+		if(flag){
 			storage[i++] = temp[0];
 		}
-			if(temp == "3")
-			{
-				LCD_GoTo(0);
-				LCD_OutString(storage);
-				LCD_OutString("cm");
-				flag = 0;
-			}
-			
-		}}
+		if(temp == "3")
+		{
+			LCD_GoTo(0);
+			LCD_OutString(storage);
+			LCD_OutString("cm");
+			flag = 0;
+		}
+	}
+}
 

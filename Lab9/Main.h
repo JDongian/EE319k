@@ -18,4 +18,4 @@
 #define N 1024
 
 void SysTickIntHandler(void);
-char convert(unsigned int);
+char* convert(unsigned int);
