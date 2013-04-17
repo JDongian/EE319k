@@ -21,7 +21,7 @@ int main2(void){ int i; unsigned long sum;
 	} 
 }
 
-int mainr(void){int i; unsigned long sum; char flag;char* temp;
+int mainr(void){int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
 	
@@ -82,9 +82,11 @@ char* convert(unsigned int input)
 	}
 	input = (input*(LENGTH))/(MAX-MIN);
   *output = input/1000+48;
+
   output[1] = '.';
   output[2] = (input%1000)/100+48;
   output[3] = (input%100)/10+48;
   output[4] = (input%10)+48;
+
 	return output;
 }
