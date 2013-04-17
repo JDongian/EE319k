@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>PeriodicSysTickInts</TargetName>
+      <TargetName>Lab9</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <TargetOption>
@@ -44,7 +44,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>Lab8</OutputName>
+          <OutputName>Lab9</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -391,19 +391,29 @@
           <GroupName>Source Code</GroupName>
           <Files>
             <File>
-              <FileName>ADC.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ADC.c</FilePath>
+              <FileName>Startup.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\Startup.s</FilePath>
             </File>
             <File>
-              <FileName>Delay.c</FileName>
+              <FileName>ADCDriver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Delay.c</FilePath>
+              <FilePath>.\ADCDriver.c</FilePath>
             </File>
             <File>
-              <FileName>Main.c</FileName>
+              <FileName>LCD2.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\LCD2.s</FilePath>
+            </File>
+            <File>
+              <FileName>Lab9.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Main.c</FilePath>
+              <FilePath>.\Lab9.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysTick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SysTick.c</FilePath>
             </File>
             <File>
               <FileName>PLL.c</FileName>
@@ -411,64 +421,34 @@
               <FilePath>.\PLL.c</FilePath>
             </File>
             <File>
-              <FileName>SysTickInts.c</FileName>
+              <FileName>Output.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\SysTickInts.c</FilePath>
+              <FilePath>.\Output.c</FilePath>
             </File>
             <File>
-              <FileName>ADC.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\ADC.h</FilePath>
+              <FileName>rit128x96x4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\rit128x96x4.c</FilePath>
             </File>
             <File>
-              <FileName>Delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Delay.h</FilePath>
+              <FileName>UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\UART.c</FilePath>
             </File>
             <File>
-              <FileName>globals.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\globals.h</FilePath>
+              <FileName>FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FIFO.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Library</GroupName>
+          <Files>
             <File>
-              <FileName>hw_types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\hw_types.h</FilePath>
-            </File>
-            <File>
-              <FileName>LCD.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\LCD.h</FilePath>
-            </File>
-            <File>
-              <FileName>lm3s1968.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\lm3s1968.h</FilePath>
-            </File>
-            <File>
-              <FileName>Main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Main.h</FilePath>
-            </File>
-            <File>
-              <FileName>PLL.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\PLL.h</FilePath>
-            </File>
-            <File>
-              <FileName>SysTickInts.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\SysTickInts.h</FilePath>
-            </File>
-            <File>
-              <FileName>LCD.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\LCD.s</FilePath>
-            </File>
-            <File>
-              <FileName>Startup.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\Startup.s</FilePath>
+              <FileName>driverlib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\driverlib\rvmdk\driverlib.lib</FilePath>
             </File>
             <File>
               <FileName>UART.c</FileName>
