@@ -26,6 +26,18 @@
 #ifndef __RIT128X96X4_H__
 #define __RIT128X96X4_H__
 
+
+#include "inc/hw_types.h"
+#include "driverlib/gpio.h"
+#include "inc/hw_ssi.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_sysctl.h"
+#include "driverlib/debug.h"
+#include "driverlib/ssi.h"
+#include "driverlib/sysctl.h"
+
+
+
 //*****************************************************************************
 //
 // Prototypes for the driver APIs.
