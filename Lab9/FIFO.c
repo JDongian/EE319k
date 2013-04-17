@@ -6,44 +6,6 @@
 
 #include "FIFO.h"
 
-// Two-index implementation of the transmit FIFO
-// can hold 0 to TXFIFOSIZE elements
-unsigned long volatile TxPutI;// put next
-unsigned long volatile TxGetI;// get next
-txDataType static TxFifo[TXFIFOSIZE];
-
-// initialize index FIFO
-void TxFifo_Init(void){ long sr;
-  sr = StartCritical(); // make atomic
-  TxPutI = TxGetI = 0;  // Empty
-  EndCritical(sr);
-}
-// add element to end of index FIFO
-// return TXFIFOSUCCESS if successful
-int TxFifo_Put(txDataType data){
-  if((TxPutI-TxGetI) & ~(TXFIFOSIZE-1)){
-    return(TXFIFOFAIL); // Failed, fifo full
-  }
-  TxFifo[TxPutI&(TXFIFOSIZE-1)] = data; // put
-  TxPutI++;  // Success, update
-  return(TXFIFOSUCCESS);
-}
-// remove element from front of index FIFO
-// return TXFIFOSUCCESS if successful
-int TxFifo_Get(txDataType *datapt){
-  if(TxPutI == TxGetI ){
-    return(TXFIFOFAIL); // Empty if TxPutI=TxGetI
-  }
-  *datapt = TxFifo[TxGetI&(TXFIFOSIZE-1)];
-  TxGetI++;  // Success, update
-  return(TXFIFOSUCCESS);
-}
-// number of elements in index FIFO
-// 0 to TXFIFOSIZE-1
-unsigned short TxFifo_Size(void){
- return ((unsigned short)(TxPutI-TxGetI));
-}
-
 // Two-pointer implementation of the receive FIFO
 // can hold 0 to RXFIFOSIZE-1 elements
 
