@@ -24,7 +24,6 @@
 
 // oscilloscope or LED connected to PD0 for period measurement
 #include "hw_types.h"
-#include "sysctl.h"
 #include "SysTickInts.h"
 #include "lm3s1968.h"
 #include "ADC.h"
