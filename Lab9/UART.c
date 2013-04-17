@@ -117,9 +117,9 @@ void UART1_Handler(void) {
 // Input: None
 // Output: None
 void UART_Enable(void) {
+	NVIC_PRI1_R |= 0xE00000;
+	NVIC_EN0_R ^= 1<<6;
 	UART1_IM_R |= 0x10;
 	UART1_IFLS_R |= 0x38;
-	NVIC_PRI1_R |= 0xE00000;
-	NVIC_EN0_R ^= 2<<6;
 }
 
