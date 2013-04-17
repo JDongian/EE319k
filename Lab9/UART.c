@@ -97,7 +97,7 @@ char character;
 // Activated when data is input from the UART line
 // Input: data byte
 // Output: None
-void UART_Handler(void) {
+void UART1_Handler(void) {
 	while(UART_FR_RXFE == 0){
 		RxFifo_Put(UART1_DR_R);
 		if(RxFifo_Size() > 16){
@@ -116,6 +116,9 @@ void UART_Handler(void) {
 // Input: None
 // Output: None
 void UART_Enable(void) {
+	UART1_IM_R |= 0x10;
+	UART1_IFLS_R |= 0x38;
+	NVIC_PRI1_R |= 0xE00000;
 	NVIC_EN0_R ^= 2<<6;
 }
 

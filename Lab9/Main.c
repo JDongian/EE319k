@@ -58,6 +58,7 @@ int main(void){ int i; unsigned long sum;
 	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
 	UART_Init();
 	UART_Enable();
+	SysTick_Init(20000000);
 	while(1){ 
 		sum = 0; 
 		for(i=0; i<N; i++){ // take N samples and perform the average 
