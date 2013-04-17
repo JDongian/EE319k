@@ -1,35 +1,7 @@
-// SysTickInts.c
-// Runs on LM3S1968
 // Use the SysTick timer to request interrupts at a particular period.
-// Daniel Valvano
-// June 27, 2011
-
-/* This example accompanies the book
-   "Embedded Systems: Real Time Interfacing to the Arm Cortex M3",
-   ISBN: 978-1463590154, Jonathan Valvano, copyright (c) 2011
-
-   Program 5.12, section 5.7
-
- Copyright 2011 by Jonathan W. Valvano, valvano@mail.utexas.edu
-    You may use, edit, run or distribute this file
-    as long as the above copyright notice remains
- THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
- OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
- VALVANO SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL,
- OR CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
- For more information about my classes, my research, and my books, see
- http://users.ece.utexas.edu/~valvano/
- */
 
 // oscilloscope or LED connected to PD0 for period measurement
-#include "hw_types.h"
 #include "SysTickInts.h"
-#include "lm3s1968.h"
-#include "ADC.h"
-
-
-
 
 #define NVIC_SYS_PRI3_R         (*((volatile unsigned long *)0xE000ED20))  // Sys. Handlers 12 to 15 Priority
 #define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
@@ -57,10 +29,9 @@ void WaitForInterrupt(void);  // low power mode
 //        Maximum is 2^24-1
 //        Minimum is determined by length of ISR
 // Output: none
-void SysTick_Init(unsigned long period){int timingop;
+void SysTick_Init(unsigned long period){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOG;
-	timingop = 0;
-	timingop += 1;
+	delay(10);
 	GPIO_PORTG_DIR_R &= 0x07;
 	GPIO_PORTG_DIR_R |= 0x04;
 	GPIO_PORTG_AFSEL_R |= 0xF8;

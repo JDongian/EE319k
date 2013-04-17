@@ -51,9 +51,9 @@ char* convert(unsigned int input)
 	}
 	input = (input*(LENGTH))/(MAX-MIN);
   *output = input/1000+48;
-  //output[1] = '.';
-  //output[2] = (input%1000)/100+48;
-  //output[3] = (input%100)/10+48;
-  //output[4] = (input%10)+48;
+	*(output+1) = '.';
+	*(output+2) = (input%1000)/100+48;
+	*(output+3) = (input%10)+48;
+	*(output+4) = 0;
 	return output;
 }

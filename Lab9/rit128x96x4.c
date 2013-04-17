@@ -34,7 +34,7 @@
 #include "inc/hw_sysctl.h"
 #include "inc/hw_types.h"
 #include "driverlib/debug.h"
-#include "driverlib/gpio.h"
+#include "gpio.h"
 #include "driverlib/ssi.h"
 #include "driverlib/sysctl.h"
 #include "rit128x96x4.h"
