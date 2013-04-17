@@ -5,7 +5,7 @@ unsigned long Data; // 10-bit ADC
 char* Position; // 16-bit fixed-point 0.001 cm 
 //char output[6] = "      ";
 
-void maint(void){
+int maint(void){
 	PLL_Init(); // Bus clock is 50 MHz 
 	LCD_Open(); 
 	LCD_Clear();
@@ -14,6 +14,7 @@ void maint(void){
 	UART_Enable();
 	SysTick_Init(20000000);
 	while(1){ }
+	return 0;
 }
 
 char* convert(unsigned int input)
@@ -27,12 +28,12 @@ char* convert(unsigned int input)
 	}
 	input = (input*(LENGTH))/(MAX-MIN);
   
-	*output = input/1000+48;
-  *(output+1) = '.';
-  *(output+2) = (input%1000)/100+48;
-  *(output+3) = (input%100)/10+48;
-  *(output+4) = (input%10)+48;
-	*(output+5) = 0;
+	output[0] = input/1000+48;
+  output[1] = '.';
+  output[2] = (input%1000)/100+48;
+  output[3] = (input%100)/10+48;
+  output[4] = (input%10)+48;
+	output[5] = 0;
 
 	return output;
 }
@@ -64,5 +65,6 @@ int main(void){
 			flag = 0;
 		}
 	}
+	return 0;
 }
 
