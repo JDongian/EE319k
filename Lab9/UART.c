@@ -99,7 +99,7 @@ char character;
 // Input: data byte
 // Output: None
 void UART1_Handler(void) {
-	while(UART_FR_RXFE == 0){
+	while(UART1_FR_R & UART_FR_RXFE == 0){
 		RxFifo_Put(UART1_DR_R);
 		if(RxFifo_Size() > 16){
 			errors += 1;
