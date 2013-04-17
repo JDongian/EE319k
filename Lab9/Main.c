@@ -5,7 +5,7 @@ unsigned long Data; // 10-bit ADC
 char* Position; // 16-bit fixed-point 0.001 cm 
 char output[6] = "      ";
 
-int main(void){ int i; unsigned long sum;
+void maint(void){
 	PLL_Init(); // Bus clock is 50 MHz 
 	LCD_Open(); 
 	LCD_Clear();
@@ -13,16 +13,7 @@ int main(void){ int i; unsigned long sum;
 	UART_Init();
 	UART_Enable();
 	SysTick_Init(20000000);
-	while(1){ 
-		sum = 0; 
-		for(i=0; i<N; i++){ // take N samples and perform the average 
-			sum += ADC_In(); // sample 10-bit channel 2 
-		} 
-		Data = sum/N; // noise reducing filter 
-		Position = convert(Data);
-		LCD_GoTo(0); 
-		LCD_OutString(Position);
-	}
+	while(1){ }
 }
 
 char* convert(unsigned int input)
@@ -46,25 +37,9 @@ char* convert(unsigned int input)
 
 	return output;
 }
-/*
 
-int main2(void){ int i; unsigned long sum; 
-	PLL_Init(); // Bus clock is 50 MHz 
-	LCD_Open(); 
-	LCD_Clear(); 
-	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
-	while(1){ 
-		sum = 0; 
-		for(i=0; i<N; i++){ // take N samples and perform the average 
-			sum = sum+ADC_In(); // sample 10-bit channel 2 
-		} 
-		Data = sum/N; // noise reducing filter 
-		LCD_GoTo(0);  
-		LCD_OutDec(Data); LCD_OutString(" "); 
-	} 
-}
 
-int mainr(void){int i; char flag;char* temp;
+int main(void){int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
 	
@@ -93,5 +68,4 @@ int mainr(void){int i; char flag;char* temp;
 			}
 			
 		}}
-*/
 
