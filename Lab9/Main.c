@@ -48,16 +48,15 @@ int main(void){
 	LCD_Clear();
 	RxFifo_Init();
 	
-	while(1){
+	while(1) {
 		while((RxFifo_Get(temp))==0){}
-		if(temp == "2"){
-			flag = 1;
-		}
-		if(flag){
+		if(flag) {
 			storage[i++] = temp[0];
 		}
-		if(temp == "3")
-		{
+		if(temp == "2") {
+			flag = 1;
+		}
+		if(temp == "3") {
 			LCD_GoTo(0);
 			LCD_OutString(storage);
 			LCD_OutString("cm");
