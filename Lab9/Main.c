@@ -14,7 +14,6 @@ int maint(void){
 	UART_Enable();
 	SysTick_Init(20000000);
 	while(1){ }
-	return 0;
 }
 
 char* convert(unsigned int input)
@@ -65,6 +64,5 @@ int main(void){
 			flag = 0;
 		}
 	}
-	return 0;
 }
 
