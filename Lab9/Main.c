@@ -25,9 +25,8 @@ int main(void){ int i; unsigned long sum;
 	}
 }
 
-char* convert(unsigned int input)
+char convert(unsigned int input)
 {
-	char* output;
 	if(input < MIN)
 	{
 		input = 0;
@@ -47,24 +46,7 @@ char* convert(unsigned int input)
 	return output;
 }
 /*
-
-int main2(void){ int i; unsigned long sum; 
-	PLL_Init(); // Bus clock is 50 MHz 
-	LCD_Open(); 
-	LCD_Clear(); 
-	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
-	while(1){ 
-		sum = 0; 
-		for(i=0; i<N; i++){ // take N samples and perform the average 
-			sum = sum+ADC_In(); // sample 10-bit channel 2 
-		} 
-		Data = sum/N; // noise reducing filter 
-		LCD_GoTo(0);  
-		LCD_OutDec(Data); LCD_OutString(" "); 
-	} 
-}
-
-int mainr(void){int i; char flag;char* temp;
+int mainTr(void){int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
 	
