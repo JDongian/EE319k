@@ -9,6 +9,8 @@
 #include "SysTickInts.h"
 #include "rit128x96x4.h"
 #include "PLL.h" 
+#include "UART.h"
+#include "FIFO.h"
 #include "ADC.h"
 
 #define MAX 1020

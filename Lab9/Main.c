@@ -21,6 +21,37 @@ int main2(void){ int i; unsigned long sum;
 	} 
 }
 
+int mainr(void){int i; unsigned long sum; char flag;char* temp;
+	char* storage = "                ";
+	flag = 0;
+	
+	
+	PLL_Init();
+	UART_Init();
+	LCD_Open();
+	LCD_Clear();
+	RxFifo_Init();
+	
+	while(1){
+		while((RxFifo_Get(temp))==0){}
+			if(temp == "2")
+			{
+				flag = 1;
+			}
+		if(flag)
+		{
+			storage[i++] = temp[0];
+		}
+			if(temp == "3")
+			{
+				LCD_GoTo(0);
+				LCD_OutString(storage);
+				LCD_OutString("cm");
+				flag = 0;
+			}
+			
+		}}
+
 int main(void){ int i; unsigned long sum; 
 	PLL_Init(); // Bus clock is 50 MHz 
 	LCD_Open(); 
@@ -51,9 +82,9 @@ char* convert(unsigned int input)
 	}
 	input = (input*(LENGTH))/(MAX-MIN);
   *output = input/1000+48;
-  //output[1] = '.';
-  //output[2] = (input%1000)/100+48;
-  //output[3] = (input%100)/10+48;
-  //output[4] = (input%10)+48;
+  output[1] = '.';
+  output[2] = (input%1000)/100+48;
+  output[3] = (input%100)/10+48;
+  output[4] = (input%10)+48;
 	return output;
 }

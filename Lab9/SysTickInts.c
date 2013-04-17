@@ -28,6 +28,8 @@
 #include "SysTickInts.h"
 #include "lm3s1968.h"
 #include "ADC.h"
+#include "UART.h"
+#include "Main.h"
 
 
 
@@ -77,9 +79,16 @@ void SysTick_Init(unsigned long period){int timingop;
 
 // Interrupt service routine
 // Executed every 20ns*(period)
-void SysTick_Handler(void){
+void SysTick_Handler(void){char* inData;
+	GPIO_PORTG2 ^= 0x04;
 	ADCMail = ADC_In();
+	inData = convert((int)ADCMail);
+	GPIO_PORTG2 ^= 0x04;
+	UART_OutChar(2);
+	UART_OutString(inData);
+	UART_OutChar(' ');
+	UART_OutChar(3);
 	ADCStatus = 1;
-	GPIO_PORTG2 ^= 0x04;        // toggle PD0
+	GPIO_PORTG2 ^= 0x04;        // toggle Pg2
 }
 
