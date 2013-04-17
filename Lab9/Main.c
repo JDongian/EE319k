@@ -3,7 +3,7 @@
 
 unsigned long Data; // 10-bit ADC 
 char* Position; // 16-bit fixed-point 0.001 cm 
-//char output[5] = "     ";
+char output[5] = "     ";
 
 int main2(void){ int i; unsigned long sum; 
 	PLL_Init(); // Bus clock is 50 MHz 
@@ -24,7 +24,6 @@ int main2(void){ int i; unsigned long sum;
 int mainr(void){int i; char flag;char* temp;
 	char* storage = "                ";
 	flag = 0;
-	
 	
 	PLL_Init();
 	UART_Init();
@@ -52,11 +51,13 @@ int mainr(void){int i; char flag;char* temp;
 			
 		}}
 
-int main(void){ int i; unsigned long sum; 
+int main(void){ int i; unsigned long sum;
 	PLL_Init(); // Bus clock is 50 MHz 
 	LCD_Open(); 
-	LCD_Clear(); 
+	LCD_Clear();
 	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
+	UART_Init();
+	UART_Enable();
 	while(1){ 
 		sum = 0; 
 		for(i=0; i<N; i++){ // take N samples and perform the average 

@@ -5,6 +5,10 @@
 
 #include "UART.h"
 
+long debugLoops;
+long errors;
+
+
 //------------UART_Init------------
 // Wait for new serial port input
 // Initialize the UART for 115,200 baud rate (assuming 50 MHz UART clock),
@@ -12,6 +16,8 @@
 // Input: none
 // Output: none
 void UART_Init(void){
+	debugLoops = 0;
+	errors = 0;
   SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART1; // activate UART1
 	delay(10);
   UART1_CTL_R &= ~UART_CTL_UARTEN;      // disable UART
@@ -86,3 +92,30 @@ char character;
   }
   *bufPt = 0;
 }
+
+//------------UART_Handler------------
+// Activated when data is input from the UART line
+// Input: data byte
+// Output: None
+void UART_Handler(void) {
+	while(UART_FR_RXFE == 0){
+		RxFifo_Put(UART1_DR_R);
+		if(RxFifo_Size() > 16){
+			errors += 1;
+			break;
+		}
+	}
+	debugLoops += 1;
+	UART1_ICR_R = 0x10;
+	GPIO_PORTG_DATA_R ^= 0x04;
+	return;
+}
+
+//------------UART_Enable------------
+// Activate UART_Handler
+// Input: None
+// Output: None
+void UART_Enable(void) {
+	NVIC_EN0_R ^= 2<<6;
+}
+

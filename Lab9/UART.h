@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "lm3s1968.h"
 #include "Delay.h"
+#include "FIFO.h"
 
 #define CR		0x0D
 #define BS		0x08
@@ -49,3 +50,18 @@ void UART_OutString(char *pt);
 // Output: Null terminated string
 // -- Modified by Agustinus Darmawan + Mingjie Qiu --
 void UART_InString(char *bufPt, unsigned short max);
+
+//------------UART_Handler------------
+// Activated when data is input from the UART line
+// Input: data byte
+// Output: None
+void UART_Handler(void);
+
+//------------UART_Enable------------
+// Activate UART_Handler
+// Input: None
+// Output: None
+void UART_Enable(void);
+
+
+

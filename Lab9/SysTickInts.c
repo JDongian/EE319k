@@ -62,6 +62,6 @@ void SysTick_Handler(void){char* inData;
 	UART_OutChar(' ');
 	UART_OutChar(3);
 	ADCStatus = 1;
-	GPIO_PORTG2 ^= 0x04;        // toggle Pg2
+	GPIO_PORTG2 ^= 0x04;        // toggle PortG2
 }
 
