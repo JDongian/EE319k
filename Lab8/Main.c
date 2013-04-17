@@ -1,5 +1,5 @@
 #include "Main.h"
-#define N 256 
+
 
 unsigned long Data; // 10-bit ADC 
 char* Position; // 16-bit fixed-point 0.001 cm 
@@ -90,12 +90,9 @@ int main4(void){
 
 void convert(unsigned int input)
 {
-	if(input < MIN)
-	{
+	if(input < MIN) {
 		input = 0;
-	}
-	else
-	{
+	} else {
 		input -= MIN;
 	}
 	input = (input*(LENGTH))/(MAX-MIN);

@@ -10,9 +10,10 @@
 #include "LCD.h"
 #include "SysTickInts.h"
 
-#define MAX 1020
+#define MAX 950
 #define MIN 85
 #define LENGTH 2000
+#define N 1024 
 
 void SysTickIntHandler(void);
 void init(void);
