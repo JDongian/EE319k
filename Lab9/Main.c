@@ -6,14 +6,14 @@ char* Position; // 16-bit fixed-point 0.001 cm
 //char output[6] = "      ";
 
 int maint(void){
-	PLL_Init(); // Bus clock is 50 MHz 
-	LCD_Open(); 
-	LCD_Clear();
-	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
+	PLL_Init();
 	UART_Init();
+	RxFifo_Init();
 	UART_Enable();
+	ADC_InitSWTriggerSeq3(2); // turn on ADC, set channel to 2, sequencer 3 
 	SysTick_Init(20000000);
-	while(1){ }
+	while(1){
+	}
 }
 
 char* convert(unsigned int input)
@@ -32,7 +32,7 @@ char* convert(unsigned int input)
   output[2] = (input%1000)/100+48;
   output[3] = (input%100)/10+48;
   output[4] = (input%10)+48;
-	output[5] = 0;
+	//output[5] = 0;
 
 	return output;
 }

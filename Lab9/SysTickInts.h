@@ -1,10 +1,5 @@
 // Use the SysTick timer to request interrupts at a particular period.
 
-#include "lm3s1968.h"
-#include "hw_types.h"
-#include "ADC.h"
-#include "Delay.h"
-
 // **************SysTick_Init*********************
 // Initialize Systick periodic interrupts
 // Input: interrupt period
