@@ -27,6 +27,10 @@ void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 #define GPIO_PORTG2             (*((volatile unsigned long *)0x40026010))
 
+void SysTick_IntEnable(void) {
+	NVIC_ST_CTRL_R |= NVIC_ST_CTRL_INTEN;
+}
+
 // **************SysTick_Init*********************
 // Initialize Systick periodic interrupts
 // Input: interrupt period
@@ -47,7 +51,7 @@ void SysTick_Init(unsigned long period){
   NVIC_ST_CURRENT_R = 0;      // any write to current clears it
   NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF)|0x40000000; // priority 2
                               // enable SysTick with core clock and interrupts
-  NVIC_ST_CTRL_R = NVIC_ST_CTRL_ENABLE+NVIC_ST_CTRL_CLK_SRC+NVIC_ST_CTRL_INTEN;
+  NVIC_ST_CTRL_R = NVIC_ST_CTRL_ENABLE+NVIC_ST_CTRL_CLK_SRC;
 }
 
 // Interrupt service routine

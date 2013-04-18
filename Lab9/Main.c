@@ -13,6 +13,7 @@ int maint(void){
 	UART_Init();
 	UART_Enable();
 	SysTick_Init(20000000);
+	SysTick_IntEnable();
 	while(1){ }
 }
 
@@ -48,7 +49,7 @@ int main(void){
 	LCD_Clear();
 	RxFifo_Init();
 	UART_Enable();
-
+	SysTick_Init(2000000);
 	while(1) {
 		while((RxFifo_Get(temp))==0){}
 		if(flag) {
