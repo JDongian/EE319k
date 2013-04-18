@@ -21,6 +21,7 @@
 //        Maximum is 2^24-1
 //        Minimum is determined by length of ISR
 // Output: none
+void SysTick_IntEnable(void);
 void SysTick_Init(unsigned long);
 void SysTick_Handler(void);
 
