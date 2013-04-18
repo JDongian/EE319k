@@ -2,11 +2,7 @@
 
 // oscilloscope or LED connected to PD0 for period measurement
 #include "SysTickInts.h"
-#include "lm3s1968.h"
-#include "ADC.h"
-#include "UART.h"
 #include "Main.h"
-
 
 #define NVIC_SYS_PRI3_R         (*((volatile unsigned long *)0xE000ED20))  // Sys. Handlers 12 to 15 Priority
 #define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
