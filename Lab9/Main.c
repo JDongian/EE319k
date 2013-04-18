@@ -32,7 +32,6 @@ char* convert(unsigned int input)
   output[2] = (input%1000)/100+48;
   output[3] = (input%100)/10+48;
   output[4] = (input%10)+48;
-	//output[5] = 0;
 
 	return output;
 }
