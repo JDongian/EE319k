@@ -42,12 +42,14 @@ int main(void){
 	flag = 0;
 	
 	PLL_Init();
+	SysTick_Init(2000000);
 	UART_Init();
+	ADC_InitSWTriggerSeq3(2);
 	LCD_Open();
 	LCD_Clear();
 	RxFifo_Init();
 	UART_Enable();
-	SysTick_Init(2000000);
+	SysTick_IntEnable();
 	EnableInterrupts();
 	while(1) {
 		while((RxFifo_Get(&temp))==0){}

@@ -22,11 +22,11 @@ void UART_Init(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD; // activate port D
 	delay(10);
   UART1_CTL_R &= ~UART_CTL_UARTEN;      // disable UART
-  UART1_IBRD_R = 27;                    // IBRD = int(50,000,000 / (16 * 115,200)) = int(27.1267)
-  UART1_FBRD_R = 8;                     // FBRD = int(0.1267 * 64 + 0.5) = 8
+  UART1_IBRD_R = 31;                    // IBRD = int(50,000,000 / (16 * 115,200)) = int(27.1267)
+  UART1_FBRD_R = 16;                     // FBRD = int(0.1267 * 64 + 0.5) = 8
                                         // 8 bit word length (no parity bits, one stop bit, FIFOs)
   UART1_LCRH_R = (UART_LCRH_WLEN_8|UART_LCRH_FEN);
-  UART1_CTL_R |= UART_CTL_UARTEN;       // enable UART
+  UART1_CTL_R |= UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE;       // enable UART
   GPIO_PORTD_AFSEL_R |= 0x0C;           // enable alt funct on PA1-0
   GPIO_PORTD_DEN_R |= 0x0C;             // enable digital I/O on PA1-0
 }
@@ -99,11 +99,9 @@ char character;
 // Input: data byte
 // Output: None
 void UART1_Handler(void) {
-	while(UART1_FR_R & UART_FR_RXFE == 0){
-		RxFifo_Put(UART1_DR_R);
-		if(RxFifo_Size() > 16){
+	while (((UART1_FR_R & 0x10) == 0)) {
+		if (RxFifo_Put(UART1_DR_R) == 0) {
 			errors += 1;
-			break;
 		}
 	}
 	debugLoops += 1;
@@ -117,9 +115,8 @@ void UART1_Handler(void) {
 // Input: None
 // Output: None
 void UART_Enable(void) {
-	NVIC_PRI1_R |= 0xE00000;
-	NVIC_EN0_R ^= 1<<6;
-	UART1_IM_R |= 0x10;
-	UART1_IFLS_R |= 0x38;
+	NVIC_PRI1_R &= 0xFF1FFFFF;
+	NVIC_EN0_R |= 1 << 6;
+	UART1_IM_R = 0x10;
 }
 
