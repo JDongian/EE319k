@@ -4,6 +4,7 @@
 unsigned long Data; // 10-bit ADC 
 char* Position; // 16-bit fixed-point 0.001 cm 
 //char output[6] = "      ";
+char output[6] = "      ";
 
 int maint(void){
 	PLL_Init();
@@ -18,8 +19,6 @@ int maint(void){
 
 char* convert(unsigned int input)
 {
-	char* output;
-	
 	if(input < MIN){
 		input = 0;
 	}	else {
@@ -56,10 +55,13 @@ int main(void){
 		while((RxFifo_Get(&temp))==0){}
 		if(temp == 3) {
 			LCD_GoTo(0);
-			LCD_OutString(storage);
+			LCD_OutChar(storage[0]);
+			LCD_OutChar(storage[1]);
+			LCD_OutChar(storage[2]);
+			LCD_OutChar(storage[3]);
+			LCD_OutChar(storage[4]);
+			LCD_OutChar(' ');
 			LCD_OutString("cm");
-			printf(storage);
-			printf("%c",NEWLINE);
 			flag = 0;
 			i = 0;
 		}
