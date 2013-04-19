@@ -45,7 +45,7 @@ void SysTick_Handler(void){char* inData;
 	inData = convert((int)ADCMail);
 	GPIO_PORTG2 ^= 0x04;
 	UART_OutChar(2);
-	UART_OutString("0.000");
+	UART_OutString(inData);
 	UART_OutChar(' ');
 	UART_OutChar(3);
 	ADCStatus = 1;
