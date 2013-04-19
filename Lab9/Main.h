@@ -17,5 +17,7 @@
 #define LENGTH 2000
 #define N 1024
 
+void EnableInterrupts(void);
+
 void SysTickIntHandler(void);
 char* convert(unsigned int);

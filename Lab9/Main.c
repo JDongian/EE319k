@@ -1,5 +1,5 @@
 #include "Main.h"
- 
+
 
 unsigned long Data; // 10-bit ADC 
 char* Position; // 16-bit fixed-point 0.001 cm 
@@ -48,19 +48,21 @@ int main(void){
 	RxFifo_Init();
 	UART_Enable();
 	SysTick_Init(2000000);
+	EnableInterrupts();
 	while(1) {
 		while((RxFifo_Get(&temp))==0){}
-		if(flag) {
-			storage[i++] = temp;
-		}
-		if(temp == 2) {
-			flag = 1;
-		}
 		if(temp == 3) {
 			LCD_GoTo(0);
 			LCD_OutString(storage);
 			LCD_OutString("cm");
 			flag = 0;
+			i = 0;
+		}
+		if(flag) {
+			storage[i++] = temp;
+		}
+		if(temp == 2) {
+			flag = 1;
 		}
 	}
 }
