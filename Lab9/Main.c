@@ -37,7 +37,7 @@ char* convert(unsigned int input)
 }
 
 int main(void){
-	int i; char flag;char* temp;
+	int i; char flag;char temp = ' ';
 	char* storage = "                ";
 	flag = 0;
 	
@@ -49,14 +49,14 @@ int main(void){
 	UART_Enable();
 	SysTick_Init(2000000);
 	while(1) {
-		while((RxFifo_Get(temp))==0){}
+		while((RxFifo_Get(&temp))==0){}
 		if(flag) {
-			storage[i++] = temp[0];
+			storage[i++] = temp;
 		}
-		if(temp == "2") {
+		if(temp == 2) {
 			flag = 1;
 		}
-		if(temp == "3") {
+		if(temp == 3) {
 			LCD_GoTo(0);
 			LCD_OutString(storage);
 			LCD_OutString("cm");
