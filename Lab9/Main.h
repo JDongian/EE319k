@@ -15,9 +15,9 @@
 #include "FIFO.h"
 #include "ADC.h"
 
-#define MAX 2000
+#define MAX 700
 #define MIN 0
-#define LENGTH 13000
+#define LENGTH 20000
 #define N 1024
 
 // standard ASCII symbols
