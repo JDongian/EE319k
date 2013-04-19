@@ -17,24 +17,6 @@ int maint(void){
 	while(1){ }
 }
 
-char* convert(unsigned int input)
-{
-	if(input < MIN){
-		input = 0;
-	}	else {
-		input -= MIN;
-	}
-	input = (input*(LENGTH))/(MAX-MIN);
-  
-	output[0] = input/1000+48;
-  output[1] = '.';
-  output[2] = (input%1000)/100+48;
-  output[3] = (input%100)/10+48;
-  output[4] = (input%10)+48;
-
-	return output;
-}
-
 int main(void){
 	int i = 0; char flag = 0;char temp = ' ';
 	char storage[6] = "      ";
@@ -72,5 +54,22 @@ int main(void){
 			flag = 1;
 		}
 	}
+}
+
+char* convert(unsigned int input){
+	if(input < MIN){
+		input = 0;
+	}	else {
+		input -= MIN;
+	}
+	input = (input*(LENGTH))/(MAX-MIN);
+  
+	output[0] = input/1000+48;
+  output[1] = '.';
+  output[2] = (input%1000)/100+48;
+  output[3] = (input%100)/10+48;
+  output[4] = (input%10)+48;
+
+	return output;
 }
 

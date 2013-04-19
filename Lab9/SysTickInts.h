@@ -14,6 +14,8 @@
 
 #define GPIO_PORTG2             (*((volatile unsigned long *)0x40026010))
 
+#define SAMPLES 4
+
 // **************SysTick_Init*********************
 // Initialize Systick periodic interrupts
 // Input: interrupt period

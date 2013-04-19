@@ -10,6 +10,9 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 
+int inData=0;
+long sum=0;
+int sample=0;
 void SysTick_IntEnable(void) {
 	NVIC_ST_CTRL_R |= NVIC_ST_CTRL_INTEN;
 }
@@ -39,16 +42,25 @@ void SysTick_Init(unsigned long period){
 
 // Interrupt service routine
 // Executed every 20ns*(period)
-void SysTick_Handler(void){char* inData;
+void SysTick_Handler(void){char* outData;
 	GPIO_PORTG2 ^= 0x04;
 	ADCMail = ADC_In();
-	inData = convert((int)ADCMail);
+	if(sample++ < SAMPLES){
+		sum += ADCMail;
+		return;
+	}
+	inData = sum/SAMPLES;
+	outData = convert((int)inData);
 	GPIO_PORTG2 ^= 0x04;
 	UART_OutChar(2);
-	UART_OutString(inData);
+	UART_OutString(outData);
 	UART_OutChar(' ');
 	UART_OutChar(3);
 	ADCStatus = 1;
 	GPIO_PORTG2 ^= 0x04;
+	printf(outData);
+	printf("\n");
+	sum = 0;
+	sample = 0;
 }
 
