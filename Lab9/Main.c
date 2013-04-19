@@ -37,12 +37,13 @@ char* convert(unsigned int input)
 }
 
 int main(void){
-	int i; char flag;char temp = ' ';
-	char* storage = "                ";
-	flag = 0;
+	int i = 0; char flag = 0;char temp = ' ';
+	char storage[6] = "      ";
 	
 	PLL_Init();
 	SysTick_Init(2000000);
+	Output_Init();
+	Output_Color(15);
 	UART_Init();
 	ADC_InitSWTriggerSeq3(2);
 	LCD_Open();
@@ -57,6 +58,8 @@ int main(void){
 			LCD_GoTo(0);
 			LCD_OutString(storage);
 			LCD_OutString("cm");
+			printf(storage);
+			printf("%c",NEWLINE);
 			flag = 0;
 			i = 0;
 		}
