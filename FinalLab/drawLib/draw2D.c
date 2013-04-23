@@ -98,13 +98,16 @@ point* getCircle(point center, int radius) {
 	return circlePoints;
 }
 
-point* rotate(point* obj, char angle) {/*
-	point* rotObj; int i = 0;
-	char angleInit;
+point* rotate(point center, char dAngle, point* obj) {
+	point* rotObj; int i = 0; point temp;
+	char angle; int magnitude;
 	while(obj[i].x != -1) {
-		obj[i].x*(1<<20)/obj[i].y;
-		rotObj[i] = obj[i];
+		magnitude = dist(center, obj[i]);
+		angle = atanDeg(obj[i].x*(1<<10)/obj[i].y);
+		angle += dAngle;
+		temp.x = magnitude*sinDeg(angle); temp.y = magnitude*cosDeg(angle);
+		rotObj[i] = temp;
 		i++;
 	}
-	return rotObj;*/return 0;
+	return rotObj;
 }
