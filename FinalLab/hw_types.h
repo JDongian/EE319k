@@ -31,6 +31,7 @@
 //
 //*****************************************************************************
 typedef unsigned char tBoolean;
+typedef enum{True, False} bool;
 
 #ifndef true
 #define true 1

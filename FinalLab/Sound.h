@@ -41,13 +41,13 @@
 #define SYS_TIME_CONST 37500000
 
 #include "systick.h"
+#include "hw_types.h"
 
 //Typedefs
 typedef struct {
 	unsigned short frequency;
 	unsigned int time;
 } note;
-typedef enum{True, False} bool;
 
 //Variables
 extern unsigned int waveform[TABLE_SIZE];

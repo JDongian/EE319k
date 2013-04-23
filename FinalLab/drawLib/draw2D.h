@@ -1,8 +1,8 @@
-#include graphicsUtil.h
+#include "graphicsUtil.h"
 
 point* getLine(point, point);
-point* createRect(point, point);
-point* rasterCircle(point, char);
+point* getRect(point, point);
+point* getCircle(point, int);
 point* rotate(point*, char);		//Rotate an array of points a given integral angle in degrees.
 
 

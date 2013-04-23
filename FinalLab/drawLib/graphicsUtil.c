@@ -1,4 +1,5 @@
 //Basic util functions to aid graphics
+#include "graphicsUtil.h"
 
 //Sin table from 2**20*sin(0) to 2**20*sin(90)
 const int sin1048576[] = {0, 18300, 36595, 54878, 73145, 91389, 109606,
@@ -63,9 +64,9 @@ char arcsin20(int ratio, bool xIsPositive) {
 		ratio = -1*ratio;
 	}
 	while(ratio > sin20(i)) {
-		if(i++ = 90) { return 90*(isNeg*2-1); }
+		if(i++ == 90) { return 90*(isNeg*2-1); }
 	}
-	if((sin20(i) - ratio) > (ratio - sin20(i-1)) { i--; }
+	if((sin20(i) - ratio) > (ratio - sin20(i-1))) { i--; }
 	if(isNeg) { i *= -1; }
 	if(xIsPositive) { return i; }
 	return 180-i;
@@ -81,28 +82,30 @@ int tan20(char degree) {
 		return tan1048576[180-degree];
 	}
 }
-char arctan20(int x, int y) {
+short arctan20(int x, int y) { //Unreliable
+	int ratio;
+	bool isNeg = False;
+	short testAngle = 0;
 	if(y == 0) {
 		if(x > 0) { return 90; }
 		return 270;
-	}	
+	}
 	ratio = x*(1<<20)/y;
-	bool isNeg = False;
-	int i = 0;
 	if(ratio < 0) {
 		isNeg = True;
 		ratio = -1*ratio;
 	}
-	while(ratio > tan20(i)) {
-		if(i++ = 90) { return 90*(isNeg*2-1); }
+	while(ratio > tan20(testAngle)) {
+		if(testAngle++ == 90) { return 90*(isNeg*2-1); }
 	}
-	if((tan20(i) - ratio) > (ratio - tan20(i-1)) { i--; }
-	if(isNeg) { i *= -1; }
-	if() { return i; }
-	return 180-i;
+	if((tan20(testAngle) - ratio) > (ratio - tan20(testAngle-1))) { testAngle--; }
+	if(isNeg) { return 90-testAngle; }
+	return testAngle;
 }
-char dist(point a, point b) {
-	return sqrt(a*a+b*b);
+int dist(point a, point b) {
+	int dx = a.x-b.x;
+	int dy = a.y-b.y;
+	return sqrt(dx*dx + dy*dy);
 }
 void intSwap (int* a, int* b) {
 	int temp = *a;
@@ -128,8 +131,8 @@ float sin(char degree) {
 		return -1*sin1048576[degree]/1048576.0;
 	}
 }
-char arcsin(float ratio) {
-	return arcsin20((int)ratio*(1<<20));
+char arcsin(float ratio, bool isXneg) {
+	return arcsin20((int)ratio*(1<<20), isXneg);
 }
 float ipart (float x) {return  (float)(long)x;}
 float round (float x) {return ipart(x + 0.5);}
@@ -139,3 +142,4 @@ float abs (float x) {
 	if (x<0) {return -1*x;}
 	return x;
 }
+

@@ -1,32 +1,39 @@
-#include draw2D.h
+#include "draw2D.h"
 
 point* getLine(point a, point b) {
-	point *output; int i = 0;
+	point *output; int i = 0; point temp;
 	int dx = abs(b.x-a.x), sx = a.x<b.x ? 1 : -1;
 	int dy = abs(b.y-a.y), sy = a.y<b.y ? 1 : -1; 
 	int err = (dx>dy ? dx : -dy)/2, e2;
 	for(;;) {
-		output[i++] = {a.x,a.y};
-		if (a.x==b.x && a.y==b.y) break;
+		temp.x = a.x; temp.y = a.y;
+		output[i++] = temp;
+		if (a.x==b.x && a.y==b.y) { break; }
 		e2 = err;
 		if (e2 >-dx) { err -= dy; a.x += sx; }
 		if (e2 < dy) { err += dx; a.y += sy; }
 	}
-	output[i] = {-1, -1};
+	temp.x = -1; temp.y = -1;
+	output[i] = temp;
+	return output;
 }
 
-point* createRect(point topLeft, point bottomRight){
+point* getRect(point topLeft, point bottomRight){
 	point* rectPoints; int i=0;
 	int j;
+	point topRight; point bottomLeft;
+	point* top; point* right; point* bottom; point* left;
 	if(topLeft.x > bottomRight.x){
 		intSwap(&topLeft.x, &bottomRight.x);
 	}if(topLeft.y > bottomRight.y){
 		intSwap(&topLeft.y, &bottomRight.y);
 	}
-	top = getLine({topLeft.x, topLeft.y}, {bottomRight.x, topLeft.y});
-	right = getLine({bottomRight.x, topLeft.y}, {bottomRight.x, bottomRight.y});
-	bottom = getLine({topLeft.x, bottomRight.y}, {bottomRight.x, bottomRight.y});
-	left = getLine({topLeft.x, topLeft.y}, {topLeft.x, bottomRight.y});
+	topRight.x = bottomRight.x; topRight.y = topLeft.y;
+	bottomLeft.x = topLeft.x; bottomLeft.y = bottomRight.y;
+	top = getLine(topLeft, topRight);
+	right = getLine(topRight, bottomRight);
+	bottom = getLine(bottomLeft, bottomRight);
+	left = getLine(topLeft, bottomLeft);
 	j = 0;
 	while(top[j].x != -1){
 		rectPoints[i++]=top[j++];
@@ -43,18 +50,22 @@ point* createRect(point topLeft, point bottomRight){
 	return rectPoints;
 }
 
-point* rasterCircle(point center, int radius) {
-	point* circlePoints; int i = 0;
+point* getCircle(point center, int radius) {
+	point* circlePoints; int i = 0; point temp;
 	int f = 1 - radius;
 	int ddF_x = 1;
 	int ddF_y = -2 * radius;
 	int x = 0;
 	int y = radius;
 	//Draw the axis points
-	circlePoints[i++] = {center.x, center.y + radius};
-	circlePoints[i++] = {center.x, center.y - radius};
-	circlePoints[i++] = {center.x + radius, center.y};
-	circlePoints[i++] = {center.x - radius, center.y};
+	temp.x = center.x; temp.y = center.y + radius;
+	circlePoints[i++] = temp;
+	temp.x = center.x; temp.y = center.y - radius;
+	circlePoints[i++] = temp;
+	temp.x = center.x + radius; temp.y = center.y;
+	circlePoints[i++] = temp;
+	temp.x = center.x - radius; temp.y = center.y;
+	circlePoints[i++] = temp;
 	while(x < y) {
 		// ddF_x == 2 * x + 1;
 		// ddF_y == -2 * y;
@@ -67,91 +78,33 @@ point* rasterCircle(point center, int radius) {
 		x++;
 		ddF_x += 2;
 		f += ddF_x;    
-		circlePoints[i++] = {center.x + x, center.y + y};
-		circlePoints[i++] = {center.x - x, center.y + y};
-		circlePoints[i++] = {center.x + x, center.y - y};
-		circlePoints[i++] = {center.x - x, center.y - y};
-		circlePoints[i++] = {center.x + y, center.y + x};
-		circlePoints[i++] = {center.x - y, center.y + x};
-		circlePoints[i++] = {center.x + y, center.y - x};
-		circlePoints[i++] = {center.x - y, center.y - x};
+		temp.x = center.x + x; temp.y = center.y + y;
+		circlePoints[i++] = temp;
+		temp.x = center.x - x; temp.y = center.y - y;
+		circlePoints[i++] = temp;
+		temp.x = center.x + x; temp.y = center.y + y;
+		circlePoints[i++] = temp;
+		temp.x = center.x - x; temp.y = center.y - y;
+		circlePoints[i++] = temp;
+		temp.x = center.x + y; temp.y = center.y + x;
+		circlePoints[i++] = temp;
+		temp.x = center.x - y; temp.y = center.y - x;
+		circlePoints[i++] = temp;
+		temp.x = center.x + y; temp.y = center.y + x;
+		circlePoints[i++] = temp;
+		temp.x = center.x - y; temp.y = center.y - x;
+		circlePoints[i++] = temp;
 	}
 	return circlePoints;
 }
 
-point* rotate(point* obj, char angle) {
+point* rotate(point* obj, char angle) {/*
 	point* rotObj; int i = 0;
 	char angleInit;
-	while(obj[i] != -1) {
+	while(obj[i].x != -1) {
 		obj[i].x*(1<<20)/obj[i].y;
 		rotObj[i] = obj[i];
 		i++;
 	}
-	return rotObj;
+	return rotObj;*/return 0;
 }
-
-
-
-
-
-
-/*
-
-point* createSegment(point a, point b){
-	int i=0;
-	short sx = -1;
-	short sy = -1;
-	short dx = b.x - a.x;
-	short dy = b.y - a.y;
-	short error = dx-dy;
-	short error2 = error*2;
-	point* linePoints;
-	if (b.x < a.x){sx = 1;}
-	if (b.y < a.y){sy = 1;}
-	do{
-		linePoints[i++] = {a.x, a.y};
-		if(error2 > -1*dy){
-			error -= dy;
-			a.x += sx;
-		}
-		if(e2 < dx){
-			error += dx
-			a.y += sy
-		}
-	}while(b.x != a.x && b.y != a.y);
-	return linePoints;
-}
-
-
-point* drawCircle(point center, int radius)
-{
-
-  int x = radius, y = 0;
-  int xChange = 1 - radius*2;
-  int yChange = 0;
-  int radiusError = 0;
- 
-  while(x >= y)
-  {
-    DrawPixel(x + x0, y + y0);
-    DrawPixel(y + x0, x + y0);
-    DrawPixel(-x + x0, y + y0);
-    DrawPixel(-y + x0, x + y0);
-    DrawPixel(-x + x0, -y + y0);
-    DrawPixel(-y + x0, -x + y0);
-    DrawPixel(x + x0, -y + y0);
-    DrawPixel(y + x0, -x + y0);
- 
-    y++;
-    radiusError += yChange;
-    yChange += 2;
-    if(((radiusError << 1) + xChange) > 0)
-    {
-      x--;
-      radiusError += xChange;
-      xChange += 2;
-    }
-  }
-}
-
-*/
