@@ -136,7 +136,6 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>4</TargetSelection>
@@ -445,6 +444,71 @@
               <FileName>Output.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Output.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ADC.h</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>FIFO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\FIFO.h</FilePath>
+            </File>
+            <File>
+              <FileName>globals.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\globals.h</FilePath>
+            </File>
+            <File>
+              <FileName>hw_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hw_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>LCD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LCD.h</FilePath>
+            </File>
+            <File>
+              <FileName>lm3s1968.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lm3s1968.h</FilePath>
+            </File>
+            <File>
+              <FileName>Main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Main.h</FilePath>
+            </File>
+            <File>
+              <FileName>Output.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Output.h</FilePath>
+            </File>
+            <File>
+              <FileName>PLL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PLL.h</FilePath>
+            </File>
+            <File>
+              <FileName>rit128x96x4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\rit128x96x4.h</FilePath>
+            </File>
+            <File>
+              <FileName>SysTickInts.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SysTickInts.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\UART.h</FilePath>
             </File>
           </Files>
         </Group>
