@@ -1,7 +1,9 @@
 #include "graphicsUtil.h"
 
-void drawLine(point, point);
-void drawRect(point, point);
-void drawCircle(point, int);
+//void drawPx(point, unsigned char);
+void drawObj(point*, unsigned char);
+void drawLine(point, point, unsigned char);
+void drawRect(point, point, unsigned char);
+void drawCircle(point, int, unsigned char);
 
 

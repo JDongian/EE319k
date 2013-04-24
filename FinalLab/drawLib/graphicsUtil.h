@@ -1,6 +1,9 @@
+#include "C:\Users\Joshua\Documents\GitHub\EE319k\FinalLab\rit128x96x4.h"
 #include "hw_types.h"
 #include "math2.h"
 
+//Driver interfacing
+void drawPx(point, unsigned char);
 //Misc
 void intSwap (int*, int*);
 //Point functions

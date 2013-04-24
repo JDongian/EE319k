@@ -18,6 +18,7 @@ typedef struct point {
 	int y;
 } point;
 
+
 //Math functions
 int abs(int);
 int roundInt(float);

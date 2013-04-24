@@ -1,6 +1,19 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
 
+unsigned char* frameBuffer[64*96];
+
+//Drawing functions
+void clearBuffer(void) {
+	unsigned char zeroArray[64*96] = {0};
+	*frameBuffer = zeroArray;
+}
+void drawPx(point px, unsigned char shade) { unsigned char temp;
+	if(px.x%2 == 0) {		//If px.x is even
+		*frameBuffer[px.x/2+px.y*96] = shade + (*frameBuffer[px.x/2+px.y*96] & (15<<4));
+	}	*frameBuffer[px.x/2+px.y*96] = shade<<4 + (*frameBuffer[px.x/2+px.y*96] & 0xF);
+}
+
 //Misc
 void intSwap (int* a, int* b) {
 	int temp = *a;
