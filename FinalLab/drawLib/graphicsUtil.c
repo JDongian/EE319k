@@ -1,7 +1,7 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
 
-unsigned char* frameBuffer[64*96];
+unsigned char (*frameBuffer)[64*96];
 
 //Drawing functions
 unsigned char* getBuffer(void) {

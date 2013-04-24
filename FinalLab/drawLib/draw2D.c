@@ -22,7 +22,7 @@ void drawCircle(point center, int radius, unsigned char shade) {
 	drawObj(obj, shade);
 }
 void demo() {
-	drawPoint(makePoint(7, 7), , 0xF);
+	drawPoint(makePoint(7, 7), 0xF);
 	drawLine(makePoint(4, 8), makePoint(30, 13), 0xF);
 	drawRect(makePoint(4, 8), makePoint(30, 13), 0xF);
 	drawCircle(makePoint(30, 19), 6, 0xF);
