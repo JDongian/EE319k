@@ -6,6 +6,9 @@ void drawObj(point* obj, unsigned char shade) {
 		drawPx(obj[i++], shade);
 	}
 }
+void drawPoint(point myPoint, unsigned char shade) {
+	drawPx(myPoint, shade);
+}
 void drawLine(point a, point b, unsigned char shade) {
 	point* obj = getLine(a, b);
 	drawObj(obj, shade);
