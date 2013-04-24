@@ -46,6 +46,5 @@ extern void RIT128x96x4Enable(unsigned long ulFrequency);
 extern void RIT128x96x4Disable(void);
 extern void RIT128x96x4DisplayOn(void);
 extern void RIT128x96x4DisplayOff(void);
-extern void RIT128x96x4PixelDraw(unsigned char shade, unsigned long ulX, unsigned long ulY);
 
 #endif // __RIT128X96X4_H__

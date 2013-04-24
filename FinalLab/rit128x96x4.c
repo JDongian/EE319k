@@ -711,15 +711,6 @@ RIT128x96x4ImageDraw(const unsigned char *pucImage, unsigned long ulX,
     }
 }
 
-void 
-RIT128x96x4PixelDraw(unsigned char shade, unsigned long ulX, unsigned long ulY)
-{
-	unsigned char *pix;
-	*pix = shade;
-	RIT128x96x4ImageDraw(*pix, ulX, ulY, 1, 1);
-}
-	
-
 //*****************************************************************************
 //
 //! Enable the SSI component of the OLED display driver.
