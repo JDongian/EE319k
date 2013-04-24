@@ -1,74 +1,14 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
 
-int rseed = 0;
-
-
-int abs(int x) {
-	if(x < 0) {
-		return x*-1;
-	} return x;
-}
-int roundInt(float x) {
-	if(x < 0) {
-		return (int)(x-0.5);
-	} return (int)(x+0.5);
-}
-short roundSho(float x) {
-	if(x < 0) {
-		return (short)(x-0.5);
-	} return (short)(x+0.5);
-}
-int fastSqrt(int num) {
-	int res = 0;
-	int bit = 1 << 30; // The second-to-top bit is set
-	// "bit" starts at the highest power of four <= the argument.
-	while (bit > num) { bit >>= 2; }
-	while (bit != 0) {
-		if (num >= res + bit) {
-			num -= res + bit;
-			res = (res >> 1) + bit;
-		} else { res >>= 1; }
-		bit >>= 2;
-	}
-	return res;
-}
-//Note: Trig functions are scaled by 2**10 for some arbitrary reason.
-int sinDeg(short deg) {
-    return (int)roundInt(sin(deg*EASYPI/180)*1024);
-}
-short asinDeg(int ratio) {
-    return (short)roundSho(asin(ratio/1024.)*180/EASYPI);
-}
-int cosDeg(short deg) {
-    return (int)roundInt(cos(deg*EASYPI/180)*1024);
-}
-short acosDeg(int ratio) {
-    return (short)roundSho(acos(ratio/1024.)*180/EASYPI);
-}
-int tanDeg(short deg) {
-    return (int)roundInt(tan(deg*EASYPI/180)*1024);
-}
-short atanDeg(int ratio) {
-    return (short)roundSho(atan(ratio/1024.)*180/EASYPI);
-}
-int dist(point a, point b) {
-	int dx = a.x-b.x;
-	int dy = a.y-b.y;
-	return fastSqrt(dx*dx + dy*dy);
-}
+//Misc
 void intSwap (int* a, int* b) {
 	int temp = *a;
 	*a = *b;
 	*b = temp;
 }
-int rand(int max) {
-	rseed = ((rseed*RAND_A+RAND_C)%RAND_M)%max;
-	return rseed;
-}
-int randRange(int min, int max) {
-	return rand(max-min+1)+min;
-}
+
+//Point functions
 point makePoint(int x, int y) {
 	point temp;
 	temp.x = x; temp.y = y;
@@ -79,9 +19,117 @@ void addPoint(point* obj, int x, int y) {
 	temp = makePoint(x, y);
 	while(obj[i++].x != -1) {}
 	obj[i++] = temp;
-	temp.x = -1; temp.y = -1;
-	obj[i] = temp;
+	obj[i] = makePoint(END, END);
 }
+point* getLine(point a, point b) {
+	point *output; int i = 0;
+	int dx = abs(b.x-a.x), sx = a.x<b.x ? 1 : -1;
+	int dy = abs(b.y-a.y), sy = a.y<b.y ? 1 : -1; 
+	int err = (dx>dy ? dx : -dy)/2, e2;
+	for(;;) {
+		output[i++] = makePoint(a.x, a.y);
+		if (a.x==b.x && a.y==b.y) { break; }
+		e2 = err;
+		if (e2 >-dx) { err -= dy; a.x += sx; }
+		if (e2 < dy) { err += dx; a.y += sy; }
+	}
+	output[i] = makePoint(END, END);
+	return output;
+}
+
+point* getRect(point topLeft, point botRight){
+	point* rectPoints; int i=0;
+	int j;
+	point topRight; point botLeft;
+	point* top; point* right; point* bot; point* left;
+	if(topLeft.x > botRight.x){
+		intSwap(&topLeft.x, &botRight.x);
+	}if(topLeft.y > botRight.y){
+		intSwap(&topLeft.y, &botRight.y);
+	}
+	topRight = makePoint(botRight.x, topLeft.y);
+	botLeft = makePoint(topLeft.x, botRight.y);
+	top = getLine(topLeft, topRight);
+	right = getLine(topRight, botRight);
+	bot = getLine(botLeft, botRight);
+	left = getLine(topLeft, botLeft);
+	j = 0;
+	while(top[j].x != -1){
+		rectPoints[i++]=top[j++];
+	}j = 0;
+	while(right[j].x != -1){
+		rectPoints[i++]=right[j++];
+	}j = 0;
+	while(bot[j].x != -1){
+		rectPoints[i++]=bot[j++];
+	}j = 0;
+	while(left[j].x != -1){
+		rectPoints[i++]=left[j++];
+	}
+	rectPoints[i] = makePoint(END, END);
+	return rectPoints;
+}
+
+point* getCircle(point center, int radius) {
+	point* circlePoints; int i = 0;
+	int f = 1 - radius;
+	int ddF_x = 1;
+	int ddF_y = -2 * radius;
+	int x = 0;
+	int y = radius;
+	//Draw the axis points.
+	circlePoints[i++] = makePoint(center.x, center.y + radius);
+	circlePoints[i++] = makePoint(center.x, center.y - radius);
+	circlePoints[i++] = makePoint(center.x + radius, center.y);
+	circlePoints[i++] = makePoint(center.x - radius, center.y);
+	while(x < y) {
+		// ddF_x == 2 * x + 1;
+		// ddF_y == -2 * y;
+		// f == x*x + y*y - radius*radius + 2*x - y + 1;
+		if(f >= 0) {
+			y--;
+			ddF_y += 2;
+			f += ddF_y;
+		}
+		x++;
+		ddF_x += 2;
+		f += ddF_x;
+		circlePoints[i++] = makePoint(center.x + x, center.y + y);
+		circlePoints[i++] = makePoint(center.x - x, center.y - y);
+		circlePoints[i++] = makePoint(center.x + x, center.y + y);
+		circlePoints[i++] = makePoint(center.x - x, center.y - y);
+		circlePoints[i++] = makePoint(center.x + y, center.y + x);
+		circlePoints[i++] = makePoint(center.x - y, center.y - x);
+		circlePoints[i++] = makePoint(center.x + y, center.y + x);
+		circlePoints[i++] = makePoint(center.x - y, center.y - x);
+	}
+	circlePoints[i] = makePoint(END, END);
+	return circlePoints;
+}
+
+point* rotate(point center, char dAngle, point* obj) {
+	point* rotObj; int i = 0;
+	char angle; int magnitude;
+	while(obj[i].x != -1) {
+		magnitude = dist(center, obj[i]);
+		angle = atanDeg((obj[i].y-center.y)*(1<<10)/(obj[i].x-center.x));
+		angle += dAngle;
+		rotObj[i++] = makePoint((magnitude*sinDeg(angle)+center.x), (magnitude*cosDeg(angle)+center.y));
+	}
+	rotObj[i] = makePoint(END, END);
+	return rotObj;
+}
+
+point* scale(point center, float scaleFactor, point* obj){
+	point* scaleObj; int i = 0;
+	while(obj[i].x != -1) {
+		scaleObj[i++] = makePoint(scaleFactor*(obj[i].x-center.x)+center.x,
+														scaleFactor*(obj[i].y-center.y)+center.y);
+	}
+	scaleObj[i] = makePoint(END, END);
+	return scaleObj;
+}
+
 
 /*
 point* combinePoints(point** objList){
