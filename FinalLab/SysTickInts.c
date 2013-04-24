@@ -3,6 +3,7 @@
 // oscilloscope or LED connected to PD0 for period measurement
 #include "SysTickInts.h"
 #include "Main.h"
+#include "rit128x96x4.h"
 #include "Delay.h"
 
 void DisableInterrupts(void); // Disable interrupts
@@ -45,5 +46,8 @@ void SysTick_Init(unsigned long period){
 // Executed every 20ns*(period)
 void SysTick_Handler(void){
 	GPIO_PORTG2 ^= 0x04;
+	if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) { return; }
+	RIT128x96x4ImageDraw(getBuffer(), 0, 0, 128, 96);	//draw it.(dude!!)
+	HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 0;
 }
 

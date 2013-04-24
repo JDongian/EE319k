@@ -37,6 +37,9 @@ int dist(point a, point b) {
 	int dy = a.y-b.y;
 	return fastSqrt(dx*dx + dy*dy);
 }
+void setSeed(int val) {
+	rseed = val;
+}
 int rand(int max) {
 	rseed = ((rseed*RAND_A+RAND_C)%RAND_M)%max;
 	return rseed;

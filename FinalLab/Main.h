@@ -3,13 +3,14 @@
 #include "lm3s1968.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
-#include "Output.h"
 #include "SysTick.h"
 #include "SysTickInts.h"
 #include "rit128x96x4.h"
+#include "Output.h"
 #include "PLL.h"
 #include "DAC.h"
 //#include "Sound.h"
+#include "DrawLib\draw2D.h"
 
 // standard ASCII symbols
 #define BACKSPACE               0x8  // back up one character

@@ -5,5 +5,6 @@ void drawObj(point*, unsigned char);
 void drawLine(point, point, unsigned char);
 void drawRect(point, point, unsigned char);
 void drawCircle(point, int, unsigned char);
+void demo(void);
 
 
