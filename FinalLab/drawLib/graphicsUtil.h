@@ -12,7 +12,7 @@ void intSwap (int*, int*);
 point makePoint(int, int);
 void addPoint(point*, int, int);//DONOT USE		//Inserts a point to a {-1, -1} terminated array.
 pointArr getLine(point, point);
-pointArr getRect(point, point);
+//pointArr getRect(point, point);
 pointArr getCircle(point, int);
 pointArr rotate(point, char, pointArr);
 pointArr scale(point, float, pointArr);

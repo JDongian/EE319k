@@ -1,11 +1,10 @@
 #include "graphicsUtil.h"
 
-//void drawPx(point, unsigned char);
-void drawObj(pointArr, unsigned char);
 void drawPoint(point, unsigned char);
 void drawLine(point, point, unsigned char);
 void drawRect(point, point, unsigned char);
 void drawCircle(point, int, unsigned char);
+point rotPoint(point, short, point);
+void drawPlayer(point, short);
 void demo(void);
-
 

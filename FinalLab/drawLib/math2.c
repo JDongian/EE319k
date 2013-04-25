@@ -32,7 +32,7 @@ int fastSqrt(int num) {
 	}
 	return res;
 }
-int dist(point a, point b) {
+unsigned int dist(point a, point b) {
 	int dx = a.x-b.x;
 	int dy = a.y-b.y;
 	return fastSqrt(dx*dx + dy*dy);
@@ -47,22 +47,10 @@ int rand(int max) {
 int randRange(int min, int max) {
 	return rand(max-min+1)+min;
 }
-int sinDeg(short deg) {
-    return (int)roundInt(sin(deg*EASYPI/180)*1024);
-}
-short asinDeg(int ratio) {
-    return (short)roundSho(asin(ratio/1024.)*180/EASYPI);
-}
-int cosDeg(short deg) {
-    return (int)roundInt(cos(deg*EASYPI/180)*1024);
-}
-short acosDeg(int ratio) {
-    return (short)roundSho(acos(ratio/1024.)*180/EASYPI);
-}
-int tanDeg(short deg) {
-    return (int)roundInt(tan(deg*EASYPI/180)*1024);
-}
-short atanDeg(int ratio) {
-    return (short)roundSho(atan(ratio/1024.)*180/EASYPI);
-}
+float sinDeg(short deg) { return sin(deg*EASYPI/180); }
+short asinDeg(int ratio) { return roundSho(asin(ratio/1024.)*180/EASYPI); }
+float cosDeg(short deg) { return cos(deg*EASYPI/180); }
+short acosDeg(int ratio) { return roundSho(acos(ratio/1024.)*180/EASYPI); }
+float tanDeg(short deg) { return tan(deg*EASYPI/180); }
+short atan2Deg(int x, int y) { return roundSho(atan2(x, y)*180/EASYPI+0.5); }
 

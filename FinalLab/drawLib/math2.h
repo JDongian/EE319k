@@ -31,16 +31,16 @@ int abs(int);
 int roundInt(float);
 short roundSho(float);
 int fastSqrt(int);		//Return the integer part of the square root.
-int dist(point, point);
+unsigned int dist(point, point);
 void setSeed(int);
 int rand(int);
 int randRange(int, int);
 											//Note: Trig functions are scaled by 2**10 for some arbitrary reason.
-int sinDeg(short);
+float sinDeg(short);
 short asinDeg(int);
-int cosDeg(short);
+float cosDeg(short);
 short acosDeg(int);
-int tanDeg(short);
-short atanDeg(int);
+float tanDeg(short);
+short atan2Deg(int, int);
 
 
