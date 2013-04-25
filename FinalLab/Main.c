@@ -10,7 +10,7 @@ int main(void){
 	SysTick_IntEnable();
 	gFlags = 0;
 	while(1) {
-		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) { continue; }
+		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 1) { continue; }
 		clearBuffer();		
 		demo();
 		HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 1;
