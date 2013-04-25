@@ -14,19 +14,25 @@ void clearBuffer(void) {
 	}
 }
 void drawPx(point px, unsigned char shade) {
+	shade &= 0xF;
 	if(px.x%2 == 0) {		//If px.x is even
-		frameBuffer[px.x/2+px.y*96] = shade + (frameBuffer[px.x/2+px.y*96] & (15<<4));
+		frameBuffer[(px.x>>1)+(px.y*64)] = shade<<4 + (frameBuffer[(px.x>>1)+(px.y*64)] & (0xF));
 	}	else {
-		frameBuffer[px.x/2+px.y*96] = shade<<4 + (frameBuffer[px.x/2+px.y*96] & 0xF);
+		frameBuffer[(px.x>>1)+(px.y*64)] = shade + (frameBuffer[(px.x>>1)+(px.y*64)] & 0xF<<4);
 	}
 }
-
 
 //Misc
 void intSwap (int* a, int* b) {
 	int temp = *a;
 	*a = *b;
 	*b = temp;
+}
+void clearPointArr(pointArr* dumb) {
+	int i;
+	for(i=0; i<OBJ_SIZE;){
+		(*dumb).array[i++] = makePoint(END, END);
+	}
 }
 
 //Point functions
@@ -35,34 +41,34 @@ point makePoint(int x, int y) {
 	temp.x = x; temp.y = y;
 	return temp;
 }
-void addPoint(point* obj, int x, int y) {
+void addPoint(point* obj, int x, int y) {//DONOT USE
 	point temp; int i;
 	temp = makePoint(x, y);
 	while(obj[i++].x != -1) {}
 	obj[i++] = temp;
 	obj[i] = makePoint(END, END);
 }
-point* getLine(point a, point b) {
-	point *output; int i = 0;
+pointArr getLine(point a, point b) {
+	pointArr output; int i = 0;
 	int dx = abs(b.x-a.x), sx = a.x<b.x ? 1 : -1;
 	int dy = abs(b.y-a.y), sy = a.y<b.y ? 1 : -1; 
 	int err = (dx>dy ? dx : -dy)/2, e2;
+	clearPointArr(&output);
 	for(;;) {
-		output[i++] = makePoint(a.x, a.y);
+		output.array[i++] = makePoint(a.x, a.y);
 		if (a.x==b.x && a.y==b.y) { break; }
 		e2 = err;
 		if (e2 >-dx) { err -= dy; a.x += sx; }
 		if (e2 < dy) { err += dx; a.y += sy; }
 	}
-	output[i] = makePoint(END, END);
 	return output;
 }
-
-point* getRect(point topLeft, point botRight){
-	point* rectPoints; int i=0;
+pointArr getRect(point topLeft, point botRight){
+	pointArr rectPoints; int i=0;
 	int j;
 	point topRight; point botLeft;
-	point* top; point* right; point* bot; point* left;
+	pointArr top; pointArr right; pointArr bot; pointArr left;
+	clearPointArr(&rectPoints);
 	if(topLeft.x > botRight.x){
 		intSwap(&topLeft.x, &botRight.x);
 	}if(topLeft.y > botRight.y){
@@ -75,34 +81,35 @@ point* getRect(point topLeft, point botRight){
 	bot = getLine(botLeft, botRight);
 	left = getLine(topLeft, botLeft);
 	j = 0;
-	while(top[j].x != -1){
-		rectPoints[i++]=top[j++];
+	while(top.array[j].x != END){
+		rectPoints.array[i++] = top.array[j++];
+	}j = 1;
+	while(right.array[j].x != END){
+		rectPoints.array[i++] = right.array[j++];
 	}j = 0;
-	while(right[j].x != -1){
-		rectPoints[i++]=right[j++];
-	}j = 0;
-	while(bot[j].x != -1){
-		rectPoints[i++]=bot[j++];
-	}j = 0;
-	while(left[j].x != -1){
-		rectPoints[i++]=left[j++];
-	}
-	rectPoints[i] = makePoint(END, END);
+	while(bot.array[j].x != END){
+		rectPoints.array[i++] = bot.array[j++];
+	}j = 1;
+	while(left.array[j].x != END){
+		rectPoints.array[i++] = left.array[j++];
+	}	rectPoints.array[i++] = botLeft;
+		rectPoints.array[i++] = makePoint(botLeft.x+1, botLeft.y);
 	return rectPoints;
 }
 
-point* getCircle(point center, int radius) {
-	point* circlePoints; int i = 0;
+pointArr getCircle(point center, int radius) {
+	pointArr circlePoints; int i = 0;
 	int f = 1 - radius;
 	int ddF_x = 1;
 	int ddF_y = -2 * radius;
 	int x = 0;
 	int y = radius;
+	clearPointArr(&circlePoints);
 	//Draw the axis points.
-	circlePoints[i++] = makePoint(center.x, center.y + radius);
-	circlePoints[i++] = makePoint(center.x, center.y - radius);
-	circlePoints[i++] = makePoint(center.x + radius, center.y);
-	circlePoints[i++] = makePoint(center.x - radius, center.y);
+	circlePoints.array[i++] = makePoint(center.x, center.y + radius);
+	circlePoints.array[i++] = makePoint(center.x, center.y - radius);
+	circlePoints.array[i++] = makePoint(center.x + radius, center.y);
+	circlePoints.array[i++] = makePoint(center.x - radius, center.y);
 	while(x < y) {
 		// ddF_x == 2 * x + 1;
 		// ddF_y == -2 * y;
@@ -115,39 +122,39 @@ point* getCircle(point center, int radius) {
 		x++;
 		ddF_x += 2;
 		f += ddF_x;
-		circlePoints[i++] = makePoint(center.x + x, center.y + y);
-		circlePoints[i++] = makePoint(center.x - x, center.y - y);
-		circlePoints[i++] = makePoint(center.x + x, center.y + y);
-		circlePoints[i++] = makePoint(center.x - x, center.y - y);
-		circlePoints[i++] = makePoint(center.x + y, center.y + x);
-		circlePoints[i++] = makePoint(center.x - y, center.y - x);
-		circlePoints[i++] = makePoint(center.x + y, center.y + x);
-		circlePoints[i++] = makePoint(center.x - y, center.y - x);
+		circlePoints.array[i++] = makePoint(center.x + x, center.y + y);
+		circlePoints.array[i++] = makePoint(center.x - x, center.y - y);
+		circlePoints.array[i++] = makePoint(center.x + x, center.y + y);
+		circlePoints.array[i++] = makePoint(center.x - x, center.y - y);
+		circlePoints.array[i++] = makePoint(center.x + y, center.y + x);
+		circlePoints.array[i++] = makePoint(center.x - y, center.y - x);
+		circlePoints.array[i++] = makePoint(center.x + y, center.y + x);
+		circlePoints.array[i++] = makePoint(center.x - y, center.y - x);
 	}
-	circlePoints[i] = makePoint(END, END);
+	circlePoints.array[i] = makePoint(END, END);
 	return circlePoints;
 }
 
-point* rotate(point center, char dAngle, point* obj) {
-	point* rotObj; int i = 0;
+pointArr rotate(point center, char dAngle, pointArr obj) {
+	pointArr rotObj; int i = 0;
 	char angle; int magnitude;
-	while(obj[i].x != -1) {
-		magnitude = dist(center, obj[i]);
-		angle = atanDeg((obj[i].y-center.y)*(1<<10)/(obj[i].x-center.x));
+	while(obj.array[i].x != END) {
+		magnitude = dist(center, obj.array[i]);
+		angle = atanDeg((obj.array[i].y-center.y)*(1<<10)/(obj.array[i].x-center.x));
 		angle += dAngle;
-		rotObj[i++] = makePoint((magnitude*sinDeg(angle)+center.x), (magnitude*cosDeg(angle)+center.y));
+		rotObj.array[i++] = makePoint((magnitude*sinDeg(angle)+center.x), (magnitude*cosDeg(angle)+center.y));
 	}
-	rotObj[i] = makePoint(END, END);
+	rotObj.array[i] = makePoint(END, END);
 	return rotObj;
 }
 
-point* scale(point center, float scaleFactor, point* obj){
-	point* scaleObj; int i = 0;
-	while(obj[i].x != -1) {
-		scaleObj[i++] = makePoint(scaleFactor*(obj[i].x-center.x)+center.x,
-														scaleFactor*(obj[i].y-center.y)+center.y);
+pointArr scale(point center, float scaleFactor, pointArr obj){
+	pointArr scaleObj; int i = 0;
+	while(obj.array[i].x != END) {
+		scaleObj.array[i++] = makePoint(scaleFactor*(obj.array[i].x-center.x)+center.x,
+																		scaleFactor*(obj.array[i].y-center.y)+center.y);
 	}
-	scaleObj[i] = makePoint(END, END);
+	scaleObj.array[i] = makePoint(END, END);
 	return scaleObj;
 }
 

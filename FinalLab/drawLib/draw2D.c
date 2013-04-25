@@ -1,30 +1,29 @@
 #include "draw2D.h"
 
-void drawObj(point* obj, unsigned char shade) {
+void drawObj(pointArr obj, unsigned char shade) {
 	int i = 0;
-	while(obj[i].x != END) {
-		drawPx(obj[i++], shade);
+	while(obj.array[i].x != END) {
+		drawPx(obj.array[i++], shade);
 	}
 }
 void drawPoint(point myPoint, unsigned char shade) {
 	drawPx(myPoint, shade);
 }
 void drawLine(point a, point b, unsigned char shade) {
-	point* obj = getLine(a, b);
-	drawObj(obj, shade);
+	pointArr thing;
+	thing = getLine(a, b);
+	drawObj(thing, shade);
 }
 void drawRect(point topRight, point bottomLeft, unsigned char shade) {
-	point* obj = getRect(topRight, bottomLeft);
-	drawObj(obj, shade);
+	drawObj(getRect(topRight, bottomLeft), shade);
 }
 void drawCircle(point center, int radius, unsigned char shade) {
-	point* obj = getCircle(center, radius);
-	drawObj(obj, shade);
+	drawObj(getCircle(center, radius), shade);
 }
 void demo() {
-	drawPoint(makePoint(7, 7), 0xF);
-//	drawLine(makePoint(4, 8), makePoint(30, 13), 0xF);
-//	drawRect(makePoint(4, 8), makePoint(30, 13), 0xF);
+	drawPoint(makePoint(0, 0), 0xF);
+	drawLine(makePoint(4, 4), makePoint(16, 7), 0xF);
+	drawRect(makePoint(32, 17), makePoint(36, 23), 0xF);
 //	drawCircle(makePoint(30, 19), 6, 0xF);
 }
 

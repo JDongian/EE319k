@@ -9,6 +9,7 @@
 
 #ifndef __POINTS__
 #define __POINTS__
+#define OBJ_SIZE		30
 typedef struct pointShaded {
 	char x;
 	char y;
@@ -18,6 +19,9 @@ typedef struct point {
 	int x;
 	int y;
 } point;
+typedef struct pointArr {
+	point array[OBJ_SIZE];
+} pointArr;
 #endif //__POINTS__
 
 #include <math.h>
@@ -28,7 +32,7 @@ int roundInt(float);
 short roundSho(float);
 int fastSqrt(int);		//Return the integer part of the square root.
 int dist(point, point);
-void setSeed(int val);
+void setSeed(int);
 int rand(int);
 int randRange(int, int);
 											//Note: Trig functions are scaled by 2**10 for some arbitrary reason.
