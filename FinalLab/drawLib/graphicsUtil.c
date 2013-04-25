@@ -9,7 +9,7 @@ unsigned char* getBuffer(void) {
 }
 void clearBuffer(void) {
 	unsigned char zeroArray[64*96] = {0};
-	*frameBuffer = zeroArray;
+	frameBuffer = &zeroArray;
 }
 void drawPx(point px, unsigned char shade) {
 	if(px.x%2 == 0) {		//If px.x is even

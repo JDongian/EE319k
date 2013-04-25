@@ -5,10 +5,8 @@
 unsigned char* getBuffer(void);
 void clearBuffer(void);
 void drawPx(point, unsigned char);
-
 //Misc
 void intSwap (int*, int*);
-
 //Point functions
 point makePoint(int, int);
 void addPoint(point*, int, int);		//Inserts a point to a {-1, -1} terminated array.

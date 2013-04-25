@@ -8,6 +8,7 @@ int main(void){
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
+	gFlags = 0;
 	while(1) {
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) { continue; }
 		clearBuffer();		
