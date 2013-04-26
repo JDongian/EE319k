@@ -37,43 +37,26 @@ box getBox(point* points, int numberOfPoints) {
 	return fittingBox;
 }
 bool pointInPolygon(point* verticies, int numberOfVerticies, point test) {
-	int i, nodes=0;
-	box myBox; //if(test.y%2*test.x%2){return True;} return False;
-	myBox = getBox(verticies, numberOfVerticies);
-	for(i = 0; i < numberOfVerticies-1; i++) {
-		if(lineIntersect(makePoint(myBox.topL.x, test.y), makePoint(test.x, test.y),
-										 verticies[i], verticies[i+1]) ==
-										 True) {
-//		myBox.topL.x test.y test.x test.y
-			nodes++;
+	int i, j;
+	bool result = False;
+	for(i = 0, j = numberOfVerticies-1; i < numberOfVerticies; j = i++) {
+//Float only version, perfect detection.																 
+//		if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+//			 ((float)test.x < (float)(verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+//															 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+//Integer only version, a bit less accurate.																 
+			if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+				 (test.x < (verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+									 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+			result ^= 1;
 		}
-	}
-	if(lineIntersect(makePoint(myBox.topL.x, test.y), test,
-									 verticies[i], verticies[i+1]) ==
-									 True) {
-		nodes++;
-	}
-
-	if(nodes%2 == 1) {
-		return True;
-	} return False;
-}
-/*
-http://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
-int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
-{
-  int i, j, c = 0;
-  for (i = 0, j = nvert-1; i < nvert; j = i++) {
-    if ( ((verty[i]>testy) != (verty[j]>testy)) &&
-     (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
-       c = !c;
   }
-  return c;
+  return result;
+	//For more help:
+	//http://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
 }
-*/
 
-
-
+//===============Code Graveyard================
 /*
 pointArr scale(point center, float scaleFactor, pointArr obj){
 	pointArr scaleObj; int i = 0;
@@ -85,118 +68,3 @@ pointArr scale(point center, float scaleFactor, pointArr obj){
 	return scaleObj;
 }
 */
-
-
-
-//===============Code Graveyard================
-
-
-//  public domain function by Darel Rex Finley, 2006
-
-
-
-//  Determines the intersection point of the line segment defined by points A and B
-//  with the line segment defined by points C and D.
-//
-//  Returns YES if the intersection point was found, and stores that point in X,Y.
-//  Returns NO if there is no determinable intersection point, in which case X,Y will
-//  be unmodified.
-
-/*
-That guy's intersect
-bool intersect(float Ax, float Ay,
-							 float Bx, float By,
-							 float Cx, float Cy,
-							 float Dx, float Dy,
-							 point* result) {
-  float  distAB, elCos, elSin, newX, ABpos;
-  //  Fail if either line segment is zero-length.
-  if (Ax==Bx && Ay==By || Cx==Dx && Cy==Dy) { return False; }
-  //  Fail if the segments share an end-point.
-  if (Ax==Cx && Ay==Cy || Bx==Cx && By==Cy
-  ||  Ax==Dx && Ay==Dy || Bx==Dx && By==Dy) { return False; }
-	
-  //Translate the system so that point A is on the origin.
-  Bx-=Ax; By-=Ay;
-  Cx-=Ax; Cy-=Ay;
-  Dx-=Ax; Dy-=Ay;
-  //Discover the length of segment A-B.
-  distAB=sqrt(Bx*Bx+By*By);
-  //Rotate the system so that point B is on the positive X axis.
-  elCos=Bx/distAB;
-  elSin=By/distAB;
-  newX=Cx*elCos+Cy*elSin;
-  Cy  =Cy*elCos-Cx*elSin; Cx=newX;
-  newX=Dx*elCos+Dy*elSin;
-  Dy  =Dy*elCos-Dx*elSin; Dx=newX;
-  //Fail if segment C-D doesn't cross line A-B.
-  if (Cy<0. && Dy<0. || Cy>=0. && Dy>=0.) { return False; }
-  //Discover the position of the intersection point along line A-B.
-  ABpos=Dx+(Cx-Dx)*Dy/(Dy-Cy);
-  //Fail if segment C-D crosses line A-B outside of segment A-B.
-  if (ABpos<0. || ABpos>distAB) { return False; }
-  //Apply the discovered position to line A-B in the original coordinate system.
-  *result = makePoint(roundSho(Ax+ABpos*elCos), roundSho(Ay+ABpos*elSin));
-  return True;
-}*/
-/*
-point intersect(box a, box b) {
-	point r, s, qp;
-	float t; int crossRS;
-	qp = makePoint(b.topL.x-a.topL.x, b.botR.y-a.botR.y);
-	r = makePoint(a.botR.x-a.topL.x, a.botR.y-a.topL.y);
-	s = makePoint(b.botR.x-b.topL.x, b.botR.y-b.topL.y);
-	crossRS = crossP(r, s);
-	if(crossRS) {
-`		t = crossP(qp, s)/crossRS;
-		return makePoint(a.topL.x + (int)(t*r.x), a.topL.y + (int)(t*r.y));
-	}
-	return makePoint(END, END);
-}*/
-/*
-bool isPointNearLine(point test, point a, point b) {//doesn't work and too slow
-	int dy = b.y - a.y;
-	int dx = b.x - a.x;
-	float estimateX = (float)((test.y - a.y)*dx)/dy + a.x;
-	if((test.x - estimateX < 1.0) && (test.x - estimateX > -1.0)) {
-		return True;
-	} return False;
-}*/
-
-/*
-	//D. Finley's algorithm
-	int i, j=numberOfVerticies-1;
-	bool oddNodes=False;
-	for (i=0; i<numberOfVerticies; i++) {
-		if (verticies[i].y < test.y && verticies[j].y >= test.y ||
-				verticies[j].y < test.y && verticies[i].y >= test.y ) {
-					if ((verticies[i].x + (test.y - verticies[i].y)/
-							(verticies[j].y - verticies[i].y)*(verticies[j].x - verticies[i].x))
-							< test.x) {
-							oddNodes ^= 1;
-							//oddNodes = !oddNodes;
-					}
-		}
-    j = i; 
-	}
-	return oddNodes;
-}
-*/
-/*
-	====================================================
-
-	//L. Lagidse's algorithm
-	int i, j=numberOfVerticies-1;
-	bool oddNodes=False;
-	for(i=0; i<numberOfVerticies; i++) {
-		if((verticies[i].y < test.y && verticies[j].y >= test.y
-		||	verticies[j].y < test.y && verticies[i].y >= test.y)
-		&& (verticies[i].x <= test.x || verticies[j].x <= test.x)) {
-			oddNodes ^= (verticies[i].x+(test.y-verticies[i].y)/
-									(verticies[j].y-verticies[i].y)*
-									(verticies[j].x-verticies[i].x) < test.x);
-		}
-    j=i;
-	}
-  return oddNodes;
-}*/

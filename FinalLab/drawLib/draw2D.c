@@ -40,7 +40,7 @@ void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 	int x, y;
 	box myBox;
-	myBox = getBox(verticies, numberOfVerticies);	
+	myBox = getBox(verticies, numberOfVerticies);
 	for(y = myBox.topL.y; y <= myBox.botR.y; y++){
 		for(x = myBox.topL.x; x <= myBox.botR.x; x++){
 			if(pointInPolygon(verticies, numberOfVerticies, makePoint(x, y))) {
@@ -48,6 +48,7 @@ void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char sh
 			}
 		}
 	}
+	drawPolygon(verticies, numberOfVerticies, shade);
 }
 void drawCircle(point center, int radius, unsigned char shade) {	int f = 1 - radius;
 	int ddF_x = 1;
