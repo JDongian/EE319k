@@ -1,5 +1,6 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
+#include <strings.h>
 
 unsigned char frameBuffer[64*96] = {0};
 
@@ -8,10 +9,12 @@ unsigned char* getBuffer(void) {
 	return frameBuffer;
 }
 void clearBuffer(void) {
+	memset(frameBuffer, 0, sizeof frameBuffer);
+	/*
 	int i;
 	for (i = 0; i < 64*96; i++) {
 		frameBuffer[i] = 0;
-	}
+	}*/
 }
 void drawPx(point px, unsigned char shade) {
 	shade &= 0xF;
