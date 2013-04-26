@@ -9,7 +9,6 @@
 
 #ifndef __POINTS__
 #define __POINTS__
-#define OBJ_SIZE		30
 typedef struct pointShaded {
 	char x;
 	char y;
@@ -19,9 +18,10 @@ typedef struct point {
 	int x;
 	int y;
 } point;
-typedef struct pointArr {
-	point array[OBJ_SIZE];
-} pointArr;
+typedef struct box {
+	point topL;
+	point botR;
+} box;
 #endif //__POINTS__
 
 #include <math.h>
