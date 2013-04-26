@@ -25,11 +25,19 @@ typedef struct box {
 #endif //__POINTS__
 
 #include <math.h>
+#include "hw_types.h"
 
 //Basic math
 int abs(int);
 int fastSqrt(int);		//Returns integral part of the sqrt.
 unsigned int dist(point, point);
+//Vector functions
+int crossP(point, point);   //Cross product with respect to the origin
+bool isBetween(int, int, int);   //Endpoint inclusive bound check
+bool lineIntersect(point, point, point, point);   //**Reliable in case a is horizantal. **BUGGED:a1**
+//Memory handlers
+void intSwap (int*, int*);
+point makePoint(int, int);
 //Rounding
 int roundInt(float);
 short roundSho(float);

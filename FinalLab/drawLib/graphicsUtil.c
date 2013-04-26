@@ -1,13 +1,17 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
-#include <strings.h>
 
 unsigned char frameBuffer[64*96] = {0};
 
 //Buffer interface functions
-unsigned char* getBuffer(void) { return frameBuffer; }		//Returns the current frameBuffer.
-void clearBuffer(void) { memset(frameBuffer, 0, sizeof frameBuffer); }		//Sets frameBuffer to black.
-void drawPx(point px, unsigned char shade) {		//Writes to the frameBuffer.
+unsigned char* getBuffer(void) { return frameBuffer; }
+void clearBuffer(void) {		//Sets frameBuffer to black.
+	int i;
+	for (i = 0; i < 64*96; i++) {
+		frameBuffer[i] = 0;
+	}
+}
+void drawPx(point px, unsigned char shade) {
 	shade &= 0xF;
 	px.x &= 0x7F;
 	if(px.x%2 == 0) {			//If px.x is even
@@ -18,47 +22,6 @@ void drawPx(point px, unsigned char shade) {		//Writes to the frameBuffer.
 			shade | (frameBuffer[(px.x>>1)+(px.y*64)] & 0xF<<4);
 	}
 }
-//PENDING MOVE///////////////////////////
-void intSwap (int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
-point makePoint(int x, int y) {
-	point temp;
-	temp.x = x; temp.y = y;
-	return temp;
-}
-int crossP(point v1, point v2) {		//Cross product with respect to the origin
-	short angle;
-	angle = atan2Deg(v1.x, v1.y) - atan2Deg(v2.x, v2.y);
-	return dist(v1, makePoint(0,0))*dist(v2, makePoint(0,0))*sinDeg(angle);
-}
-bool isBetween(int test, int range0, int range1) {//Endpoint inclusive bound check
-	if(range0 >= range1) {
-		intSwap(&range0, &range1);
-	}
-	if(range0 <= test && test <= range1) {
-		return True;
-	}	return False;
-}
-bool lineIntersect(point a0, point a1, point b0, point b1) { //**Reliable in case a is horizantal. **BUGGED:a1**
-	int A0 = a0.x-a1.x, B0 = a1.y-a0.y, C0;//dyX+dxY = C
-	int A1 = b0.x-b1.x, B1 = b1.y-b0.y, C1;//a is horizontal scan
-	int det = A0*B1 - A1*B0;
-	C0 = B0*a0.y-A0*a0.x;
-	C1 = B1*b0.y-A1*b0.x;
-	if(det == 0) {
-		return False;
-	} else {
-		if(isBetween((B1*C0 - B0*C1)/det, b0.x, b1.x)) {
-			return True;
-		}
-		//y = (A0*C1 - A1*C0)/det
-	}
-	return False;
-}
-///////////////////////////////////////////
 //Collision detect helpers
 box getBox(point* points, int numberOfPoints) {
 	point topL = {1<<20,1<<20}; point botR = {0,0}; box fittingBox;
