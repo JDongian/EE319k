@@ -2,23 +2,13 @@
 
 int rseed = 0;
 
-//Math functions
+//Basic math
 int abs(int x) {
 	if(x < 0) {
 		return x*-1;
 	} return x;
 }
-int roundInt(float x) {
-	if(x < 0) {
-		return (int)(x-0.5);
-	} return (int)(x+0.5);
-}
-short roundSho(float x) {
-	if(x < 0) {
-		return (short)(x-0.5);
-	} return (short)(x+0.5);
-}
-int fastSqrt(int num) {
+int fastSqrt(int num) {		//Returns integral part of sqrt.
 	int res = 0;
 	int bit = 1 << 30; // The second-to-top bit is set
 	// "bit" starts at the highest power of four <= the argument.
@@ -37,6 +27,18 @@ unsigned int dist(point a, point b) {
 	int dy = a.y-b.y;
 	return fastSqrt(dx*dx + dy*dy);
 }
+//Rounding
+int roundInt(float x) {
+	if(x < 0) {
+		return (int)(x-0.5);
+	} return (int)(x+0.5);
+}
+short roundSho(float x) {
+	if(x < 0) {
+		return (short)(x-0.5);
+	} return (short)(x+0.5);
+}
+//LCG random functions
 void setSeed(int val) {
 	rseed = val;
 }
@@ -47,6 +49,7 @@ int rand(int max) {
 int randRange(int min, int max) {
 	return rand(max-min+1)+min;
 }
+//Trig ******WARNING:SLOW******
 float sinDeg(short deg) { return sin(deg*EASYPI/180); }
 short asinDeg(int ratio) { return roundSho(asin(ratio/1024.)*180/EASYPI); }
 float cosDeg(short deg) { return cos(deg*EASYPI/180); }
