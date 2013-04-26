@@ -1,11 +1,15 @@
 #include "graphicsUtil.h"
 
-void drawPoint(point, unsigned char);
-void drawLine(point, point, unsigned char);
-void drawRect(point, point, unsigned char);
-void drawCircle(point, int, unsigned char);
-point rotPoint(point, short, point);
-void drawPlayer(point, short);
-void drawPlayerExhaust(point, short);
-void demo(void);
+extern bool isExhaustOn;
 
+void drawPoint(point myPoint, unsigned char shade);
+void drawLine(point a, point b, unsigned char shade);   //Implements Bresenham's algorithm.
+void drawRect(point topLeft, point botRight, unsigned char shade);    //For convinience.
+void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade);   //Connect the dots.
+void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade); //Checks points in
+                                                                                      //the fitting box for pairity.
+void drawCircle(point center, int radius, unsigned char shade);
+point rotPoint(point center, short dAngle, point myPoint); //Non-matrix implementation
+void drawPlayer(point loc, short angle);    //At angle = 0, player faces to the right.
+void drawPlayerExhaust(point loc, short angle);   //Fun animation
+void demo();
