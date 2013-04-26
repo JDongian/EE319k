@@ -26,21 +26,21 @@ typedef struct box {
 
 #include <math.h>
 
-//Math functions
+//Basic math
 int abs(int);
+int fastSqrt(int);		//Returns integral part of the sqrt.
+unsigned int dist(point, point);
+//Rounding
 int roundInt(float);
 short roundSho(float);
-int fastSqrt(int);		//Return the integer part of the square root.
-unsigned int dist(point, point);
+//LCG random functions
 void setSeed(int);
 int rand(int);
 int randRange(int, int);
-											//Note: Trig functions are scaled by 2**10 for some arbitrary reason.
+//Trig ******WARNING:SLOW******
 float sinDeg(short);
 short asinDeg(int);
 float cosDeg(short);
 short acosDeg(int);
 float tanDeg(short);
 short atan2Deg(int, int);
-
-
