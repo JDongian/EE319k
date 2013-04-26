@@ -49,51 +49,6 @@ void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char sh
 		}
 	}
 }
-				
-//bool pointInPolygon(point* verticies, int numberOfVerticies, point test) {
-//		}
-//	}
-		
-		
-	/*
-	D. Finley's algorithm
-	int  nodes, nodeX[MAX_POLY_CORNERS], pixelX, pixelY, i, j, swap;
-	//Loop through image rows.
-	for (pixelY = IMAGE_TOP; pixelY < IMAGE_BOT; pixelY++) {
-		//Build node list.
-		nodes = 0; j = polyCorners-1;
-		for (i = 0; i < polyCorners; i++) {
-			if (polyY[i] < (double) pixelY && polyY[j] >= (double) pixelY
-			||	polyY[j] < (double) pixelY && polyY[i] >= (double) pixelY) {
-				nodeX[nodes++] = (int)(polyX[i]+(pixelY-polyY[i])/(polyY[j]-polyY[i])
-				*(polyX[j]-polyX[i]));
-			}
-			j = i;
-		}
-		//Sort nodes.
-		i = 0;
-		while(i < nodes-1) {
-			if(nodeX[i] > nodeX[i+1]) {
-				swap = nodeX[i];
-				nodeX[i] = nodeX[i+1];
-				nodeX[i+1] = swap;
-				if(i) { i--; }
-			} else { i++; }
-		}
-		//Fill pixels between node pairs.
-		for (i=0; i<nodes; i+=2) {
-			if(nodeX[i] >= IMAGE_RIGHT) { break; }
-			if(nodeX[i+1] > IMAGE_LEFT) {
-				if(nodeX[i] < IMAGE_LEFT) { nodeX[i]=IMAGE_LEFT; }
-				if(nodeX[i+1] > IMAGE_RIGHT) { nodeX[i+1]=IMAGE_RIGHT; }
-				for(j=nodeX[i]; j<nodeX[i+1]; j++) {
-					fillPixel(j,pixelY);
-				}
-			}
-		}
-	}*/
-//}
-			
 void drawCircle(point center, int radius, unsigned char shade) {	int f = 1 - radius;
 	int ddF_x = 1;
 	int ddF_y = -2 * radius;
@@ -134,7 +89,7 @@ point rotPoint(point center, short dAngle, point myPoint) {
 	return makePoint((center.x+(magnitude*sinDeg(angle))),
 									 (center.y-(magnitude*cosDeg(angle))));
 }
-void drawPlayer(point loc, short angle) {
+void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	vertex = rotPoint(loc, angle, makePoint(loc.x+5, loc.y));
 	port = rotPoint(loc, angle, makePoint(loc.x-4, loc.y-4));
@@ -146,9 +101,11 @@ void drawPlayer(point loc, short angle) {
 	drawLine(starboard, vertex, 0x8);
 	if(isExhaustOn) {
 		drawPlayerExhaust(loc, angle);
+		isExhaustOn ^= 1; //Flip the bit.
 	}
 }
 void drawPlayerExhaust(point loc, short angle) {
+	/*
 	point vertex, port, starboard, exhaust;
 	vertex = rotPoint(loc, angle, makePoint(loc.x+5, loc.y));
 	port = rotPoint(loc, angle, makePoint(loc.x-4, loc.y-4));
@@ -157,7 +114,8 @@ void drawPlayerExhaust(point loc, short angle) {
 	drawLine(vertex, port, 0xF);
 	drawLine(port, exhaust, 0xF);
 	drawLine(exhaust, starboard, 0xF);
-	drawLine(starboard, vertex, 0xF);	
+	drawLine(starboard, vertex, 0xF);
+	*/
 }	
 void demo() {
 	point triangle[3];
@@ -190,8 +148,8 @@ void demo() {
 	drawPoint(makePoint(128/2, 96/2), 0x2);
 	drawRect(makePoint(2, 2), makePoint(128-3, 96-3), 0x2);
 	drawRect(makePoint(0, 0), makePoint(127, 95), 0x4);
-//	drawRect(makePoint(2, 2), makePoint(19, 9), 0x0);
-//	drawRect(makePoint(0, 0), makePoint(19, 9), 0x0);
+//	drawRect(makePoint(2, 2), makePoint(24, 10), 0x0);
+//	drawRect(makePoint(0, 0), makePoint(24, 10), 0x0);
 	drawCircle(makePoint(128/2, 96/2), 8, 0x2);
 	drawCircle(makePoint(128/2, 96/2), 10, 0x4);
 
@@ -207,13 +165,6 @@ void demo() {
 	drawFilledPolygon(hexagon, 6, 0x4);
 
 	drawPolygon(pentagon, 5, 0x1);
-	drawFilledPolygon(pentagon, 5, 0x4);
-/*
-	drawLine(pentagon[0], pentagon[1], 0xF);
-	drawLine(pentagon[2], pentagon[1], 0xD);
-	drawLine(pentagon[2], pentagon[3], 0xA);
-	drawLine(pentagon[4], pentagon[3], 0x8);
-	drawLine(pentagon[4], pentagon[0], 0x4);
-*/	
+	drawFilledPolygon(pentagon, 5, 0x4);	
 }
 
