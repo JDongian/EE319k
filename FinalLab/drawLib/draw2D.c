@@ -31,6 +31,21 @@ void drawRect(point topLeft, point botRight, unsigned char shade) {
 	drawLine(botLeft, botRight, shade);
 	drawLine(topLeft, botLeft, shade);
 }
+void drawFilledRect(point topLeft, point botRight, unsigned char shade) {
+	point topRight; point botLeft;
+	if(topLeft.x > botRight.x){
+		intSwap(&topLeft.x, &botRight.x);
+	}if(topLeft.y > botRight.y){
+		intSwap(&topLeft.y, &botRight.y);
+	}
+	topRight = makePoint(botRight.x, topLeft.y);
+	botLeft = makePoint(topLeft.x, botRight.y);
+	while(topLeft.y <= botLeft.y) {
+		drawLine(topLeft, topRight, shade);
+		topLeft = makePoint(topLeft.x, topLeft.y+1);
+		topRight = makePoint(topRight.x, topLeft.y);
+	}
+}
 void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 	int i;
 	for(i = 0; i < numberOfVerticies-1; i++) {
@@ -110,9 +125,9 @@ void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the r
 	myShip[2] = exhaust;
 	myShip[3] = starboard;
 	if(getSetting() >= 1) {
-		drawFilledPolygon(myShip, 4, 0x8);
+		drawFilledPolygon(myShip, 4, PLAYER_SHADE);
 	} else {
-		drawPolygon(myShip, 4, 0x8);
+		drawPolygon(myShip, 4, PLAYER_SHADE);
 	}
 	if(isExhaustOn) {
 		drawPlayerExhaust(loc, angle);
@@ -136,11 +151,11 @@ void drawPlayerExhaust(point loc, short angle) {
 	outerFire[2] = exhaust;
 	outerFire[3] = starboard;
 	if(getSetting() >= 1) {
-		drawFilledPolygon(outerFire, 4, 0xA);
-		drawFilledPolygon(innerFire, 4, 0xC);
+		drawFilledPolygon(outerFire, 4, PLAYER_EXHAUST_SHADE2);
+		drawFilledPolygon(innerFire, 4, PLAYER_EXHAUST_SHADE);
 	} else {
-		drawLine(outerVertex, port, 0xC);
-		drawLine(outerVertex, starboard, 0xC);
+		drawLine(outerVertex, port, PLAYER_EXHAUST_SHADE);
+		drawLine(outerVertex, starboard, PLAYER_EXHAUST_SHADE);
 	}
 }
 void drawRock(point loc, unsigned short version, unsigned short size) {
@@ -158,9 +173,9 @@ void drawRock(point loc, unsigned short version, unsigned short size) {
 													loc.y+size*rocks[version][i].y);
 	}
 	if(getSetting() >= 1) {
-		drawFilledPolygon(myRock, ROCK_VERTICIES, 0x8);
+		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	} else {
-		drawPolygon(myRock, ROCK_VERTICIES, 0x8);
+		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	}
 }
 void demo() {
