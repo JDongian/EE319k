@@ -1,6 +1,15 @@
 #include <math.h>
 #include "lm3s1968.h"
 
+#define TAO 6.283185307179586
+#define TABLE_SIZE 100
+#define SYS_TIME_CONST 37500000
+
+#include "systick.h"
+#include "hw_types.h"
+
+#ifndef __NOTES__
+#define __NOTES__
 //Notes
 #define Off         0		
 #define As2					117
@@ -35,19 +44,14 @@
 #define quaver			2*semiquaver
 #define semiquaver	10
 
-//Math
-#define TAO 6.283185307179586
-#define TABLE_SIZE 100
-#define SYS_TIME_CONST 37500000
-
-#include "systick.h"
-#include "hw_types.h"
-
 //Typedefs
 typedef struct {
 	unsigned short frequency;
 	unsigned int time;
 } note;
+
+#endif //__NOTES
+
 
 //Variables
 extern unsigned int waveform[TABLE_SIZE];

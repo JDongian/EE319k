@@ -3,13 +3,20 @@
 #include "lm3s1968.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
+
 #include "SysTick.h"
 #include "SysTickInts.h"
+
 #include "rit128x96x4.h"
 #include "Output.h"
 #include "PLL.h"
 #include "DAC.h"
-//#include "Sound.h"
+#include "Sound.h"
+
+#include "driverlib/adc.h"
+#include "driverlib/gpio.h"
+#include "driverlib/sysctl.h"
+
 #include "DrawLib\draw2D.h"
 
 // standard ASCII symbols

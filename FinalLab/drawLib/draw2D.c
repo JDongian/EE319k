@@ -1,16 +1,17 @@
 #include "draw2D.h"
 
-bool isExhaustOn;
+bool isExhaustOn = False;
+unsigned char gGraphicsSetting;
 
 void drawPoint(point myPoint, unsigned char shade) {
-	drawPx(myPoint, shade);
+	setPx(makePoint(myPoint.x%128, myPoint.y%96), shade);
 }
 void drawLine(point a, point b, unsigned char shade) {
 	int dx = abs(b.x-a.x), sx = a.x<b.x ? 1 : -1;
 	int dy = abs(b.y-a.y), sy = a.y<b.y ? 1 : -1; 
 	int err = (dx>dy ? dx : -dy)/2, e2;
 	for(;;) {
-		drawPx(makePoint(a.x, a.y), shade);
+		drawPoint(makePoint(a.x, a.y), shade);
 		if (a.x==b.x && a.y==b.y) { break; }
 		e2 = err;
 		if (e2 >-dx) { err -= dy; a.x += sx; }
@@ -40,26 +41,28 @@ void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 	int x, y;
 	box myBox;
+	if(gGraphicsSetting == 0) { return; }
 	myBox = getBox(verticies, numberOfVerticies);
 	for(y = myBox.topL.y; y <= myBox.botR.y; y++){
 		for(x = myBox.topL.x; x <= myBox.botR.x; x++){
 			if(pointInPolygon(verticies, numberOfVerticies, makePoint(x, y))) {
-				drawPx(makePoint(x, y), shade);
+				drawPoint(makePoint(x, y), shade);
 			}
 		}
 	}
 	drawPolygon(verticies, numberOfVerticies, shade);
 }
-void drawCircle(point center, int radius, unsigned char shade) {	int f = 1 - radius;
+void drawCircle(point center, int radius, unsigned char shade) {
+	int f = 1 - radius;
 	int ddF_x = 1;
 	int ddF_y = -2 * radius;
 	int x = 0;
 	int y = radius;
 	//Draw the axis points.
-	drawPx(makePoint(center.x, center.y + radius), shade);
-	drawPx(makePoint(center.x, center.y - radius), shade);
-	drawPx(makePoint(center.x + radius, center.y), shade);
-	drawPx(makePoint(center.x - radius, center.y), shade);
+	drawPoint(makePoint(center.x, center.y + radius), shade);
+	drawPoint(makePoint(center.x, center.y - radius), shade);
+	drawPoint(makePoint(center.x + radius, center.y), shade);
+	drawPoint(makePoint(center.x - radius, center.y), shade);
 	while(x < y) {
 		// ddF_x == 2 * x + 1;
 		// ddF_y == -2 * y;
@@ -72,14 +75,14 @@ void drawCircle(point center, int radius, unsigned char shade) {	int f = 1 - rad
 		x++;
 		ddF_x += 2;
 		f += ddF_x;
-		drawPx(makePoint(center.x + x, center.y + y), shade);
-		drawPx(makePoint(center.x - x, center.y + y), shade);
-		drawPx(makePoint(center.x + x, center.y - y), shade);
-		drawPx(makePoint(center.x - x, center.y - y), shade);
-		drawPx(makePoint(center.x + y, center.y + x), shade);
-		drawPx(makePoint(center.x - y, center.y + x), shade);
-		drawPx(makePoint(center.x + y, center.y - x), shade);
-		drawPx(makePoint(center.x - y, center.y - x), shade);
+		drawPoint(makePoint(center.x + x, center.y + y), shade);
+		drawPoint(makePoint(center.x - x, center.y + y), shade);
+		drawPoint(makePoint(center.x + x, center.y - y), shade);
+		drawPoint(makePoint(center.x - x, center.y - y), shade);
+		drawPoint(makePoint(center.x + y, center.y + x), shade);
+		drawPoint(makePoint(center.x - y, center.y + x), shade);
+		drawPoint(makePoint(center.x + y, center.y - x), shade);
+		drawPoint(makePoint(center.x - y, center.y - x), shade);
 	}
 }
 point rotPoint(point center, short dAngle, point myPoint) {
@@ -92,31 +95,48 @@ point rotPoint(point center, short dAngle, point myPoint) {
 }
 void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
-	vertex = rotPoint(loc, angle, makePoint(loc.x+5, loc.y));
-	port = rotPoint(loc, angle, makePoint(loc.x-4, loc.y-4));
-	starboard = rotPoint(loc, angle, makePoint(loc.x-4, loc.y+4));
-	exhaust = rotPoint(loc, angle, makePoint(loc.x-2, loc.y));
-	drawLine(vertex, port, 0x8);
-	drawLine(port, exhaust, 0x8);
-	drawLine(exhaust, starboard, 0x8);
-	drawLine(starboard, vertex, 0x8);
+	point myShip[4];
+	vertex = rotPoint(loc, angle, makePoint(loc.x+6, loc.y));
+	port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
+	starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+5));
+	exhaust = rotPoint(loc, angle, makePoint(loc.x-3, loc.y));
+	myShip[0] = vertex;
+	myShip[1] = port;
+	myShip[2] = exhaust;
+	myShip[3] = starboard;
+	if(gGraphicsSetting >= 1) {
+		drawFilledPolygon(myShip, 4, 0x6);
+	} else {
+		drawPolygon(myShip, 4, 0x6);
+	}
 	if(isExhaustOn) {
 		drawPlayerExhaust(loc, angle);
-		isExhaustOn ^= 1; //Flip the bit.
 	}
+	isExhaustOn ^= 1; //Flip the bit.
 }
 void drawPlayerExhaust(point loc, short angle) {
-	/*
-	point vertex, port, starboard, exhaust;
-	vertex = rotPoint(loc, angle, makePoint(loc.x+5, loc.y));
-	port = rotPoint(loc, angle, makePoint(loc.x-4, loc.y-4));
-	starboard = rotPoint(loc, angle, makePoint(loc.x-4, loc.y+4));
-	exhaust = rotPoint(loc, angle, makePoint(loc.x-2, loc.y));
-	drawLine(vertex, port, 0xF);
-	drawLine(port, exhaust, 0xF);
-	drawLine(exhaust, starboard, 0xF);
-	drawLine(starboard, vertex, 0xF);
-	*/
+	point innerVertex, outerVertex, port, starboard, exhaust;
+	point innerFire[4], outerFire[4];
+	outerVertex = rotPoint(loc, angle, makePoint(loc.x-7, loc.y));
+	innerVertex = rotPoint(loc, angle, makePoint(loc.x-5, loc.y));
+	port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-3));
+	starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+3));
+	exhaust = rotPoint(loc, angle, makePoint(loc.x-3, loc.y));
+	innerFire[0] = innerVertex;
+	innerFire[1] = port;
+	innerFire[2] = exhaust;
+	innerFire[3] = starboard;
+	outerFire[0] = outerVertex;
+	outerFire[1] = port;
+	outerFire[2] = exhaust;
+	outerFire[3] = starboard;
+	if(gGraphicsSetting >= 1) {
+		drawFilledPolygon(outerFire, 4, 0xA);
+		drawFilledPolygon(innerFire, 4, 0xF);
+	} else {
+		drawLine(outerVertex, port, 0xF);
+		drawLine(outerVertex, starboard, 0xF);
+	}
 }	
 void demo() {
 	point triangle[3];
@@ -155,17 +175,17 @@ void demo() {
 	drawCircle(makePoint(128/2, 96/2), 10, 0x4);
 
 	drawPolygon(square, 4, 0x1);
-	drawFilledPolygon(square, 4, 0x4);
+	drawFilledPolygon(square, 4, 0x1);
 	
 	drawPoint(makePoint(0x67,0x0D), 0x8);
 	
 	drawPolygon(triangle, 3, 0x1);
-	drawFilledPolygon(triangle, 3, 0x4);
+	drawFilledPolygon(triangle, 3, 0x1);
 
 	drawPolygon(hexagon, 6, 0x1);
-	drawFilledPolygon(hexagon, 6, 0x4);
+	drawFilledPolygon(hexagon, 6, 0x1);
 
 	drawPolygon(pentagon, 5, 0x1);
-	drawFilledPolygon(pentagon, 5, 0x4);	
+	drawFilledPolygon(pentagon, 5, 0x1);	
 }
 

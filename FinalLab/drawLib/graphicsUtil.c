@@ -2,6 +2,7 @@
 #include "graphicsUtil.h"
 
 unsigned char frameBuffer[64*96] = {0};
+extern unsigned char gGraphicsSetting;
 
 //Buffer interface functions
 unsigned char* getBuffer(void) { return frameBuffer; }
@@ -11,16 +12,21 @@ void clearBuffer(void) {		//Sets frameBuffer to black.
 		frameBuffer[i] = 0;
 	}
 }
-void drawPx(point px, unsigned char shade) {
+void setPx(point px, unsigned char shade) {
 	shade &= 0xF;
-	px.x &= 0x7F;
-	if(px.x%2 == 0) {			//If px.x is even
+	px.x = (px.x+128)%128;
+	px.y = (px.y+96)%96;
+	if(px.x%2 == 0) {	//If px.x is even
 		frameBuffer[(px.x>>1)+(px.y*64)] =
 			shade<<4 | (frameBuffer[(px.x>>1)+(px.y*64)] & (0xF));
-	} else {				//If px.x is odd
+	} else {					//If px.x is odd
 		frameBuffer[(px.x>>1)+(px.y*64)] =
 			shade | (frameBuffer[(px.x>>1)+(px.y*64)] & 0xF<<4);
 	}
+}
+//Graphics modifier
+void setGraphics(unsigned char setting) {
+	gGraphicsSetting = setting;
 }
 //Collision detect helpers
 box getBox(point* points, int numberOfPoints) {
@@ -41,13 +47,16 @@ bool pointInPolygon(point* verticies, int numberOfVerticies, point test) {
 	bool result = False;
 	for(i = 0, j = numberOfVerticies-1; i < numberOfVerticies; j = i++) {
 //Float only version, perfect detection.																 
-//		if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
-//			 ((float)test.x < (float)(verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
-//															 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+		if(gGraphicsSetting == 2 &&
+			 ((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+			 ((float)test.x < (float)(verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+															 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+			result ^= 1;
+		}
 //Integer only version, a bit less accurate.																 
-			if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
-				 (test.x < (verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
-									 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+		else if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+						(test.x < (verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+						(verticies[j].y-verticies[i].y)+verticies[i].x)) {
 			result ^= 1;
 		}
   }
