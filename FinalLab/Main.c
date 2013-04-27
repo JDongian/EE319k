@@ -21,11 +21,10 @@ int main(void){
 	Output_Color(15);
 	SysTick_IntEnable();
 	gFlags = 0;
-	setGraphics(0);
+	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	while(1) {
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) {
 			t = t+dt;
-			if(t > 600 || t < 10) dt *= -1;
 			clearBuffer();
 		//	drawRect(makePoint(1, 1), makePoint(127-1, 95-1), 0x2);
 		//	drawRect(makePoint(0, 0), makePoint(127, 95), 0x1);

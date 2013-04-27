@@ -12,6 +12,7 @@ void setGraphics(unsigned char setting);
 	//0 = line
 	//1 = int shaded
 	//2 = fully shaded
+unsigned char getSetting(void);
 //Collision detect helpers
 box getBox(point*, int);  //Finds the minimum fitting box.
 bool pointInPolygon(point*, int, point);   //Uses a ray-pairity implemetation.

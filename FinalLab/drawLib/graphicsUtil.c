@@ -2,7 +2,10 @@
 #include "graphicsUtil.h"
 
 unsigned char frameBuffer[64*96] = {0};
-extern unsigned char gGraphicsSetting;
+unsigned char gGraphicsSetting;
+//0 = line
+//1 = shaded
+//2 = best shaded
 
 //Buffer interface functions
 unsigned char* getBuffer(void) { return frameBuffer; }
@@ -30,9 +33,12 @@ void setPx(point px, unsigned char shade) {
 			shade | (frameBuffer[(px.x>>1)+(px.y*64)] & 0xF<<4);
 	}
 }
-//Graphics modifier
+//Graphics settings
 void setGraphics(unsigned char setting) {
 	gGraphicsSetting = setting;
+}
+unsigned char getSetting(void) {
+	return gGraphicsSetting;
 }
 //Collision detect helpers
 box getBox(point* points, int numberOfPoints) {

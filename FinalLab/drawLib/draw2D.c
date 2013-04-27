@@ -1,7 +1,6 @@
 #include "draw2D.h"
 
 bool isExhaustOn = False;
-unsigned char gGraphicsSetting;
 
 void drawPoint(point myPoint, unsigned char shade) {
 	setPx(makePoint(myPoint.x%128, myPoint.y%96), shade);
@@ -42,7 +41,7 @@ void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char sh
 	int x, y;
 	box myBox;
 	drawPolygon(verticies, numberOfVerticies, shade);
-	if(gGraphicsSetting == 0) { return; }
+	if(getSetting() == 0) { return; }
 	myBox = getBox(verticies, numberOfVerticies);
 	for(y = myBox.topL.y; y <= myBox.botR.y; y++){
 		for(x = myBox.topL.x; x <= myBox.botR.x; x++){
@@ -110,7 +109,7 @@ void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the r
 	myShip[1] = port;
 	myShip[2] = exhaust;
 	myShip[3] = starboard;
-	if(gGraphicsSetting >= 1) {
+	if(getSetting() >= 1) {
 		drawFilledPolygon(myShip, 4, 0x8);
 	} else {
 		drawPolygon(myShip, 4, 0x8);
@@ -136,7 +135,7 @@ void drawPlayerExhaust(point loc, short angle) {
 	outerFire[1] = port;
 	outerFire[2] = exhaust;
 	outerFire[3] = starboard;
-	if(gGraphicsSetting >= 1) {
+	if(getSetting() >= 1) {
 		drawFilledPolygon(outerFire, 4, 0xA);
 		drawFilledPolygon(innerFire, 4, 0xC);
 	} else {
@@ -158,7 +157,7 @@ void drawRock(point loc, unsigned short version, unsigned short size) {
 		myRock[i] = makePoint(loc.x+size*rocks[version][i].x,
 													loc.y+size*rocks[version][i].y);
 	}
-	if(gGraphicsSetting >= 1) {
+	if(getSetting() >= 1) {
 		drawFilledPolygon(myRock, ROCK_VERTICIES, 0x8);
 	} else {
 		drawPolygon(myRock, ROCK_VERTICIES, 0x8);
