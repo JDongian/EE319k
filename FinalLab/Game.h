@@ -1,7 +1,13 @@
 #include "drawLib\math2.h"
+#include "lm3s1968.h"
+#include "globals.h"
 
 #ifndef __GAMETYPES__
 #define __GAMETYPES__
+#define PLAYER_ACCEL						0.5
+#define PLAYER_TURN_RATE				10
+#define SPEED_DECAY							0.9
+#define BULLET_SPEED						3
 #define MAX_STARS								30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4
@@ -24,7 +30,7 @@ typedef enum {
 
 typedef struct agentState {
 	point pos;
-	float dx, dy;
+	int dx, dy;
 	agentStatus status;		//Agent life status
 	agentType type;
 	char behavior;
@@ -59,6 +65,8 @@ typedef struct starState {
 }*/
 #endif //__GAMETYPES__
 
+
+extern short gameLevel;
 //extern unsigned char g_boomSprite[][];
 extern playerState gPlayer;
 extern rockState gRocks[MAX_ROCKS];
@@ -70,4 +78,11 @@ extern agentState gSatellites[MAX_SATELLITES*3];
 
 
 void gameInit(void); 	//Begin the game.
+void gameUpdate(void); 	//Begin the game.
+void gameSet(short);
+void addRock(point, int, int, unsigned char);
+void centerPlayer(void);
+void killRocks(void);
+void killBullets(void);
+void killEnemies(void);
 

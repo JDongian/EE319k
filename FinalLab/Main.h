@@ -18,6 +18,7 @@
 #include "driverlib/sysctl.h"
 
 #include "DrawLib\draw2D.h"
+#include "Game.h"
 
 // standard ASCII symbols
 #define BACKSPACE               0x8  // back up one character

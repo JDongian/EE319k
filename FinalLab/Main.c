@@ -1,7 +1,7 @@
 #include "Main.h"
 
 unsigned long gFlags;
-
+short gameLevel;
 
 int main(void){
 	int i = 0; int t = 8; int dt = 2;
@@ -16,17 +16,35 @@ int main(void){
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7),
 												GPIO_STRENGTH_2MA,
 												GPIO_PIN_TYPE_STD_WPU);
-	
 	SysTick_Init(2000000);
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
 	gFlags = 0;
 	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
+	gameInit();
 	while(1) {
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) {
-			t = t+dt;
 			clearBuffer();
+			//Draw the player.
+			gameUpdate();
+			drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y), gPlayer.angle);
+			for(i = 0; i < MAX_ROCKS; i++) {
+				//drawRock();
+			}
+			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {}
+			for(i = 0; i < MAX_ENEMY_BULLETS; i++) {}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			t = t+dt;
 		//	drawRect(makePoint(1, 1), makePoint(127-1, 95-1), 0x2);
 		//	drawRect(makePoint(0, 0), makePoint(127, 95), 0x1);
 			
@@ -35,13 +53,10 @@ int main(void){
 //			drawCircle(makePoint(128/2, 96/2), t+2, 0x2);
 
 			drawRock(makePoint((t+5)/3, -1*t+5), 1, 1);
-			drawRock(makePoint(2*t-75, (t+15)/2), 2, 3);			
-			drawRock(makePoint(t+5, t-25), 3, 2);
-			drawRock(makePoint(t-25, t+5), 4, 1);
-			drawRock(makePoint(-1*t+60, -1*t+65), 5, 3);
-			drawPlayer(makePoint(128/2+t-t*t/5000, 96/2-(t*t)/10000), i++);
-			i %= 360;
-			i += 1;
+//			drawRock(makePoint(2*t-75, (t+15)/2), 2, 3);			
+//			drawRock(makePoint(t+5, t-25), 3, 2);
+//			drawRock(makePoint(t-25, t+5), 4, 1);
+//			drawRock(makePoint(-1*t+60, -1*t+65), 5, 3);
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 1;
 		}
 	}
