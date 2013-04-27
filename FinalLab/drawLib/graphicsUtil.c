@@ -12,6 +12,12 @@ void clearBuffer(void) {		//Sets frameBuffer to black.
 		frameBuffer[i] = 0;
 	}
 }
+void setBuffer(unsigned char shade) {		//Sets frameBuffer to shade.
+	int i;
+	for (i = 0; i < 64*96; i++) {
+		frameBuffer[i] = (shade<<4) + (shade&0xF);
+	}
+}
 void setPx(point px, unsigned char shade) {
 	shade &= 0xF;
 	px.x = (px.x+128)%128;

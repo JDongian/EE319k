@@ -5,6 +5,7 @@
 //Buffer interface functions
 unsigned char* getBuffer(void);   //Returns the current frameBuffer.
 void clearBuffer(void);   //Sets frameBuffer to black.
+void setBuffer(unsigned char);   //Sets frameBuffer to shade.
 void setPx(point, unsigned char);   //Writes to the frameBuffer.
 //Graphics modifier
 void setGraphics(unsigned char setting); 

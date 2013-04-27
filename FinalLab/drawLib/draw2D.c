@@ -41,6 +41,7 @@ void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 	int x, y;
 	box myBox;
+	drawPolygon(verticies, numberOfVerticies, shade);
 	if(gGraphicsSetting == 0) { return; }
 	myBox = getBox(verticies, numberOfVerticies);
 	for(y = myBox.topL.y; y <= myBox.botR.y; y++){
@@ -93,6 +94,11 @@ point rotPoint(point center, short dAngle, point myPoint) {
 	return makePoint((center.x+(magnitude*sinDeg(angle))),
 									 (center.y-(magnitude*cosDeg(angle))));
 }
+point scalePoint(point center, float scaleFactor, point target) {
+	target.x *= scaleFactor;
+	target.y *= scaleFactor;
+	return target;
+}
 void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];
@@ -105,9 +111,9 @@ void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the r
 	myShip[2] = exhaust;
 	myShip[3] = starboard;
 	if(gGraphicsSetting >= 1) {
-		drawFilledPolygon(myShip, 4, 0x6);
+		drawFilledPolygon(myShip, 4, 0x8);
 	} else {
-		drawPolygon(myShip, 4, 0x6);
+		drawPolygon(myShip, 4, 0x8);
 	}
 	if(isExhaustOn) {
 		drawPlayerExhaust(loc, angle);
@@ -132,12 +138,32 @@ void drawPlayerExhaust(point loc, short angle) {
 	outerFire[3] = starboard;
 	if(gGraphicsSetting >= 1) {
 		drawFilledPolygon(outerFire, 4, 0xA);
-		drawFilledPolygon(innerFire, 4, 0xF);
+		drawFilledPolygon(innerFire, 4, 0xC);
 	} else {
-		drawLine(outerVertex, port, 0xF);
-		drawLine(outerVertex, starboard, 0xF);
+		drawLine(outerVertex, port, 0xC);
+		drawLine(outerVertex, starboard, 0xC);
 	}
-}	
+}
+void drawRock(point loc, unsigned short version, unsigned short size) {
+	point rocks[5][ROCK_VERTICIES] = {
+		{{0, 5},{4, 2},{4, -1},{1, -3},{-1, -1},{-3, -3},{-4, 0}},
+		{{0, 4},{2, 4},{4, 0},{2, -4},{-1, -5},{-3, -2},{-3, 3}},
+		{{-1, 4},{1, 4},{4, 1},{3, -4},{1, -2},{-3, -4},{-4, 1}},
+		{{-1, 5},{1, 3},{3, 5},{5, 1},{-1, -5},{-4, -3},{-4, 4}},
+		{{0, 5},{5, 1},{3, -5},{-1, -5},{-3, -3},{-6, -2},{-2, 1}}
+	};
+	point myRock[ROCK_VERTICIES]; int i = 0;
+	version %= 5;
+	for(i = 0; i < ROCK_VERTICIES; i++) {
+		myRock[i] = makePoint(loc.x+size*rocks[version][i].x,
+													loc.y+size*rocks[version][i].y);
+	}
+	if(gGraphicsSetting >= 1) {
+		drawFilledPolygon(myRock, ROCK_VERTICIES, 0x8);
+	} else {
+		drawPolygon(myRock, ROCK_VERTICIES, 0x8);
+	}
+}
 void demo() {
 	point triangle[3];
 	point square[4];
