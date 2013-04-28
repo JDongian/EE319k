@@ -6,7 +6,7 @@ extern unsigned long gSystemClock;
 
 extern unsigned long gFlags;
 #define FRAME_BUFFER_READY			0				//If 1, the frame buffer is ready to be output to the screen.
-#define FLAG_SELECT_BUTTON			1				//Is pressed
+//#define SHOOT_NOW								1				//Has shot a bullet
 
 #include "lm3s1968.h"
 #endif // __GLOBALS_H__

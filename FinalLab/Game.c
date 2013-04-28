@@ -1,17 +1,12 @@
 #include "Game.h"
 
-unsigned char bulletSprite[3][3] = {
-	{0x00, 0x04, 0x00},
-	{0x04, 0x0C, 0x04},
-	{0x00, 0x04, 0x00}
-};
-
 playerState gPlayer;
 rockState gRocks[MAX_ROCKS];
 bulletState gPlayerBullets[MAX_PLAYER_BULLETS];
 bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 agentState gUFOs[MAX_UFOS];
 agentState gSatellites[MAX_SATELLITES*3];
+bool selectStatus = False;
 
 void gameUpdate(void) {
 	int i;
@@ -20,11 +15,12 @@ void gameUpdate(void) {
 	gPlayer.y += gPlayer.dy;
 	gPlayer.dx = (gPlayer.dx*SPEED_DECAY);
 	gPlayer.dy = (gPlayer.dy*SPEED_DECAY);
+	gPlayer.exhaustOn = False;
 	switch(gPlayer.status) {
 		case ALIVE:
 			////Button movement input
 			//Forward (up)
-			if ((GPIO_PORTG_DATA_R&0xF8) == 0xF0) {
+			if ((GPIO_PORTG_DATA_R&0x08) == 0) {
 				/*if ((g_soundArray == 0) || (g_soundIndex > SND_MOVE_LENGTH/2)) {
 					g_soundArray = &g_soundMove;
 					g_soundIndex = 0;
@@ -32,31 +28,29 @@ void gameUpdate(void) {
 				}*/
 				gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
 				gPlayer.dy -= sinDeg(gPlayer.angle)*PLAYER_ACCEL;
+				gPlayer.exhaustOn = True;
 			}
 			//Left
 			if ((GPIO_PORTG_DATA_R&0x20) == 0) { gPlayer.angle += PLAYER_TURN_RATE; }
 			//Right
 			if ((GPIO_PORTG_DATA_R&0x40) == 0) { gPlayer.angle -= PLAYER_TURN_RATE; }
-			
+			//Select
+			if((GPIO_PORTG_DATA_R&0x80) == 0) {
+				selectStatus = True;
+			}
+			if((selectStatus == True) && ((GPIO_PORTG_DATA_R&0x80) != 0)) {
+				selectStatus = False;
+				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
+									(cosDeg(gPlayer.angle)*BULLET_SPEED),
+									-1*(sinDeg(gPlayer.angle)*BULLET_SPEED),
+									True);
+			}
+			//Speed capping
+			//TODO: do it right
 			if(gPlayer.dx < -1*PLAYER_MAX_SPEED) { gPlayer.dx = -1*PLAYER_MAX_SPEED; }
 			if(gPlayer.dx > PLAYER_MAX_SPEED) { gPlayer.dx = PLAYER_MAX_SPEED; }
 			if(gPlayer.dy < -1*PLAYER_MAX_SPEED) { gPlayer.dy = -1*PLAYER_MAX_SPEED; }
 			if(gPlayer.dy > PLAYER_MAX_SPEED) { gPlayer.dy = PLAYER_MAX_SPEED; }
-			
-			if (HWREGBITW(&gFlags, FLAG_SELECT_BUTTON)) { //Shoot
-				for (i = 0; i < MAX_PLAYER_BULLETS; i++) {
-					if (gPlayerBullets[i].status == DEAD) {
-						gPlayerBullets[i].status = ALIVE;
-						gPlayerBullets[i].pos = makePoint((int)gPlayer.x, (int)gPlayer.y);
-						gPlayerBullets[i].dx = (int)(sinDeg(gPlayer.angle)*BULLET_SPEED);
-						gPlayerBullets[i].dy = (int)(cosDeg(gPlayer.angle)*BULLET_SPEED);
-//						g_soundArray = &g_soundBullet;
-//						g_soundIndex = 0;
-//						g_soundMax = SND_BULLET_LENGTH; 
-						break;
-					}
-				}
-			}
 			/*
 			vertex = rotPoint(makePoint(gPlayer.x, gPlayer.y), angle, makePoint(loc.x+6, loc.y));
 			port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
@@ -70,14 +64,11 @@ void gameUpdate(void) {
 				if(myShip[i]) {
 					gPlayer.status = HIT;
 				}
-			}*/	
+			}*/
 			break;
-		case HIT:
-			break;
-		case DEAD:
-			break;
+		case HIT: break;
+		case DEAD: break;
 	}
-		
 	//Update rocks
 	for(i = 0; i < MAX_ROCKS; i++) {
 		if(gRocks[i].status == ALIVE) {		//Only update visible rocks.			
@@ -85,7 +76,22 @@ void gameUpdate(void) {
 																gRocks[i].pos.y+gRocks[i].dy);
 		}
 	}
-	HWREGBITW(&gFlags, FLAG_SELECT_BUTTON) = 0;
+	//Update bullets
+	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
+		if(gPlayerBullets[i].status == ALIVE) {		//Only update visible bullets.
+			if(gPlayerBullets[i].life++ > BULLET_LIFETICKS) { gPlayerBullets[i].status = DEAD; }
+			gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
+			gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
+		}
+	}
+	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
+		if(gEnemyBullets[i].status == ALIVE) {		//Only update visible bullets.
+			if(gEnemyBullets[i].life++ > BULLET_LIFETICKS) { gEnemyBullets[i].status = DEAD; }
+			gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
+			gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
+			gEnemyBullets[i].life++;
+		}
+	}
 }
 void gameSet(short level) { //Gets the game ready for a new level.
 	//TODO: Can be updated to use addRock
@@ -94,10 +100,11 @@ void gameSet(short level) { //Gets the game ready for a new level.
 	killBullets();
 	killEnemies();
 	if(level < 5) {
+		//TODO: implement float speed test
 		for(i = 0; i < 4; i++) {
 			gRocks[i].pos = makePoint(randRange(-10, 10),randRange(-10, 10));//makePoint(, randRange(-20, 20)%96);
 			gRocks[i].dx = randRange(-1, 1);
-			gRocks[i].dy = randRange(abs(gRocks[i].dx)-1, 1-abs(gRocks[i].dx));
+			gRocks[i].dy = randRange(-1, 1);
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, 0xF);
 			gRocks[i].rockSize = 2;//randRange(1,3);
@@ -110,8 +117,8 @@ void gameSet(short level) { //Gets the game ready for a new level.
 	else if(level < 10) {
 		for(i = 0; i < level/2+3; i++) {
 			gRocks[i].pos = makePoint(randRange(-10, 10), randRange(-10, 10));
-			gRocks[i].dx = randRange(-4, 4);
-			gRocks[i].dy = randRange(abs(gRocks[i].dx)-4, 4-abs(gRocks[i].dx));
+			gRocks[i].dx = randRange(-1, 1);
+			gRocks[i].dy = randRange(abs(gRocks[i].dx)-1, 1-abs(gRocks[i].dx));
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, 0xF);
 			gRocks[i].rockSize = randRange(1,3);
@@ -120,12 +127,7 @@ void gameSet(short level) { //Gets the game ready for a new level.
 			}
 		}
 	}
-	
-//				drawRock(makePoint((t+5)/3, -1*t+5), 1, 1);
-//			drawRock(makePoint(2*t-75, (t+15)/2), 2, 3);			
-//			drawRock(makePoint(t+5, t-25), 3, 2);
-//			drawRock(makePoint(t-25, t+5), 4, 1);
-//			drawRock(makePoint(-1*t+60, -1*t+65), 5, 3);
+	//DEBUG:addBullet(makePoint(128/2, 96/2), 2, 2, True);
 }
 void gameInit(void) {
 	centerPlayer();
@@ -142,10 +144,9 @@ void centerPlayer()	{
 	gPlayer.dy = 0;
 	gPlayer.angle = 90;
 	gPlayer.status = ALIVE;
-	gPlayer.step = 0;
+	gPlayer.exhaustOn = False;
 }
-//Adding functions
-
+//Object adding functions
 void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
 	int i;
 	for(i = 0; i < MAX_ROCKS; i++) {
@@ -164,26 +165,30 @@ void addBullet(point bulletPos, int dx, int dy, bool isAllied) {
 	if(isAllied) {
 		for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 			if(gPlayerBullets[i].status == DEAD) {
-				gPlayerBullets[i].pos = bulletPos;
+				gPlayerBullets[i].x = bulletPos.x;
+				gPlayerBullets[i].y = bulletPos.y;
 				gPlayerBullets[i].dx = dx;
 				gPlayerBullets[i].dy = dy;
 				gPlayerBullets[i].status = ALIVE;
+				gPlayerBullets[i].life = 0;
 				return;
 			}
 		}
 	} else {
 		for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
 			if(gEnemyBullets[i].status == DEAD) {
-				gEnemyBullets[i].pos = bulletPos;
+				gEnemyBullets[i].x = bulletPos.x;
+				gEnemyBullets[i].y = bulletPos.y;
 				gEnemyBullets[i].dx = dx;
 				gEnemyBullets[i].dy = dy;
 				gEnemyBullets[i].status = ALIVE;
+				gEnemyBullets[i].life = 0;
 				return;
 			}
 		}
 	}
 }
-//Clearing functions
+//Clearing functions (clear globals)
 void killRocks(void) {
 	int i;
 	//Set all rocks to dead.
@@ -200,16 +205,20 @@ void killBullets(void) {
 	int i;
 	//Set all bullets to dead.
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
-		gPlayerBullets[i].pos = makePoint(0,0);
+		gPlayerBullets[i].x = 0;
+		gPlayerBullets[i].y = 0;
 		gPlayerBullets[i].dx = 0;
 		gPlayerBullets[i].dy = 0;
 		gPlayerBullets[i].status = DEAD;
+		gPlayerBullets[i].life = BULLET_LIFETICKS;
 	}
 	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
-		gEnemyBullets[i].pos = makePoint(0,0);
+		gEnemyBullets[i].x = 0;
+		gEnemyBullets[i].y = 0;
 		gEnemyBullets[i].dx = 0;
 		gEnemyBullets[i].dy = 0;
 		gEnemyBullets[i].status = DEAD;
+		gEnemyBullets[i].life = BULLET_LIFETICKS;
 	}
 }
 void killEnemies(void) {

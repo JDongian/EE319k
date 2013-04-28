@@ -1,5 +1,12 @@
 #include "draw2D.h"
 
+//Sprites
+unsigned char bulletSprite[9] = {
+	0x00, 0x04, 0x00,
+	0x04, 0x0C, 0x04,
+	0x00, 0x04, 0x00
+};
+
 bool isExhaustOn = False;
 
 void drawPoint(point myPoint, unsigned char shade) {
@@ -113,7 +120,7 @@ point scalePoint(point center, float scaleFactor, point target) {
 	target.y *= scaleFactor;
 	return target;
 }
-void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the right.
+void drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];
 	vertex = rotPoint(loc, angle, makePoint(loc.x+6, loc.y));
@@ -129,10 +136,12 @@ void drawPlayer(point loc, short angle) {		//At angle = 0, player faces to the r
 	} else {
 		drawPolygon(myShip, 4, PLAYER_SHADE);
 	}
-	if(isExhaustOn) {
-		drawPlayerExhaust(loc, angle);
+	if(doExhaust) {
+		if(isExhaustOn) {
+			drawPlayerExhaust(loc, angle);
+		}
+		isExhaustOn ^= 1; //Flip the bit.
 	}
-	isExhaustOn ^= 1; //Flip the bit.
 }
 void drawPlayerExhaust(point loc, short angle) {
 	point innerVertex, outerVertex, port, starboard, exhaust;
@@ -178,6 +187,19 @@ void drawRock(point loc, unsigned short version, unsigned short size) {
 		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	}
 }
+void drawSprite(unsigned char sprite[], point pos,
+								unsigned int width, unsigned int height) {
+	int i,j;
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
+			drawPoint(makePoint(pos.x+i, pos.y+j), sprite[i+j*width]);
+		}
+	}
+}
+void drawBullet(point pos) {
+	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
+}
+void drawExplosion(point pos, char frame) {}
 void demo() {
 	point triangle[3];
 	point square[4];

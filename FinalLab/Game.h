@@ -5,10 +5,11 @@
 #ifndef __GAMETYPES__
 #define __GAMETYPES__
 #define PLAYER_ACCEL						0.7
-#define PLAYER_TURN_RATE				14
+#define PLAYER_TURN_RATE				17
 #define PLAYER_MAX_SPEED				4
 #define SPEED_DECAY							0.9
-#define BULLET_SPEED						3
+#define BULLET_SPEED						8
+#define BULLET_LIFETICKS				32
 #define MAX_STARS								30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4
@@ -42,7 +43,7 @@ typedef struct playerState {
 	float dx, dy;
 	short angle;
 	agentStatus status;		//Player life status
-	char step;						//Animation state
+	bool exhaustOn;				//Animations on?
 } playerState;
 
 typedef struct rockState {
@@ -54,9 +55,10 @@ typedef struct rockState {
 } rockState;
 
 typedef struct bulletState {
-	point pos;
-	int dx, dy;
+	float x, y;
+	float dx, dy;
 	agentStatus status;
+	short life;
 } bulletState;
 /*
 typedef struct starState {

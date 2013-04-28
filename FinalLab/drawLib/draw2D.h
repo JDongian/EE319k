@@ -9,17 +9,19 @@
 
 extern bool isExhaustOn;
 
-void drawPoint(point myPoint, unsigned char shade);
-void drawLine(point a, point b, unsigned char shade);   //Implements Bresenham's algorithm.
-void drawRect(point topLeft, point botRight, unsigned char shade);    //For convinience.
+void drawPoint(point, unsigned char);
+void drawLine(point, point, unsigned char);   //Implements Bresenham's algorithm.
+void drawRect(point, point, unsigned char);    //For convinience.
 void drawFilledRect(point, point, unsigned char);				//Important for enemy entry.
-void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade);   //Connect the dots.
-void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade); //Checks points in
+void drawPolygon(point*, int, unsigned char);   //Connect the dots.
+void drawFilledPolygon(point*, int, unsigned char); //Checks points in
                                                                                       //the fitting box for pairity.
-void drawCircle(point center, int radius, unsigned char shade);
-point rotPoint(point center, short dAngle, point myPoint); //Non-matrix implementation
-void drawPlayer(point loc, short angle);    //At angle = 0, player faces to the right.
-void drawPlayerExhaust(point loc, short angle);   //Fun animation
+void drawCircle(point, int, unsigned char);
+point rotPoint(point, short, point); //Non-matrix implementation
+void drawPlayer(point, short, bool);    //At angle = 0, player faces to the right.
+void drawPlayerExhaust(point, short);   //Fun animation
 void drawRock(point, unsigned short, unsigned short);
-
+void drawSprite(unsigned char[], point,
+								unsigned int, unsigned int);
+void drawBullet(point);
 void demo(void);

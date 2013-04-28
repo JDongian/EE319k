@@ -27,7 +27,7 @@ int main(void){
 	gameInit();
 	gameSet(1);
 	while(1) {
-		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) {
+		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == False) {
 			//Check for level completion, aka all rocks and enemies are 
 			//TODO: enemies
 			for(i = 0; i < MAX_ROCKS; i++) {
@@ -37,18 +37,34 @@ int main(void){
 				}
 			} if(i == MAX_ROCKS) {isLevelComplete = True; }
 			if(isLevelComplete) { gameSet(++gameLevel); }
+			//Redraw the screen from scratch.
 			clearBuffer();
 			//Draw the player.
 			gameUpdate();
-			drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y), gPlayer.angle);
+			///*
+			drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y),
+													 gPlayer.angle, gPlayer.exhaustOn);
+			/*
 			for(i = 0; i < MAX_ROCKS; i++) {
 				if(gRocks[i].status == ALIVE) {
 					drawRock(gRocks[i].pos, gRocks[i].rockType, gRocks[i].rockSize);
 				}
 			}
-			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {}
-			for(i = 0; i < MAX_ENEMY_BULLETS; i++) {}
-			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 1;
+			*/
+			//Draw allied bullets.
+			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
+				if(gPlayerBullets[i].status == ALIVE) {
+					drawBullet(makePoint(gPlayerBullets[i].x, gPlayerBullets[i].y));
+				}
+			}
+			//Draw enemy bullets.
+			for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
+				if(gEnemyBullets[i].status == ALIVE) {
+					drawBullet(makePoint(gEnemyBullets[i].x, gEnemyBullets[i].y));
+				}
+			}
+			//*/
+			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}
 	}
 }

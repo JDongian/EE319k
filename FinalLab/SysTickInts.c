@@ -46,9 +46,9 @@ void SysTick_Init(unsigned long period){
 // Executed every 20ns*(period)
 void SysTick_Handler(void){
 	GPIO_PORTG2 ^= 0x04;
-	if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 1) {
+	if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == True) {
 		RIT128x96x4ImageDraw(getBuffer(), 0, 0, 128, 96);	//draw it.(dude!!)
-		HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 0;
+		HWREGBITW(&gFlags, FRAME_BUFFER_READY) = False;
 	}
 }
 
