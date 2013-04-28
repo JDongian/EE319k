@@ -38,11 +38,11 @@ void gameUpdate(void) {
 			//Right
 			if ((GPIO_PORTG_DATA_R&0x40) == 0) { gPlayer.angle -= PLAYER_TURN_RATE; }
 			//Select
-			if((GPIO_PORTG_DATA_R&0x80) == 0) {
-				selectStatus = True;
-			}
-			if((selectStatus == True) && ((GPIO_PORTG_DATA_R&0x80) != 0)) {
+			if((GPIO_PORTG_DATA_R&0x80) != 0) {
 				selectStatus = False;
+			}
+			if((selectStatus == False) && ((GPIO_PORTG_DATA_R&0x80) == 0)) {
+				selectStatus = True;
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
@@ -138,7 +138,6 @@ void gameInit(void) {
 	killBullets();
 	killEnemies();
 }
-
 void centerPlayer()	{
 	//Set the player in the center.
 	gPlayer.x = 128/2;

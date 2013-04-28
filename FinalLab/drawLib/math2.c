@@ -57,6 +57,19 @@ bool lineIntersect(point a0, point a1, point b0, point b1) { //**Reliable in cas
 	}
 	return False;
 }
+point rotPoint(point center, short dAngle, point myPoint) {
+	float angle; unsigned int magnitude;
+	angle = atan2Deg((myPoint.x-center.x), (myPoint.y-center.y));
+	magnitude = dist(center, myPoint);
+	angle -= dAngle;
+	return makePoint((center.x+(magnitude*sinDeg(angle))),
+									 (center.y-(magnitude*cosDeg(angle))));
+}
+point scalePoint(point center, short scaleFactor, point target) {
+	target.x *= scaleFactor;
+	target.y *= scaleFactor;
+	return target;
+}
 //Memory Handlers
 void intSwap (int* a, int* b) {
 	int temp = *a;

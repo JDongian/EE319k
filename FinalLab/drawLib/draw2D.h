@@ -17,7 +17,6 @@ void drawPolygon(point*, int, unsigned char);   //Connect the dots.
 void drawFilledPolygon(point*, int, unsigned char); //Checks points in
                                                                                       //the fitting box for pairity.
 void drawCircle(point, int, unsigned char);
-point rotPoint(point, short, point); //Non-matrix implementation
 void drawPlayer(point, short, bool);    //At angle = 0, player faces to the right.
 void drawPlayerExhaust(point, short);   //Fun animation
 void drawRock(point, unsigned short, unsigned short);

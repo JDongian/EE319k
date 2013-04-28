@@ -107,19 +107,6 @@ void drawCircle(point center, int radius, unsigned char shade) {
 		drawPoint(makePoint(center.x - y, center.y - x), shade);
 	}
 }
-point rotPoint(point center, short dAngle, point myPoint) {
-	float angle; unsigned int magnitude;
-	angle = atan2Deg((myPoint.x-center.x), (myPoint.y-center.y));
-	magnitude = dist(center, myPoint);
-	angle -= dAngle;
-	return makePoint((center.x+(magnitude*sinDeg(angle))),
-									 (center.y-(magnitude*cosDeg(angle))));
-}
-point scalePoint(point center, float scaleFactor, point target) {
-	target.x *= scaleFactor;
-	target.y *= scaleFactor;
-	return target;
-}
 void drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];

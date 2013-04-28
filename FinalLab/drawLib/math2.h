@@ -37,6 +37,8 @@ unsigned int dist(point, point);
 int crossP(point, point);   //Cross product with respect to the origin
 bool isBetween(int, int, int);   //Endpoint inclusive bound check
 bool lineIntersect(point, point, point, point);   //**Reliable in case a is horizantal. **BUGGED:a1**
+point rotPoint(point, short, point); //Non-matrix implementation
+point scalePoint(point, short, point);
 //Memory handlers
 void intSwap (int*, int*);
 point makePoint(int, int);
