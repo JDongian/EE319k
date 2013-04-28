@@ -60,6 +60,12 @@ typedef struct bulletState {
 	agentStatus status;
 	short life;
 } bulletState;
+
+typedef struct exposionState {
+	point pos;
+	int lifetime;
+} explosionState;
+
 /*
 typedef struct starState {
 	point pos;
@@ -78,7 +84,7 @@ extern bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 extern agentState gUFOs[MAX_UFOS];
 extern agentState gSatellites[MAX_SATELLITES*3];
 //extern starState gStars[MAX_STARS];
-
+extern gOxplosions
 
 void gameInit(void); 	//Begin the game.
 void gameUpdate(void); 	//Begin the game.

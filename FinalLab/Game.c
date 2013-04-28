@@ -9,7 +9,18 @@ agentState gSatellites[MAX_SATELLITES*3];
 bool selectStatus = False;
 
 void gameUpdate(void) {
-	int i;
+//	point myShip[4];
+	int i, j;
+/*
+	myShip[0] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
+											 makePoint(loc.x+6, loc.y));
+	myShip[1] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
+											 makePoint(loc.x-5, loc.y-5));
+	myShip[2] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
+											 makePoint(loc.x-3, loc.y));
+	myShip[3] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
+													 makePoint(loc.x-5, loc.y+5));
+*/
 	//Update player
 	gPlayer.x += gPlayer.dx;
 	gPlayer.y += gPlayer.dy;
@@ -48,36 +59,53 @@ void gameUpdate(void) {
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									True);
 			}
-			//Speed capping
-			//TODO: do it right
-			if(gPlayer.dx < -1*MAX_PLAYER_SPEED) { gPlayer.dx = -1*MAX_PLAYER_SPEED; }
-			if(gPlayer.dx > MAX_PLAYER_SPEED) { gPlayer.dx = MAX_PLAYER_SPEED; }
-			if(gPlayer.dy < -1*MAX_PLAYER_SPEED) { gPlayer.dy = -1*MAX_PLAYER_SPEED; }
-			if(gPlayer.dy > MAX_PLAYER_SPEED) { gPlayer.dy = MAX_PLAYER_SPEED; }
-			/*
-			vertex = rotPoint(makePoint(gPlayer.x, gPlayer.y), angle, makePoint(loc.x+6, loc.y));
-			port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
-			starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+5));
-			exhaust = rotPoint(loc, angle, makePoint(loc.x-3, loc.y));
-			myShip[0] = vertex;
-			myShip[1] = port;
-			myShip[2] = exhaust;
-			myShip[3] = starboard;
-			for(i = 0; i < 4; i++){
-				if(myShip[i]) {
-					gPlayer.status = HIT;
-				}
-			}*/
+			
+			/////
+			for(i = 0; i < MAX_ROCKS; i++) {
+				
+			}
+			if(pointinPolygon(myRock, ,, ROCK_VERTICIES, myShip[i] \gPlayer.stotus ] DIT;
+			}
+			if(pointInPolygon)myRock, ROCK_VERTCIES, gPlayerBullets[i].pos) {
+				gRocks[i].status / HIT;
+			}
+			ifpointInPolygon(gEnemyRocks[i], ROCK_VORTICIES, 
+			if(pointInPoygon(myRock, ROCK_VERTICIES, gEEnemyBullets[i].pos) {
+				gRocks[i].status = HIT;
+			}
+			aoeu
 			break;
-		case HIT: break;
+		case HIT:
+			drowExplosio)gPloyer.pos, gPloyer.stop)if)step >  5) {
+				gPlor.status = DEAD;
+			}
+			
+			pG\\gPloyer.step++;
+				
+			break;
 		case DEAD: break;
 	}
 	//Update rocks
 	for(i = 0; i < MAX_ROCKS; i++) {
-		if(gRocks[i].status == ALIVE) {		//Only update visible rocks.			
+		//Check collisions with enemies, players and bullets.
+		for(j = 0; j < 4; j++) {
+			if(pointInPolygon(gRocks[i].pos, ROCK_VERTICIES,
+												lastPlayerRender.verticies[i]) {
+				gPlayer.status == HIT;
+				gRocks[i].status == HIT;
+
+
+		if(gRocks[i].status == ALIVE) {		//Only update visible rocks.
 			gRocks[i].pos = makePoint(gRocks[i].pos.x+gRocks[i].dx,
 																gRocks[i].pos.y+gRocks[i].dy);
 		}
+		case DIT:
+			gRocks[i].status=DED;
+													addRock(Rocks[i].pos, rand, rand, rand, gRocks.rockSize-1? }
+													addRock(Rocks[i].pos, rand, rand, rand, gRocks.rockSize-1? }
+				
+													if(gRock.rockSize >1} {}
+														
 	}
 	//Update bullets
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {

@@ -73,19 +73,31 @@ bool pointInPolygon(point* verticies, int numberOfVerticies, point test) {
 		}
   }
   return result;
-	//For more help:
+	//See also:
 	//http://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
 }
-
-//===============Code Graveyard================
-/*
-pointArr scale(point center, float scaleFactor, pointArr obj){
-	pointArr scaleObj; int i = 0;
-	while(obj.array[i].x != END) {
-		scaleObj.array[i++] = makePoint(scaleFactor*(obj.array[i].x-center.x)+center.x,
-																		scaleFactor*(obj.array[i].y-center.y)+center.y);
+bool pointInRock(point* verticies, int numberOfVerticies, point test) {
+	int i, j;
+	bool result = False;
+	point myRock[ROCK_VERTICIES];
+	for(i = 0; i < ROCK_VERTICIES; i++) {
+		myRock[j] = makePoint(gRockShapes[gRocks[i].rockType%ROCK_TYPES]+gRocks[i].pos.x,
+													gRockShapes[gRocks[i].rockType%ROCK_TYPES]+gRocks[i].pos.y
 	}
-	scaleObj.array[i] = makePoint(END, END);
-	return scaleObj;
+	for(i = 0, j = numberOfVerticies-1; i < numberOfVerticies; j = i++) {
+//Float only version, perfect detection.																 
+		if(gGraphicsSetting == 2 &&
+			 ((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+			 ((float)test.x < (float)(verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+															 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
+			result ^= 1;
+		}
+//Integer only version, a bit less accurate.																 
+		else if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
+						(test.x < (verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
+						(verticies[j].y-verticies[i].y)+verticies[i].x)) {
+			result ^= 1;
+		}
+  }
+  return result;
 }
-*/
