@@ -107,9 +107,10 @@ void drawCircle(point center, int radius, unsigned char shade) {
 		drawPoint(makePoint(center.x - y, center.y - x), shade);
 	}
 }
-void drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
+anPlayer drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];
+	anPlayer me; int i;
 	vertex = rotPoint(loc, angle, makePoint(loc.x+6, loc.y));
 	port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
 	starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+5));
@@ -129,6 +130,8 @@ void drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, playe
 		}
 		isExhaustOn ^= 1; //Flip the bit.
 	}
+	for(i = 0; i < 4; i++) { me.verticies[i] = myShip[i]; }
+	return me;
 }
 void drawPlayerExhaust(point loc, short angle) {
 	point innerVertex, outerVertex, port, starboard, exhaust;
@@ -154,26 +157,23 @@ void drawPlayerExhaust(point loc, short angle) {
 		drawLine(outerVertex, starboard, PLAYER_EXHAUST_SHADE);
 	}
 }
-void drawRock(point loc, unsigned short version, unsigned short size) {
-	point rocks[5][ROCK_VERTICIES] = {
-		{{0, 5},{4, 2},{4, -1},{1, -3},{-1, -1},{-3, -3},{-4, 0}},
-		{{0, 4},{2, 4},{4, 0},{2, -4},{-1, -5},{-3, -2},{-3, 3}},
-		{{-1, 4},{1, 4},{4, 1},{3, -4},{1, -2},{-3, -4},{-4, 1}},
-		{{-1, 5},{1, 3},{3, 5},{5, 1},{-1, -5},{-4, -3},{-4, 4}},
-		{{0, 5},{5, 1},{3, -5},{-1, -5},{-3, -3},{-6, -2},{-2, 1}}
-	};
+rockagon drawRock(point loc, unsigned short version, unsigned short size) {
 	point myRock[ROCK_VERTICIES]; int i = 0;
+	rockagon outRock;
 	version %= 5;
 	for(i = 0; i < ROCK_VERTICIES; i++) {
-		myRock[i] = makePoint(loc.x+size*rocks[version][i].x,
-													loc.y+size*rocks[version][i].y);
+		myRock[i] = makePoint(loc.x+size*rockShapes[version][i].x,
+													loc.y+size*rockShapes[version][i].y);
 	}
 	if(getSetting() >= 1) {
 		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	} else {
 		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	}
+	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
+	return outRock;
 }
+	
 void drawSprite(unsigned char sprite[], point pos,
 								unsigned int width, unsigned int height) {
 	int i,j;
@@ -186,7 +186,7 @@ void drawSprite(unsigned char sprite[], point pos,
 void drawBullet(point pos) {
 	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
 }
-void drawExplosion(point pos, char frame) {}
+void drawExplosion(point pos, short frame) {}
 void demo() {
 	point triangle[3];
 	point square[4];

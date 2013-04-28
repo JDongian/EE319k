@@ -6,24 +6,18 @@ bulletState gPlayerBullets[MAX_PLAYER_BULLETS];
 bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 agentState gUFOs[MAX_UFOS];
 agentState gSatellites[MAX_SATELLITES*3];
+explosionState gExplosions[MAX_EXPLOSIONS];
 bool selectStatus = False;
+anPlayer lastPlayerRender;
 
 void gameUpdate(void) {
 //	point myShip[4];
 	int i, j;
-/*
-	myShip[0] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
-											 makePoint(loc.x+6, loc.y));
-	myShip[1] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
-											 makePoint(loc.x-5, loc.y-5));
-	myShip[2] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
-											 makePoint(loc.x-3, loc.y));
-	myShip[3] = rotPoint(makePoint((int)gPlayer.x, (int)gPlayer.y), angle,
-													 makePoint(loc.x-5, loc.y+5));
-*/
 	//Update player
 	gPlayer.x += gPlayer.dx;
 	gPlayer.y += gPlayer.dy;
+	gPlayer.x = floatMod(gPlayer.x, 128);
+	gPlayer.y = floatMod(gPlayer.y, 96);
 	gPlayer.dx = (gPlayer.dx*SPEED_DECAY);
 	gPlayer.dy = (gPlayer.dy*SPEED_DECAY);
 	gPlayer.exhaustOn = False;
@@ -59,53 +53,74 @@ void gameUpdate(void) {
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									True);
 			}
-			
-			/////
-			for(i = 0; i < MAX_ROCKS; i++) {
-				
-			}
-			if(pointinPolygon(myRock, ,, ROCK_VERTICIES, myShip[i] \gPlayer.stotus ] DIT;
-			}
-			if(pointInPolygon)myRock, ROCK_VERTCIES, gPlayerBullets[i].pos) {
-				gRocks[i].status / HIT;
-			}
-			ifpointInPolygon(gEnemyRocks[i], ROCK_VORTICIES, 
-			if(pointInPoygon(myRock, ROCK_VERTICIES, gEEnemyBullets[i].pos) {
-				gRocks[i].status = HIT;
-			}
-			aoeu
 			break;
 		case HIT:
-			drowExplosio)gPloyer.pos, gPloyer.stop)if)step >  5) {
-				gPlor.status = DEAD;
-			}
-			
-			pG\\gPloyer.step++;
-				
+			addExplosion(makePoint(gPlayer.x, gPlayer.y), 8);
+			gPlayer.status = DEAD;
 			break;
-		case DEAD: break;
+		case DEAD:
+			break;
 	}
 	//Update rocks
 	for(i = 0; i < MAX_ROCKS; i++) {
-		//Check collisions with enemies, players and bullets.
-		for(j = 0; j < 4; j++) {
-			if(pointInPolygon(gRocks[i].pos, ROCK_VERTICIES,
-												lastPlayerRender.verticies[i]) {
-				gPlayer.status == HIT;
-				gRocks[i].status == HIT;
-
-
-		if(gRocks[i].status == ALIVE) {		//Only update visible rocks.
-			gRocks[i].pos = makePoint(gRocks[i].pos.x+gRocks[i].dx,
-																gRocks[i].pos.y+gRocks[i].dy);
+		switch(gRocks[i].status) {
+			case ALIVE:		//Only update visible rocks.
+				//Check collisions with enemies, players and bullets.
+				//Did it hit the player?
+				for(j = 0; j < 4; j++) {
+					if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
+																	 ((int)gRocks[i].pos.y)%96),
+												 gRocks[i].rockType,
+												 gRocks[i].rockSize,
+												 lastPlayerRender.verticies[j])) {
+						gPlayer.status = HIT;
+					}
+				}
+				//Did it hit a bullet?
+				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
+					if(gPlayerBullets[i].status == ALIVE) {
+						if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
+																		 ((int)gRocks[i].pos.y)%96),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gPlayerBullets[j].x)%128,
+																		 ((int)gPlayerBullets[j].y)%96))) {
+							gRocks[i].status = HIT;
+							gPlayerBullets[j].status = DEAD;
+						}
+					}
+				}
+				for(j = 0; j < MAX_ENEMY_BULLETS; j++) {
+					if(gEnemyBullets[i].status == ALIVE) {
+						if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
+																		 ((int)gRocks[i].pos.y)%96),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gEnemyBullets[j].x)%128,
+																		 ((int)gEnemyBullets[j].y)%96))) {
+							gRocks[i].status = HIT;
+							gEnemyBullets[j].status = DEAD;
+						}
+					}
+				}
+				//Update rock position
+				gRocks[i].pos = makePoint((gRocks[i].pos.x+gRocks[i].dx)%128,
+																	(gRocks[i].pos.y+gRocks[i].dy)%96);
+				break;
+			case HIT:
+				gRocks[i].status = DEAD;
+				if(gRocks[i].rockSize > 1) {
+					addRock(gRocks[i].pos,
+									randRange(-1,1), randRange(-1,1),
+									gRocks[i].rockSize-1);
+					addRock(gRocks[i].pos,
+									randRange(-1,1), randRange(-1,1),
+									gRocks[i].rockSize-1);
+				}
+				break;
+			case DEAD:
+				break;
 		}
-		case DIT:
-			gRocks[i].status=DED;
-													addRock(Rocks[i].pos, rand, rand, rand, gRocks.rockSize-1? }
-													addRock(Rocks[i].pos, rand, rand, rand, gRocks.rockSize-1? }
-				
-													if(gRock.rockSize >1} {}
-														
 	}
 	//Update bullets
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
@@ -138,7 +153,7 @@ void gameSet(short level) { //Gets the game ready for a new level.
 			gRocks[i].dy = randRange(-1, 1);
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, 0xF);
-			gRocks[i].rockSize = 2;//randRange(1,3);
+			gRocks[i].rockSize = 3;//randRange(1,3);
 			if(gRocks[i].dx-gRocks[i].dy == 0) {
 				gRocks[i].dx = randRange(1, 2);
 				gRocks[i].dy = randRange(abs(gRocks[i].dx)-2, 2-abs(gRocks[i].dx));
@@ -165,6 +180,7 @@ void gameInit(void) {
 	killRocks();
 	killBullets();
 	killEnemies();
+	killExplosions();
 }
 void centerPlayer()	{
 	//Set the player in the center.
@@ -218,6 +234,16 @@ void addBullet(point bulletPos, int dx, int dy, bool isAllied) {
 		}
 	}
 }
+void addExplosion(point pos, short lifetime) {
+	int i;
+	for(i = 0; i < MAX_EXPLOSIONS; i++) {
+		if(gExplosions[i].status == DEAD) {
+			gExplosions[i].pos = pos;
+			gExplosions[i].status = ALIVE;
+			gExplosions[i].lifetime = lifetime;
+		}
+	}
+}
 //Clearing functions (clear globals)
 void killRocks(void) {
 	int i;
@@ -251,6 +277,15 @@ void killBullets(void) {
 		gEnemyBullets[i].life = BULLET_LIFETICKS;
 	}
 }
+void killExplosions(void) {
+	int i;
+	//Set all Explosions to dead.
+	for(i = 0; i < MAX_EXPLOSIONS; i++) {
+		gExplosions[i].pos = makePoint(0,0);
+		gExplosions[i].status = DEAD;
+		gExplosions[i].lifetime = 0;
+	}
+}
 void killEnemies(void) {
 	int i;
 	//Set all UFOs to dead.
@@ -270,5 +305,3 @@ void killEnemies(void) {
 		gSatellites[i].type = SATELLITE;
 	}
 }
-
-

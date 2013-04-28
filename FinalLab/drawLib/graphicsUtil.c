@@ -6,6 +6,13 @@ unsigned char gGraphicsSetting;
 //0 = line
 //1 = shaded
 //2 = best shaded
+point rockShapes[5][ROCK_VERTICIES] = {
+	{{0, 5},{4, 2},{4, -1},{1, -3},{-1, -1},{-3, -3},{-4, 0}},
+	{{0, 4},{2, 4},{4, 0},{2, -4},{-1, -5},{-3, -2},{-3, 3}},
+	{{-1, 4},{1, 4},{4, 1},{3, -4},{1, -2},{-3, -4},{-4, 1}},
+	{{-1, 5},{1, 3},{3, 5},{5, 1},{-1, -5},{-4, -3},{-4, 4}},
+	{{0, 5},{5, 1},{3, -5},{-1, -5},{-3, -3},{-6, -2},{-2, 1}}
+};
 
 //Buffer interface functions
 unsigned char* getBuffer(void) { return frameBuffer; }
@@ -76,28 +83,17 @@ bool pointInPolygon(point* verticies, int numberOfVerticies, point test) {
 	//See also:
 	//http://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
 }
-bool pointInRock(point* verticies, int numberOfVerticies, point test) {
-	int i, j;
-	bool result = False;
+bool pointInRock(point pos,
+								 unsigned char type, unsigned char size,
+								 point test) {
+	int i;
 	point myRock[ROCK_VERTICIES];
+	pos = makePoint((pos.x%128)+64, (pos.y%96)+64);
+	test = makePoint((test.x%128)+64, (test.y%96)+64);
 	for(i = 0; i < ROCK_VERTICIES; i++) {
-		myRock[j] = makePoint(gRockShapes[gRocks[i].rockType%ROCK_TYPES]+gRocks[i].pos.x,
-													gRockShapes[gRocks[i].rockType%ROCK_TYPES]+gRocks[i].pos.y
+		myRock[i] = scalePoint(pos, size,
+													 makePoint(rockShapes[type%ROCK_TYPES][i].x+pos.x,
+																		 rockShapes[type%ROCK_TYPES][i].y+pos.y));
 	}
-	for(i = 0, j = numberOfVerticies-1; i < numberOfVerticies; j = i++) {
-//Float only version, perfect detection.																 
-		if(gGraphicsSetting == 2 &&
-			 ((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
-			 ((float)test.x < (float)(verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
-															 (verticies[j].y-verticies[i].y)+verticies[i].x)) {
-			result ^= 1;
-		}
-//Integer only version, a bit less accurate.																 
-		else if(((verticies[i].y > test.y) != (verticies[j].y > test.y)) &&
-						(test.x < (verticies[j].x-verticies[i].x)*(test.y-verticies[i].y) /
-						(verticies[j].y-verticies[i].y)+verticies[i].x)) {
-			result ^= 1;
-		}
-  }
-  return result;
+	return pointInPolygon(myRock, ROCK_VERTICIES, test);
 }

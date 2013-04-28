@@ -33,6 +33,7 @@ extern int rseed;
 int abs(int);
 int fastSqrt(int);		//Returns integral part of the sqrt.
 unsigned int dist(point, point);
+float floatMod(float, int);
 //Vector functions
 int crossP(point, point);   //Cross product with respect to the origin
 bool isBetween(int, int, int);   //Endpoint inclusive bound check

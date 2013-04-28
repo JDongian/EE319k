@@ -1,6 +1,26 @@
 #include "hw_types.h"
 #include "math2.h"
 
+#ifndef __OBJSTATS__
+#define __OBJSTATS__
+#define PLAYER_SHADE						0x8
+#define PLAYER_EXHAUST_SHADE		0xC
+#define PLAYER_EXHAUST_SHADE2		0xA
+#define ROCK_TYPES							0x5
+#define ROCK_SHADE							0x6
+#define ROCK_VERTICIES					7
+
+typedef struct anPlayer {
+	point verticies[4];
+} anPlayer;
+
+typedef struct rockagon {
+	point verticies[ROCK_VERTICIES];
+} rockagon;
+
+#endif //__OBJSTATS__
+
+extern point rockShapes[5][ROCK_VERTICIES];
 
 //Buffer interface functions
 unsigned char* getBuffer(void);   //Returns the current frameBuffer.
@@ -16,3 +36,5 @@ unsigned char getSetting(void);
 //Collision detect helpers
 box getBox(point*, int);  //Finds the minimum fitting box.
 bool pointInPolygon(point*, int, point);   //Uses a ray-pairity implemetation.
+bool pointInRock(point, unsigned char, unsigned char, point);
+

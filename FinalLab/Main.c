@@ -40,17 +40,16 @@ int main(void){
 			//Redraw the screen from scratch.
 			clearBuffer();
 			//Draw the player.
-			gameUpdate();
-			///*
-			drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y),
-													 gPlayer.angle, gPlayer.exhaustOn);
-			///*
+			if(gPlayer.status == ALIVE) {
+				lastPlayerRender = 
+					drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y),
+										 gPlayer.angle, gPlayer.exhaustOn);
+			}
 			for(i = 0; i < MAX_ROCKS; i++) {
 				if(gRocks[i].status == ALIVE) {
 					drawRock(gRocks[i].pos, gRocks[i].rockType, gRocks[i].rockSize);
 				}
 			}
-			//*/
 			//Draw allied bullets.
 			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 				if(gPlayerBullets[i].status == ALIVE) {
@@ -63,7 +62,7 @@ int main(void){
 					drawBullet(makePoint(gEnemyBullets[i].x, gEnemyBullets[i].y));
 				}
 			}
-			//*/
+			gameUpdate();
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}
 	}

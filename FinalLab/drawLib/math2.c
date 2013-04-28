@@ -35,6 +35,11 @@ bool isBetween(int test, int range0, int range1) {//Endpoint inclusive bound che
 		return True;
 	}	return False;
 }
+float floatMod(float f, int m) {
+	while(f < 0) { f += m; }
+	while(f > m) { f -= m; }
+	return f;
+}
 //Vector functions
 int crossP(point v1, point v2) {		//Cross product with respect to the origin
 	short angle;
