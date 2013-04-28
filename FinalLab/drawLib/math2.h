@@ -27,6 +27,8 @@ typedef struct box {
 #include <math.h>
 #include "hw_types.h"
 
+extern int rseed;
+
 //Basic math
 int abs(int);
 int fastSqrt(int);		//Returns integral part of the sqrt.

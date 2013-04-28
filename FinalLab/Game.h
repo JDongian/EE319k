@@ -4,8 +4,9 @@
 
 #ifndef __GAMETYPES__
 #define __GAMETYPES__
-#define PLAYER_ACCEL						0.5
-#define PLAYER_TURN_RATE				10
+#define PLAYER_ACCEL						0.7
+#define PLAYER_TURN_RATE				14
+#define PLAYER_MAX_SPEED				4
 #define SPEED_DECAY							0.9
 #define BULLET_SPEED						3
 #define MAX_STARS								30
@@ -81,6 +82,9 @@ void gameInit(void); 	//Begin the game.
 void gameUpdate(void); 	//Begin the game.
 void gameSet(short);
 void addRock(point, int, int, unsigned char);
+void addBullet(point, int, int, bool);
+	//True = player bullet
+	//False = enemy bullet
 void centerPlayer(void);
 void killRocks(void);
 void killBullets(void);

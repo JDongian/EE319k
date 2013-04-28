@@ -15,16 +15,16 @@ agentState gSatellites[MAX_SATELLITES*3];
 
 void gameUpdate(void) {
 	int i;
+	//Update player
 	gPlayer.x += gPlayer.dx;
 	gPlayer.y += gPlayer.dy;
 	gPlayer.dx = (gPlayer.dx*SPEED_DECAY);
 	gPlayer.dy = (gPlayer.dy*SPEED_DECAY);
 	switch(gPlayer.status) {
-		point vertex, port, starboard, exhaust;
-		point myShip[4];
 		case ALIVE:
-			//Button movement input
-			if ((GPIO_PORTG_DATA_R&0xF8) == 0xF0) { //Up
+			////Button movement input
+			//Forward (up)
+			if ((GPIO_PORTG_DATA_R&0xF8) == 0xF0) {
 				/*if ((g_soundArray == 0) || (g_soundIndex > SND_MOVE_LENGTH/2)) {
 					g_soundArray = &g_soundMove;
 					g_soundIndex = 0;
@@ -33,16 +33,15 @@ void gameUpdate(void) {
 				gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
 				gPlayer.dy -= sinDeg(gPlayer.angle)*PLAYER_ACCEL;
 			}
-			if ((GPIO_PORTG_DATA_R&0x20) == 0) { //Left
-				gPlayer.angle += PLAYER_TURN_RATE;
-			}
-			if ((GPIO_PORTG_DATA_R&0x40) == 0) { //Right
-				gPlayer.angle -= PLAYER_TURN_RATE;
-			}
-			if(gPlayer.dx < -4) { gPlayer.dx = -4; }
-			if(gPlayer.dx > 4) { gPlayer.dx = 4; }
-			if(gPlayer.dy < -4) { gPlayer.dy = -4; }
-			if(gPlayer.dy > 4) { gPlayer.dy = 4; }
+			//Left
+			if ((GPIO_PORTG_DATA_R&0x20) == 0) { gPlayer.angle += PLAYER_TURN_RATE; }
+			//Right
+			if ((GPIO_PORTG_DATA_R&0x40) == 0) { gPlayer.angle -= PLAYER_TURN_RATE; }
+			
+			if(gPlayer.dx < -1*PLAYER_MAX_SPEED) { gPlayer.dx = -1*PLAYER_MAX_SPEED; }
+			if(gPlayer.dx > PLAYER_MAX_SPEED) { gPlayer.dx = PLAYER_MAX_SPEED; }
+			if(gPlayer.dy < -1*PLAYER_MAX_SPEED) { gPlayer.dy = -1*PLAYER_MAX_SPEED; }
+			if(gPlayer.dy > PLAYER_MAX_SPEED) { gPlayer.dy = PLAYER_MAX_SPEED; }
 			
 			if (HWREGBITW(&gFlags, FLAG_SELECT_BUTTON)) { //Shoot
 				for (i = 0; i < MAX_PLAYER_BULLETS; i++) {
@@ -78,38 +77,63 @@ void gameUpdate(void) {
 		case DEAD:
 			break;
 	}
+		
+	//Update rocks
+	for(i = 0; i < MAX_ROCKS; i++) {
+		if(gRocks[i].status == ALIVE) {		//Only update visible rocks.			
+			gRocks[i].pos = makePoint(gRocks[i].pos.x+gRocks[i].dx,
+																gRocks[i].pos.y+gRocks[i].dy);
+		}
+	}
 	HWREGBITW(&gFlags, FLAG_SELECT_BUTTON) = 0;
 }
-
 void gameSet(short level) { //Gets the game ready for a new level.
+	//TODO: Can be updated to use addRock
 	int i;
 	centerPlayer();
 	killBullets();
 	killEnemies();
 	if(level < 5) {
-//		gRocks[
+		for(i = 0; i < 4; i++) {
+			gRocks[i].pos = makePoint(randRange(-10, 10),randRange(-10, 10));//makePoint(, randRange(-20, 20)%96);
+			gRocks[i].dx = randRange(-1, 1);
+			gRocks[i].dy = randRange(abs(gRocks[i].dx)-1, 1-abs(gRocks[i].dx));
+			gRocks[i].status = ALIVE;
+			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockSize = 2;//randRange(1,3);
+			if(gRocks[i].dx-gRocks[i].dy == 0) {
+				gRocks[i].dx = randRange(1, 2);
+				gRocks[i].dy = randRange(abs(gRocks[i].dx)-2, 2-abs(gRocks[i].dx));
+			}
+		}
+	}
+	else if(level < 10) {
+		for(i = 0; i < level/2+3; i++) {
+			gRocks[i].pos = makePoint(randRange(-10, 10), randRange(-10, 10));
+			gRocks[i].dx = randRange(-4, 4);
+			gRocks[i].dy = randRange(abs(gRocks[i].dx)-4, 4-abs(gRocks[i].dx));
+			gRocks[i].status = ALIVE;
+			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockSize = randRange(1,3);
+			if(randRange(0, level) > 5) {
+				gRocks[i].rockSize = 3;
+			}
+		}
+	}
+	
 //				drawRock(makePoint((t+5)/3, -1*t+5), 1, 1);
 //			drawRock(makePoint(2*t-75, (t+15)/2), 2, 3);			
 //			drawRock(makePoint(t+5, t-25), 3, 2);
 //			drawRock(makePoint(t-25, t+5), 4, 1);
 //			drawRock(makePoint(-1*t+60, -1*t+65), 5, 3);
-	}
 }
 void gameInit(void) {
-	int i = 0;
 	centerPlayer();
 	killRocks();
 	killBullets();
 	killEnemies();
 }
-void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
-	int i;
-	for(i = 0; i < MAX_ROCKS; i++) {
-		if(gRocks[i].status == ALIVE) {
-		   
-		}
-	}
-}
+
 void centerPlayer()	{
 	//Set the player in the center.
 	gPlayer.x = 128/2;
@@ -120,6 +144,46 @@ void centerPlayer()	{
 	gPlayer.status = ALIVE;
 	gPlayer.step = 0;
 }
+//Adding functions
+
+void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
+	int i;
+	for(i = 0; i < MAX_ROCKS; i++) {
+		if(gRocks[i].status == DEAD) {
+			gRocks[i].pos = rockPos;
+			gRocks[i].dx = dx;
+			gRocks[i].dy = dy;
+			gRocks[i].status = ALIVE;
+			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockSize = rockSize;
+		}
+	}
+}
+void addBullet(point bulletPos, int dx, int dy, bool isAllied) {
+	int i;
+	if(isAllied) {
+		for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
+			if(gPlayerBullets[i].status == DEAD) {
+				gPlayerBullets[i].pos = bulletPos;
+				gPlayerBullets[i].dx = dx;
+				gPlayerBullets[i].dy = dy;
+				gPlayerBullets[i].status = ALIVE;
+				return;
+			}
+		}
+	} else {
+		for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
+			if(gEnemyBullets[i].status == DEAD) {
+				gEnemyBullets[i].pos = bulletPos;
+				gEnemyBullets[i].dx = dx;
+				gEnemyBullets[i].dy = dy;
+				gEnemyBullets[i].status = ALIVE;
+				return;
+			}
+		}
+	}
+}
+//Clearing functions
 void killRocks(void) {
 	int i;
 	//Set all rocks to dead.

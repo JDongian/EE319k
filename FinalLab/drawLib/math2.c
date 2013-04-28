@@ -84,8 +84,8 @@ void setSeed(int val) {
 	rseed = val;
 }
 int rand(int max) {
-	rseed = ((rseed*RAND_A+RAND_C)%RAND_M)%max;
-	return rseed;
+	rseed = ((rseed*RAND_A+RAND_C)%RAND_M);
+	return rseed%max;
 }
 int randRange(int min, int max) {
 	return rand(max-min+1)+min;

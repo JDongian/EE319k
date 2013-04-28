@@ -4,7 +4,8 @@ unsigned long gFlags;
 short gameLevel;
 
 int main(void){
-	int i = 0; int t = 8; int dt = 2;
+	int i = 0;
+	bool isLevelComplete;
 	PLL_Init();
 //	ADC_Init(2);
 	Sound_Init();
@@ -21,42 +22,32 @@ int main(void){
 	Output_Color(15);
 	SysTick_IntEnable();
 	gFlags = 0;
+//dont work right...	setSeed(11);
 	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
+	gameSet(1);
 	while(1) {
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == 0) {
+			//Check for level completion, aka all rocks and enemies are 
+			//TODO: enemies
+			for(i = 0; i < MAX_ROCKS; i++) {
+				if(gRocks[i].status == ALIVE) {
+					isLevelComplete = False;
+					break;
+				}
+			} if(i == MAX_ROCKS) {isLevelComplete = True; }
+			if(isLevelComplete) { gameSet(++gameLevel); }
 			clearBuffer();
 			//Draw the player.
 			gameUpdate();
 			drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y), gPlayer.angle);
 			for(i = 0; i < MAX_ROCKS; i++) {
-				//drawRock();
+				if(gRocks[i].status == ALIVE) {
+					drawRock(gRocks[i].pos, gRocks[i].rockType, gRocks[i].rockSize);
+				}
 			}
 			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {}
 			for(i = 0; i < MAX_ENEMY_BULLETS; i++) {}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			t = t+dt;
-		//	drawRect(makePoint(1, 1), makePoint(127-1, 95-1), 0x2);
-		//	drawRect(makePoint(0, 0), makePoint(127, 95), 0x1);
-			
-//			drawLine(makePoint(radius, radius), makePoint(127-radius, 95-radius), 0x2);
-//			drawCircle(makePoint(128/2, 96/2), t, 0x1);
-//			drawCircle(makePoint(128/2, 96/2), t+2, 0x2);
-
-			drawRock(makePoint((t+5)/3, -1*t+5), 1, 1);
-//			drawRock(makePoint(2*t-75, (t+15)/2), 2, 3);			
-//			drawRock(makePoint(t+5, t-25), 3, 2);
-//			drawRock(makePoint(t-25, t+5), 4, 1);
-//			drawRock(makePoint(-1*t+60, -1*t+65), 5, 3);
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = 1;
 		}
 	}
