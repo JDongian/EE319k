@@ -26,8 +26,11 @@ void gameUpdate(void) {
 					g_soundIndex = 0;
 					g_soundMax = SND_MOVE_LENGTH; 
 				}*/
-				gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
-				gPlayer.dy -= sinDeg(gPlayer.angle)*PLAYER_ACCEL;
+				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
+					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
+					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
+					gPlayer.dy -= sinDeg(gPlayer.angle)*PLAYER_ACCEL;
+				}
 				gPlayer.exhaustOn = True;
 			}
 			//Left
@@ -41,16 +44,16 @@ void gameUpdate(void) {
 			if((selectStatus == True) && ((GPIO_PORTG_DATA_R&0x80) != 0)) {
 				selectStatus = False;
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
-									(cosDeg(gPlayer.angle)*BULLET_SPEED),
-									-1*(sinDeg(gPlayer.angle)*BULLET_SPEED),
+									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
+									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									True);
 			}
 			//Speed capping
 			//TODO: do it right
-			if(gPlayer.dx < -1*PLAYER_MAX_SPEED) { gPlayer.dx = -1*PLAYER_MAX_SPEED; }
-			if(gPlayer.dx > PLAYER_MAX_SPEED) { gPlayer.dx = PLAYER_MAX_SPEED; }
-			if(gPlayer.dy < -1*PLAYER_MAX_SPEED) { gPlayer.dy = -1*PLAYER_MAX_SPEED; }
-			if(gPlayer.dy > PLAYER_MAX_SPEED) { gPlayer.dy = PLAYER_MAX_SPEED; }
+			if(gPlayer.dx < -1*MAX_PLAYER_SPEED) { gPlayer.dx = -1*MAX_PLAYER_SPEED; }
+			if(gPlayer.dx > MAX_PLAYER_SPEED) { gPlayer.dx = MAX_PLAYER_SPEED; }
+			if(gPlayer.dy < -1*MAX_PLAYER_SPEED) { gPlayer.dy = -1*MAX_PLAYER_SPEED; }
+			if(gPlayer.dy > MAX_PLAYER_SPEED) { gPlayer.dy = MAX_PLAYER_SPEED; }
 			/*
 			vertex = rotPoint(makePoint(gPlayer.x, gPlayer.y), angle, makePoint(loc.x+6, loc.y));
 			port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
