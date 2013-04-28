@@ -66,25 +66,25 @@ void gameUpdate(void) {
 		switch(gRocks[i].status) {
 			case ALIVE:		//Only update visible rocks.
 				//Check collisions with enemies, players and bullets.
-				//Did it hit the player?
+				//Player collision
 				for(j = 0; j < 4; j++) {
-					if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
-																	 ((int)gRocks[i].pos.y)%96),
+					if(pointInRock(makePoint(((int)gRocks[i].pos.x),
+																	 ((int)gRocks[i].pos.y)),
 												 gRocks[i].rockType,
 												 gRocks[i].rockSize,
 												 lastPlayerRender.verticies[j])) {
 						gPlayer.status = HIT;
 					}
 				}
-				//Did it hit a bullet?
+				//Bullet collision
 				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
 					if(gPlayerBullets[i].status == ALIVE) {
-						if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
-																		 ((int)gRocks[i].pos.y)%96),
+						if(pointInRock(makePoint(((int)gRocks[i].pos.x),
+																		 ((int)gRocks[i].pos.y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x)%128,
-																		 ((int)gPlayerBullets[j].y)%96))) {
+													 makePoint(((int)gPlayerBullets[j].x),
+																		 ((int)gPlayerBullets[j].y)))) {
 							gRocks[i].status = HIT;
 							gPlayerBullets[j].status = DEAD;
 						}
@@ -92,8 +92,8 @@ void gameUpdate(void) {
 				}
 				for(j = 0; j < MAX_ENEMY_BULLETS; j++) {
 					if(gEnemyBullets[i].status == ALIVE) {
-						if(pointInRock(makePoint(((int)gRocks[i].pos.x)%128,
-																		 ((int)gRocks[i].pos.y)%96),
+						if(pointInRock(makePoint(((int)gRocks[i].pos.x),
+																		 ((int)gRocks[i].pos.y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
 													 makePoint(((int)gEnemyBullets[j].x)%128,
@@ -111,10 +111,10 @@ void gameUpdate(void) {
 				gRocks[i].status = DEAD;
 				if(gRocks[i].rockSize > 1) {
 					addRock(gRocks[i].pos,
-									randRange(-1,1), randRange(-1,1),
+									randRange(-1,0), randRange(-1,1),
 									gRocks[i].rockSize-1);
 					addRock(gRocks[i].pos,
-									randRange(-1,1), randRange(-1,1),
+									randRange(0,1), randRange(-1,1),
 									gRocks[i].rockSize-1);
 				}
 				break;

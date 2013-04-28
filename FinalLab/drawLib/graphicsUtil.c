@@ -88,12 +88,11 @@ bool pointInRock(point pos,
 								 point test) {
 	int i;
 	point myRock[ROCK_VERTICIES];
-	pos = makePoint((pos.x%128)+64, (pos.y%96)+64);
-	test = makePoint((test.x%128)+64, (test.y%96)+64);
+	pos = makePoint((pos.x%128)+128, (pos.y%96)+128);
+	test = makePoint((test.x%128)+128, (test.y%96)+128);
 	for(i = 0; i < ROCK_VERTICIES; i++) {
-		myRock[i] = scalePoint(pos, size,
-													 makePoint(rockShapes[type%ROCK_TYPES][i].x+pos.x,
-																		 rockShapes[type%ROCK_TYPES][i].y+pos.y));
+		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
+													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
 	}
 	return pointInPolygon(myRock, ROCK_VERTICIES, test);
 }
