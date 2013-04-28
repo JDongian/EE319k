@@ -10,6 +10,8 @@
 
 #ifndef __NOTES__
 #define __NOTES__
+
+#define GPIO_PORTG2             (*((volatile unsigned long *)0x40026010))
 //Notes
 #define Off         0		
 #define As2					117
@@ -64,4 +66,4 @@ void Sound_Play(unsigned short);		//Output to the DAC based on given frequency.
 void Sound_Play_Note(note);
 void Sound_Play_Song(note []);	//Plays a song that is ended by a note of time 0.
 void Sound_Song(void);	//Plays a song that is ended by a note of time 0.
-
+void Sound_Update(void);

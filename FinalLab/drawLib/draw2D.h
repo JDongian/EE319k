@@ -12,7 +12,8 @@ void drawPolygon(point*, int, unsigned char);   //Connect the dots.
 void drawFilledPolygon(point*, int, unsigned char); //Checks points in
                                                                                       //the fitting box for pairity.
 void drawCircle(point, int, unsigned char);
-anPlayer drawPlayer(point, short, bool);    //At angle = 0, player faces to the right.
+anPlayer drawPlayer(point, short, bool); //At angle = 0, player faces to the right.
+void drawBoom(point loc, short scale);
 void drawPlayerExhaust(point, short);   //Fun animation
 rockagon drawRock(point, unsigned short, unsigned short);
 void drawSprite(unsigned char[], point,
