@@ -73,6 +73,8 @@ void gameUpdate(void) {
 			break;
 		case HIT:
 			addExplosion(makePoint(gPlayer.x, gPlayer.y), 4);
+			gPlayer.dx = 0;
+			gPlayer.dy = 0;
 			gPlayer.status = DEAD;
 			break;
 		case DEAD:
@@ -81,6 +83,38 @@ void gameUpdate(void) {
 				if(gExplosions[i].status == ALIVE) { break; }
 			}
 			return;
+	}
+	//Update bullets
+	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
+		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
+			case ALIVE:
+				if(gPlayerBullets[i].life++ > BULLET_LIFETICKS) {
+					gPlayerBullets[i].status = DEAD;
+					break;
+				}
+				gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
+				gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
+			case HIT:
+				break;
+			case DEAD:
+				break;
+		}
+	}
+	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
+		switch(gEnemyBullets[i].status) {		//Only update visible bullets.
+			case ALIVE:
+				if(gEnemyBullets[i].life++ > BULLET_LIFETICKS) {
+					gEnemyBullets[i].status = DEAD;
+					break;
+				}
+				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
+				gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
+				gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
+			case HIT:
+				break;
+			case DEAD:
+				break;
+		}
 	}
 	//Update rocks
 	for(i = 0; i < MAX_ROCKS; i++) {
@@ -108,25 +142,25 @@ void gameUpdate(void) {
 				//Bullet collision
 				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
 					if(gPlayerBullets[i].status == ALIVE) {
-						if(pointInRockBox(makePoint(((int)gRocks[i].x),
+						if(pointInRock(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
 													 makePoint(((int)gPlayerBullets[j].x+1),
 																		 ((int)gPlayerBullets[j].y+1))) ||
-							 pointInRockBox(makePoint(((int)gRocks[i].x),
+							 pointInRock(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
 													 makePoint(((int)gPlayerBullets[j].x+1),
 																		 ((int)gPlayerBullets[j].y-1))) ||
-							 pointInRockBox(makePoint(((int)gRocks[i].x),
+							 pointInRock(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
 													 makePoint(((int)gPlayerBullets[j].x-1),
 																		 ((int)gPlayerBullets[j].y+1))) ||
-							 pointInRockBox(makePoint(((int)gRocks[i].x),
+							 pointInRock(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
@@ -172,34 +206,13 @@ void gameUpdate(void) {
 				break;
 		}
 	}
-	//Update bullets
-	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
-		if(gPlayerBullets[i].status == ALIVE) {		//Only update visible bullets.
-			if(gPlayerBullets[i].life++ > BULLET_LIFETICKS) {
-				gPlayerBullets[i].status = DEAD;
-			}
-			gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
-			gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
-		}
-	}
-	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
-		if(gEnemyBullets[i].status == ALIVE) {		//Only update visible bullets.
-			if(gEnemyBullets[i].life++ > BULLET_LIFETICKS) {
-				gEnemyBullets[i].status = DEAD;
-				continue;
-			}
-			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
-			gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
-			gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
-			gEnemyBullets[i].life++;
-		}
-	}
 	//Update explosions
 	for(i = 0; i < MAX_EXPLOSIONS; i++) {
 		if(gExplosions[i].status == ALIVE) {
 			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
 			if(gExplosions[i].current++ > gExplosions[i].lifetime) {
 				gExplosions[i].status = DEAD;
+				continue;
 			}
 		}
 	}

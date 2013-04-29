@@ -134,6 +134,12 @@ bool pointInRockBox(point pos,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
 	}
 	myBox = getBox(myRock, ROCK_VERTICIES);
+	drawRect(makePoint(test.x-1, test.y-1),
+					 makePoint(test.x+1, test.y+1),
+					 0xF);
+	drawRect(makePoint(pos.x-1, pos.y-1),
+					 makePoint(pos.x+1, pos.y+1),
+					 0xF);
 	if(isBetween(test.x, myBox.topL.x, myBox.botR.x) &&
 		 isBetween(test.x, myBox.topL.y, myBox.botR.y)) {
 		return True;

@@ -36,7 +36,7 @@ int main(void){
 	while ((GPIO_PORTG_DATA_R & 0x80) == 0) { }
 	setSeed(NVIC_ST_CURRENT_R);
 	//Game set
-	setGraphics(1);//the lm3s can't handle more than 2 rocks at graphics level 3.
+	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
 	gameSet(1);
 	while(1) {
