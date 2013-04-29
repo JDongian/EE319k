@@ -9,7 +9,7 @@ extern unsigned long gSystemClock;
 
 extern unsigned long gFlags;
 #define FRAME_BUFFER_READY			0				//If 1, the frame buffer is ready to be output to the screen.
-//#define SHOOT_NOW								1				//Has shot a bullet
+#define LEVEL_COMPLETE					1				//Level complete? no rocks or enemies left
 
 extern unsigned char gGraphicsSetting;
 

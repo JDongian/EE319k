@@ -1,5 +1,6 @@
 //Basic util functions to aid graphics
 #include "graphicsUtil.h"
+#include "draw2D.h"
 
 unsigned char frameBuffer[64*96] = {0};
 unsigned char gGraphicsSetting;
@@ -88,7 +89,10 @@ bool pointInRock(point pos,
 								 unsigned char type, unsigned char size,
 								 point test) {
 	int i;
+	point hitBox[4];
 	point myRock[ROCK_VERTICIES];
+	type %= ROCK_TYPES;
+	//Avoid negative coordinates for simplicity.
 	pos = makePoint((pos.x%128)+128, (pos.y%96)+128);
 	test = makePoint((test.x%128)+128, (test.y%96)+128);
 	for(i = 0; i < ROCK_VERTICIES; i++) {
@@ -96,6 +100,26 @@ bool pointInRock(point pos,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
 	}
 	return pointInPolygon(myRock, ROCK_VERTICIES, test);
+	hitBox[0] = getBox(myRock, ROCK_VERTICIES).topL;
+	hitBox[1] = makePoint(getBox(myRock, ROCK_VERTICIES).botR.x,
+												getBox(myRock, ROCK_VERTICIES).topL.y);
+	hitBox[2] = getBox(myRock, ROCK_VERTICIES).botR;
+	hitBox[3] = makePoint(getBox(myRock, ROCK_VERTICIES).topL.x,
+												getBox(myRock, ROCK_VERTICIES).botR.y);
+	//DEBUG CODE
+	drawRect(hitBox[0], hitBox[2], 0x8);
+	
+	//return True;
+	return pointInPolygon(hitBox, 4, test);
+
+/*
+	//Begin some bad
+	if(isBetween(test.x, pos.x-0x10, pos.x+0x10) &&
+		 isBetween(test.y, pos.y-0x10, pos.y+0x10)) {
+			 return True;
+		 }
+		 return False;
+*/
 }
 
 

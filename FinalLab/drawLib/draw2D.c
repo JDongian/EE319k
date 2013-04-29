@@ -107,14 +107,14 @@ void drawCircle(point center, int radius, unsigned char shade) {
 		drawPoint(makePoint(center.x - y, center.y - x), shade);
 	}
 }
-anPlayer drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
+anPlayer drawPlayer(point pos, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];
 	anPlayer me; int i;
-	vertex = rotPoint(loc, angle, makePoint(loc.x+6, loc.y));
-	port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-5));
-	starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+5));
-	exhaust = rotPoint(loc, angle, makePoint(loc.x-3, loc.y));
+	vertex = rotPoint(pos, angle, makePoint(pos.x+6, pos.y));
+	port = rotPoint(pos, angle, makePoint(pos.x-5, pos.y-5));
+	starboard = rotPoint(pos, angle, makePoint(pos.x-5, pos.y+5));
+	exhaust = rotPoint(pos, angle, makePoint(pos.x-3, pos.y));
 	myShip[0] = vertex;
 	myShip[1] = port;
 	myShip[2] = exhaust;
@@ -126,30 +126,30 @@ anPlayer drawPlayer(point loc, short angle, bool doExhaust) {		//At angle = 0, p
 	}
 	if(doExhaust) {
 		if(isExhaustOn) {
-			drawPlayerExhaust(loc, angle);
+			drawPlayerExhaust(pos, angle);
 		}
 		isExhaustOn ^= 1; //Flip the bit.
 	}
 	for(i = 0; i < 4; i++) { me.verticies[i] = myShip[i]; }
 	return me;
 }
-void drawPlayerExhaust(point loc, short angle) {
+void drawPlayerExhaust(point pos, short angle) {
 	point innerVertex, outerVertex, port, starboard, exhaust;
 	point innerFire[4], outerFire[4];
-	outerVertex = rotPoint(loc, angle, makePoint(loc.x-7, loc.y));
-	innerVertex = rotPoint(loc, angle, makePoint(loc.x-5, loc.y));
-	port = rotPoint(loc, angle, makePoint(loc.x-5, loc.y-3));
-	starboard = rotPoint(loc, angle, makePoint(loc.x-5, loc.y+3));
-	exhaust = rotPoint(loc, angle, makePoint(loc.x-3, loc.y));
-	innerFire[0] = innerVertex;
-	innerFire[1] = port;
-	innerFire[2] = exhaust;
-	innerFire[3] = starboard;
+	outerVertex = rotPoint(pos, angle, makePoint(pos.x-7, pos.y));
+	port = rotPoint(pos, angle, makePoint(pos.x-5, pos.y-3));
+	starboard = rotPoint(pos, angle, makePoint(pos.x-5, pos.y+3));
+	exhaust = rotPoint(pos, angle, makePoint(pos.x-3, pos.y));
 	outerFire[0] = outerVertex;
 	outerFire[1] = port;
 	outerFire[2] = exhaust;
 	outerFire[3] = starboard;
 	if(getSetting() >= 1) {
+		innerVertex = rotPoint(pos, angle, makePoint(pos.x-5, pos.y));
+		innerFire[0] = innerVertex;
+		innerFire[1] = port;
+		innerFire[2] = exhaust;
+		innerFire[3] = starboard;
 		drawFilledPolygon(outerFire, 4, PLAYER_EXHAUST_SHADE2);
 		drawFilledPolygon(innerFire, 4, PLAYER_EXHAUST_SHADE);
 	} else {
@@ -157,53 +157,21 @@ void drawPlayerExhaust(point loc, short angle) {
 		drawLine(outerVertex, starboard, PLAYER_EXHAUST_SHADE);
 	}
 }
-void drawUFO(point loc, short scale){
-	point topL, topR, midTL, midTR, midBL, midBR, botL, botR;
-	point myUFO[8]; 
-	topL =	makePoint(loc.x-scale*2, loc.y-3*scale);
-	topR =  makePoint(loc.x+scale*2, loc.y-3*scale);
-	midTL=	makePoint(loc.x-scale*3, loc.y-1*scale);
-	midTR=  makePoint(loc.x+scale*3, loc.y-1*scale);
-	midBL=  makePoint(loc.x-scale*6, loc.y+1*scale);
-	midBR=  makePoint(loc.x+scale*6, loc.y+1*scale);
-	botL =  makePoint(loc.x-scale*4, loc.y+3*scale);
-	botR =  makePoint(loc.x+scale*4, loc.y+3*scale);
-	myUFO[0] = topL;
-	myUFO[1] = topR;
-	myUFO[2] = midTR;
-	myUFO[3] = midBR;
-	myUFO[4] = botR;
-	myUFO[5] = botL;
-	myUFO[6] = midBL;
-	myUFO[7] = midTL;
-	drawLine(makePoint(loc.x-scale*3, loc.y-1*scale),makePoint(loc.x+scale*3, loc.y-1*scale),PLAYER_SHADE);
-	drawLine(makePoint(loc.x-scale*6, loc.y+1*scale),makePoint(loc.x+scale*6, loc.y+1*scale),PLAYER_SHADE);
-	
-	
-	
-	
-		if(getSetting() >= 1) {
-		drawFilledPolygon(myUFO, 8, PLAYER_SHADE);
-	} else {
-		drawPolygon(myUFO, 8, PLAYER_SHADE);
-	}
-}
-
-rockagon drawRock(point loc, unsigned short version, unsigned short size) {
+void drawRock(point pos, unsigned short version, unsigned short size) {
 	point myRock[ROCK_VERTICIES]; int i = 0;
-	rockagon outRock;
-	version %= 5;
+//	rockagon outRock;
+	version %= ROCK_TYPES;
 	for(i = 0; i < ROCK_VERTICIES; i++) {
-		myRock[i] = makePoint(loc.x+size*rockShapes[version][i].x,
-													loc.y+size*rockShapes[version][i].y);
+		myRock[i] = makePoint(pos.x+size*rockShapes[version][i].x,
+													pos.y+size*rockShapes[version][i].y);
 	}
 	if(getSetting() >= 1) {
 		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	} else {
 		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	}
-	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
-	return outRock;
+//	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
+//	return outRock;
 }
 void drawSprite(unsigned char sprite[], point pos,
 								unsigned int width, unsigned int height) {
@@ -214,21 +182,52 @@ void drawSprite(unsigned char sprite[], point pos,
 		}
 	}
 }
-
-void drawBoom(point loc, short scale){
-	point myBoom[8];
-	myBoom[0] = makePoint(loc.x, loc.y-1*scale);
-	myBoom[1] = makePoint(loc.x+scale*1, loc.y-1*scale);
-	myBoom[2] = makePoint(loc.x+scale*1, loc.y*scale);
-	myBoom[3] = makePoint(loc.x+scale*1, loc.y+1*scale);
-	myBoom[4] = makePoint(loc.x, loc.y+1*scale);
-	myBoom[5] = makePoint(loc.x-scale*1, loc.y+1*scale);
-	myBoom[6] = makePoint(loc.x-scale*1, loc.y*scale);
-	myBoom[7] = makePoint(loc.x-scale*1, loc.y-1*scale);
+void drawUFO(point pos, short scale){
+	point topL, topR, midTL, midTR, midBL, midBR, botL, botR;
+	point myUFO[8]; 
+	topL =	makePoint(pos.x-scale*2, pos.y-3*scale);
+	topR =  makePoint(pos.x+scale*2, pos.y-3*scale);
+	midTL=	makePoint(pos.x-scale*3, pos.y-1*scale);
+	midTR=  makePoint(pos.x+scale*3, pos.y-1*scale);
+	midBL=  makePoint(pos.x-scale*6, pos.y+1*scale);
+	midBR=  makePoint(pos.x+scale*6, pos.y+1*scale);
+	botL =  makePoint(pos.x-scale*4, pos.y+3*scale);
+	botR =  makePoint(pos.x+scale*4, pos.y+3*scale);
+	myUFO[0] = topL;
+	myUFO[1] = topR;
+	myUFO[2] = midTR;
+	myUFO[3] = midBR;
+	myUFO[4] = botR;
+	myUFO[5] = botL;
+	myUFO[6] = midBL;
+	myUFO[7] = midTL;
+	drawLine(makePoint(pos.x-scale*3, pos.y-1*scale),
+					 makePoint(pos.x+scale*3, pos.y-1*scale),	0xF);
+	drawLine(makePoint(pos.x-scale*6, pos.y+1*scale),
+					 makePoint(pos.x+scale*6, pos.y+1*scale), 0xF);
+	if(getSetting() >= 1) {
+		drawFilledPolygon(myUFO, 8, PLAYER_SHADE);
+	} else {
+		drawPolygon(myUFO, 8, PLAYER_SHADE);
+	}
 }
-
-
+void drawExplosion(point pos, short scale) {
+	int i;
+	point myExplosion[8];
+	scale = 5-scale;
+	myExplosion[0] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x2)*scale);
+	myExplosion[1] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y-randRange(0x0, 0x2)*scale);
+	myExplosion[2] = makePoint(pos.x+scale*randRange(0x1, 0x3), pos.y+randRange(0x1, 0x3)*scale);
+	myExplosion[3] = makePoint(pos.x+scale*randRange(0x1, 0x3), pos.y-randRange(0x1, 0x3)*scale);
+	myExplosion[4] = makePoint(pos.x-scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x2)*scale);
+	myExplosion[5] = makePoint(pos.x-scale*randRange(0x0, 0x2), pos.y-randRange(0x0, 0x2)*scale);
+	myExplosion[6] = makePoint(pos.x-scale*randRange(0x1, 0x3), pos.y+randRange(0x1, 0x3)*scale);
+	myExplosion[7] = makePoint(pos.x-scale*randRange(0x1, 0x3), pos.y-randRange(0x1, 0x3)*scale);
+	for(i = 0; i < 8; i++) {
+		drawLine(pos, myExplosion[i], randRange(0x8, 0xF));
+//		drawPoint(pos, randRange(0x8, 0xF)));
+	}
+}
 void drawBullet(point pos) {
 	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
 }
-void drawExplosion(point pos, short frame) {}

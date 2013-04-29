@@ -6,11 +6,11 @@
 #ifndef __GAMETYPES__
 #define __GAMETYPES__
 #define PLAYER_ACCEL						0.7
-#define PLAYER_TURN_RATE				17
-#define MAX_PLAYER_SPEED				4
+#define PLAYER_TURN_RATE				11
+#define MAX_PLAYER_SPEED				3
 #define SPEED_DECAY							0.9
-#define MAX_BULLET_SPEED				8
-#define BULLET_LIFETICKS				100
+#define MAX_BULLET_SPEED				6
+#define BULLET_LIFETICKS				10
 #define MAX_STARS								30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4
@@ -18,7 +18,6 @@
 #define	MAX_SATELLITES					2
 #define MAX_ROCKS								24
 #define MAX_EXPLOSIONS					8
-
 
 typedef enum {
 	PLAYER,
@@ -50,8 +49,8 @@ typedef struct playerState {
 } playerState;
 
 typedef struct rockState {
-	point pos;
-	int dx, dy;
+	float x, y;
+	float dx, dy;
 	agentStatus status;
 	unsigned char rockType;
 	unsigned char rockSize;
@@ -68,6 +67,7 @@ typedef struct explosionState {
 	point pos;
 	agentStatus status;
 	short lifetime;
+	short current;
 } explosionState;
 
 /*

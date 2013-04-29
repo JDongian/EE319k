@@ -3,15 +3,20 @@
 
 unsigned long gFlags;
 short gameLevel;
+unsigned char score[3]; 
 
 int main(void){
 	int i = 0;
-	bool isLevelComplete;
+	//Score set
+	score[0] = 48;
+	score[0] = 49;
+	score[0] = 0;
 	PLL_Init();
+	//Sound init
 	DAC_Init();
-//	ADC_Init(2);
-	Sound_Init();
-	
+	Timer0A_Init(Sound_Update, 125);
+	//Sound_Init();
+	//Sound_Song();
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
 												GPIOPinTypeGPIOInput(GPIO_PORTG_BASE,
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7));
@@ -20,31 +25,26 @@ int main(void){
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7),
 												GPIO_STRENGTH_2MA,
 												GPIO_PIN_TYPE_STD_WPU);
-	
-	SysTick_Init(2000000);
+	SysTick_Init(50000000/200);
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
+	//Clear flags
 	gFlags = 0;
-//dont work right...	setSeed(11);
+	//Math rand set
+	while ((GPIO_PORTG_DATA_R & 0x80) != 0) { }
+	while ((GPIO_PORTG_DATA_R & 0x80) == 0) { }
+	setSeed(NVIC_ST_CURRENT_R);
+	//Game set
 	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
-	Timer0A_Init(Sound_Update, 125);
-	Sound_Song();
-		
 	gameSet(1);
 	while(1) {
-
-		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == False) {/*
+		//Only draw to buffer when it has been output to the screen
+		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == False) {
 			//Check for level completion, aka all rocks and enemies are 
 			//TODO: enemies
-			for(i = 0; i < MAX_ROCKS; i++) {
-				if(gRocks[i].status == ALIVE) {
-					isLevelComplete = False;
-					break;
-				}
-			} if(i == MAX_ROCKS) {isLevelComplete = True; }
-			if(isLevelComplete) { gameSet(++gameLevel); }
+			if(HWREGBITW(&gFlags, LEVEL_COMPLETE) == True) { gameSet(++gameLevel); }
 			//Redraw the screen from scratch.
 			clearBuffer();
 			//Draw the player.
@@ -54,10 +54,10 @@ int main(void){
 			}
 			for(i = 0; i < MAX_ROCKS; i++) {
 				if(gRocks[i].status == ALIVE) {
-					drawRock(gRocks[i].pos, gRocks[i].rockType, gRocks[i].rockSize);
+					drawRock(makePoint(gRocks[i].x, gRocks[i].y),
+									 gRocks[i].rockType, gRocks[i].rockSize);
 				}
 			}
-			
 			//Draw allied bullets.
 			for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 				if(gPlayerBullets[i].status == ALIVE) {
@@ -70,10 +70,15 @@ int main(void){
 					drawBullet(makePoint(gEnemyBullets[i].x, gEnemyBullets[i].y));
 				}
 			}
-			*/
-			for(i = 0; i<10; i++){
-			drawBoom(makePoint(20,20),i);
+			//Draw explosions.
+			for(i = 0; i < MAX_EXPLOSIONS; i++) {
+				if(gExplosions[i].status == ALIVE) {
+					drawExplosion(gExplosions[i].pos, gExplosions[i].current);
 				}
+			}
+			
+			//
+			//drawString(score, makePoint(0,0));
 			gameUpdate();
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}
