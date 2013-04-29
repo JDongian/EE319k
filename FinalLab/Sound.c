@@ -51,7 +51,7 @@ void Sound_Update(void){
 	
 }
 
-void Sound_Song(void) {
+void Sound_Song(void) {/*
 	note GreenHillZone[] = {
 		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
 		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 
@@ -86,7 +86,7 @@ void Sound_Song(void) {
 		{Gs3, quaver+semiquaver}, {As3, semiquaver+quaver}, {G3, quaver}, {Off, quaver}, {G3, quaver}, {F3, quaver}, {D3, quaver},
 		{C3, semibreve},
 		{A4, 0}
-	};
+	};*/
 		note Pew[] = {
 		{840, 1}, {838, 1}, {836, 1}, {834, 1}, {832, 1}, 
 		{830, 1}, {828, 1}, {826, 1}, {824, 1}, {822, 1},	

@@ -107,10 +107,9 @@ void drawCircle(point center, int radius, unsigned char shade) {
 		drawPoint(makePoint(center.x - y, center.y - x), shade);
 	}
 }
-anPlayer drawPlayer(point pos, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
+void drawPlayer(point pos, short angle, bool doExhaust) {		//At angle = 0, player faces to the right.
 	point vertex, port, starboard, exhaust;
 	point myShip[4];
-	anPlayer me; int i;
 	vertex = rotPoint(pos, angle, makePoint(pos.x+6, pos.y));
 	port = rotPoint(pos, angle, makePoint(pos.x-5, pos.y-5));
 	starboard = rotPoint(pos, angle, makePoint(pos.x-5, pos.y+5));
@@ -130,8 +129,6 @@ anPlayer drawPlayer(point pos, short angle, bool doExhaust) {		//At angle = 0, p
 		}
 		isExhaustOn ^= 1; //Flip the bit.
 	}
-	for(i = 0; i < 4; i++) { me.verticies[i] = myShip[i]; }
-	return me;
 }
 void drawPlayerExhaust(point pos, short angle) {
 	point innerVertex, outerVertex, port, starboard, exhaust;
@@ -166,9 +163,9 @@ void drawRock(point pos, unsigned short version, unsigned short size) {
 													pos.y+size*rockShapes[version][i].y);
 	}
 	if(getSetting() >= 1) {
-		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
+		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE+randRange(0,1));
 	} else {
-		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
+		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE+randRange(0,1));
 	}
 //	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
 //	return outRock;
@@ -215,16 +212,16 @@ void drawExplosion(point pos, short scale) {
 	int i;
 	point myExplosion[8];
 	scale = 5-scale;
-	myExplosion[0] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x2)*scale);
-	myExplosion[1] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y-randRange(0x0, 0x2)*scale);
-	myExplosion[2] = makePoint(pos.x+scale*randRange(0x1, 0x3), pos.y+randRange(0x1, 0x3)*scale);
-	myExplosion[3] = makePoint(pos.x+scale*randRange(0x1, 0x3), pos.y-randRange(0x1, 0x3)*scale);
+	myExplosion[0] = makePoint(pos.x+scale*randRange(0x0, 0x1), pos.y+randRange(0x0, 0x1)*scale);
+	myExplosion[1] = makePoint(pos.x+scale*randRange(0x0, 0x1), pos.y-randRange(0x0, 0x1)*scale);
+	myExplosion[2] = makePoint(pos.x+scale*randRange(0x1, 0x2), pos.y+randRange(0x1, 0x2)*scale);
+	myExplosion[3] = makePoint(pos.x+scale*randRange(0x1, 0x2), pos.y-randRange(0x1, 0x2)*scale);
 	myExplosion[4] = makePoint(pos.x-scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x2)*scale);
 	myExplosion[5] = makePoint(pos.x-scale*randRange(0x0, 0x2), pos.y-randRange(0x0, 0x2)*scale);
-	myExplosion[6] = makePoint(pos.x-scale*randRange(0x1, 0x3), pos.y+randRange(0x1, 0x3)*scale);
-	myExplosion[7] = makePoint(pos.x-scale*randRange(0x1, 0x3), pos.y-randRange(0x1, 0x3)*scale);
+	myExplosion[6] = makePoint(pos.x-scale*randRange(0x1, 0x2), pos.y+randRange(0x1, 0x2)*scale);
+	myExplosion[7] = makePoint(pos.x-scale*randRange(0x1, 0x2), pos.y-randRange(0x1, 0x2)*scale);
 	for(i = 0; i < 8; i++) {
-		drawLine(pos, myExplosion[i], randRange(0x8, 0xF));
+		drawLine(pos, myExplosion[i], randRange(0x4, 0xF));
 //		drawPoint(pos, randRange(0x8, 0xF)));
 	}
 }

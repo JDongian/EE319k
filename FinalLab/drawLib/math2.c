@@ -106,6 +106,7 @@ int rand(int max) {
 	return rseed%max;
 }
 int randRange(int min, int max) {
+	if(max < min) { intSwap(&min, &max); }
 	return rand(max-min+1)+min;
 }
 //Trig ******WARNING:SLOW******

@@ -8,9 +8,9 @@
 #define PLAYER_ACCEL						0.7
 #define PLAYER_TURN_RATE				11
 #define MAX_PLAYER_SPEED				3
-#define SPEED_DECAY							0.9
+#define SPEED_DECAY							0.92
 #define MAX_BULLET_SPEED				6
-#define BULLET_LIFETICKS				10
+#define BULLET_LIFETICKS				20
 #define MAX_STARS								30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4

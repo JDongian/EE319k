@@ -25,7 +25,7 @@ int main(void){
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7),
 												GPIO_STRENGTH_2MA,
 												GPIO_PIN_TYPE_STD_WPU);
-	SysTick_Init(50000000/200);
+	SysTick_Init(50000000/400);
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
@@ -36,7 +36,7 @@ int main(void){
 	while ((GPIO_PORTG_DATA_R & 0x80) == 0) { }
 	setSeed(NVIC_ST_CURRENT_R);
 	//Game set
-	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
+	setGraphics(1);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
 	gameSet(1);
 	while(1) {
