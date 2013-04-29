@@ -76,6 +76,7 @@ void gameUpdate(void) {
 						gPlayer.status = HIT;
 					}
 				}
+				/*
 				//Bullet collision
 				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
 					if(gPlayerBullets[i].status == ALIVE) {
@@ -103,6 +104,7 @@ void gameUpdate(void) {
 						}
 					}
 				}
+				*/
 				//Update rock position
 				gRocks[i].pos = makePoint((gRocks[i].pos.x+gRocks[i].dx)%128,
 																	(gRocks[i].pos.y+gRocks[i].dy)%96);

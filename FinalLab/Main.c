@@ -41,9 +41,8 @@ int main(void){
 			clearBuffer();
 			//Draw the player.
 			if(gPlayer.status == ALIVE) {
-				lastPlayerRender = 
-					drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y),
-										 gPlayer.angle, gPlayer.exhaustOn);
+				drawPlayer(makePoint((int)gPlayer.x, (int)gPlayer.y),
+									 gPlayer.angle, gPlayer.exhaustOn);
 			}
 			for(i = 0; i < MAX_ROCKS; i++) {
 				if(gRocks[i].status == ALIVE) {

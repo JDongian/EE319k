@@ -173,7 +173,6 @@ rockagon drawRock(point loc, unsigned short version, unsigned short size) {
 	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
 	return outRock;
 }
-	
 void drawSprite(unsigned char sprite[], point pos,
 								unsigned int width, unsigned int height) {
 	int i,j;
@@ -187,54 +186,3 @@ void drawBullet(point pos) {
 	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
 }
 void drawExplosion(point pos, short frame) {}
-void demo() {
-	point triangle[3];
-	point square[4];
-	point pentagon[5];
-	point hexagon[6];
-	
-	triangle[0] = makePoint(12, 75);
-	triangle[1] = makePoint(10, 70);
-	triangle[2] = makePoint(14, 70);
-	
-	square[0] = makePoint(100, 10);
-	square[1] = makePoint(103, 10);
-	square[2] = makePoint(103, 13);
-	square[3] = makePoint(100, 13);
-	
-	pentagon[0] = makePoint(15, 10);
-	pentagon[1] = makePoint(6, 19);
-	pentagon[2] = makePoint(10, 30);
-	pentagon[3] = makePoint(21, 30);
-	pentagon[4] = makePoint(25, 19);
-	
-	hexagon[0] = makePoint(80, 60);
-	hexagon[1] = makePoint(85, 40);
-	hexagon[5] = makePoint(60, 70);
-	hexagon[2] = makePoint(88, 70);
-	hexagon[4] = makePoint(80, 70);
-	hexagon[3] = makePoint(96, 82);
-	
-	drawPoint(makePoint(128/2, 96/2), 0x2);
-	drawRect(makePoint(2, 2), makePoint(128-3, 96-3), 0x2);
-	drawRect(makePoint(0, 0), makePoint(127, 95), 0x4);
-//	drawRect(makePoint(2, 2), makePoint(24, 10), 0x0);
-//	drawRect(makePoint(0, 0), makePoint(24, 10), 0x0);
-	drawCircle(makePoint(128/2, 96/2), 8, 0x2);
-	drawCircle(makePoint(128/2, 96/2), 10, 0x4);
-
-	drawPolygon(square, 4, 0x1);
-	drawFilledPolygon(square, 4, 0x1);
-	
-	drawPoint(makePoint(0x67,0x0D), 0x8);
-	
-	drawPolygon(triangle, 3, 0x1);
-	drawFilledPolygon(triangle, 3, 0x1);
-
-	drawPolygon(hexagon, 6, 0x1);
-	drawFilledPolygon(hexagon, 6, 0x1);
-
-	drawPolygon(pentagon, 5, 0x1);
-	drawFilledPolygon(pentagon, 5, 0x1);	
-}
-

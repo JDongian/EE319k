@@ -11,8 +11,7 @@ extern unsigned long gFlags;
 #define FRAME_BUFFER_READY			0				//If 1, the frame buffer is ready to be output to the screen.
 //#define SHOOT_NOW								1				//Has shot a bullet
 
-extern anPlayer lastPlayerRender;
-
+extern unsigned char gGraphicsSetting;
 
 #include "lm3s1968.h"
 #endif // __GLOBALS_H__

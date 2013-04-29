@@ -38,3 +38,5 @@ box getBox(point*, int);  //Finds the minimum fitting box.
 bool pointInPolygon(point*, int, point);   //Uses a ray-pairity implemetation.
 bool pointInRock(point, unsigned char, unsigned char, point);
 
+
+
