@@ -17,8 +17,8 @@ void drawCircle(point, int, unsigned char);
 anPlayer drawPlayer(point, short, bool);    //At angle = 0, player faces to the right.
 void drawPlayerExhaust(point, short);   //Fun animation
 rockagon drawRock(point, unsigned short, unsigned short);
+void drawExplosion(point, short);
 //Sprite draw
 void drawSprite(unsigned char[], point,
 								unsigned int, unsigned int);
 void drawBullet(point);
-void drawExplosion(point, short);

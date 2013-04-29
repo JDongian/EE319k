@@ -149,7 +149,7 @@ void gameSet(short level) { //Gets the game ready for a new level.
 	killEnemies();
 	if(level < 5) {
 		//TODO: implement float speed test
-		for(i = 0; i < 4; i++) {
+		for(i = 0; i < level; i++) {
 			gRocks[i].pos = makePoint(randRange(-10, 10),randRange(-10, 10));//makePoint(, randRange(-20, 20)%96);
 			gRocks[i].dx = randRange(-1, 1);
 			gRocks[i].dy = randRange(-1, 1);

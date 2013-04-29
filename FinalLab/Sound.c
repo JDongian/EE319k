@@ -1,4 +1,8 @@
+
 #include "Sound.h"
+#include "systick.h"
+#include "Timer.h"
+#include "DAC.h"
 
 unsigned int waveform[TABLE_SIZE];
 volatile int sampleIndex = 0;
@@ -19,7 +23,7 @@ void Sound_Play(unsigned short freq) {
 	} else {
 		unsigned long period = SYS_TIME_CONST/(TABLE_SIZE*freq);
 		sampleIndex = 0;
-		SysTickPeriodSet(period);
+		Timer0A_ChangePeriod(period);
 		play = True;
 	}
 }
@@ -28,7 +32,7 @@ void Sound_Play_Note(note n) {
 	double i;
 	if (n.frequency == 0) { Sound_Play(Off);
 	} else { Sound_Play(n.frequency); }
-	for (i = 0.0; i < n.time*200000/tempo; i++) {}
+	for (i = 0.0; i < 200000/tempo; i++) {}
 }
 
 void Sound_Play_Song(note song[]) {
@@ -37,9 +41,18 @@ void Sound_Play_Song(note song[]) {
 			Sound_Play_Note(song[i]);
 	}
 }
+void Sound_Update(void){
+	if(play){
+		DAC_Out(waveform[sampleIndex]);
+		sampleIndex++;
+		if (sampleIndex >= TABLE_SIZE) { sampleIndex = 0; }
+	}
+	GPIO_PORTG2 ^= 0x04;        // toggle PD0
+	
+}
 
-void Sound_Song(void) {/*
-	note GreenHills[] = {
+void Sound_Song(void) {
+	note GreenHillZone[] = {
 		{C5, quaver}, {A4, crotchet}, {C5, quaver}, 
 		{B4, crotchet}, {C5, quaver}, {B4, crotchet}, {G4, minim+quaver}, 
 		{A4, quaver}, {E5, quaver}, {D5, crotchet}, {C5, quaver},
@@ -59,7 +72,7 @@ void Sound_Song(void) {/*
 		{A4, crotchet}, {F4, crotchet}, {A4, quaver},
 		{G4, crotchet}, {A4, quaver}, {G4, crotchet},	{C4, minim+crotchet},
 		{A4, 0}
-	};*/
+	};
 	note GuilesTheme[] = {
 		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
 		{Ds4, quaver}, {Ds4, semiquaver}, {D4, semiquaver}, {Off, semiquaver}, {D4, semiquaver}, {Ds4, quaver+crotchet}, {D4, quaver},
@@ -74,7 +87,13 @@ void Sound_Song(void) {/*
 		{C3, semibreve},
 		{A4, 0}
 	};
-	Sound_Play_Song(GuilesTheme);
+		note Pew[] = {
+		{840, 1}, {838, 1}, {836, 1}, {834, 1}, {832, 1}, 
+		{830, 1}, {828, 1}, {826, 1}, {824, 1}, {822, 1},	
+		{810, 1}, {800, 1}, {790, 1}, {780, 1}, {770, 1},
+		{A4, 0}
+	
+	};
+	Sound_Play_Song(Pew);
 	Sound_Play(Off);
 }
-

@@ -6,7 +6,8 @@
 
 #include "SysTick.h"
 #include "SysTickInts.h"
-
+#include "Timer.h"
+#include "Sound.h"
 #include "rit128x96x4.h"
 #include "Output.h"
 #include "PLL.h"

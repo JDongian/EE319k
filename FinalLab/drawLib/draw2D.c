@@ -157,6 +157,38 @@ void drawPlayerExhaust(point loc, short angle) {
 		drawLine(outerVertex, starboard, PLAYER_EXHAUST_SHADE);
 	}
 }
+void drawUFO(point loc, short scale){
+	point topL, topR, midTL, midTR, midBL, midBR, botL, botR;
+	point myUFO[8]; 
+	topL =	makePoint(loc.x-scale*2, loc.y-3*scale);
+	topR =  makePoint(loc.x+scale*2, loc.y-3*scale);
+	midTL=	makePoint(loc.x-scale*3, loc.y-1*scale);
+	midTR=  makePoint(loc.x+scale*3, loc.y-1*scale);
+	midBL=  makePoint(loc.x-scale*6, loc.y+1*scale);
+	midBR=  makePoint(loc.x+scale*6, loc.y+1*scale);
+	botL =  makePoint(loc.x-scale*4, loc.y+3*scale);
+	botR =  makePoint(loc.x+scale*4, loc.y+3*scale);
+	myUFO[0] = topL;
+	myUFO[1] = topR;
+	myUFO[2] = midTR;
+	myUFO[3] = midBR;
+	myUFO[4] = botR;
+	myUFO[5] = botL;
+	myUFO[6] = midBL;
+	myUFO[7] = midTL;
+	drawLine(makePoint(loc.x-scale*3, loc.y-1*scale),makePoint(loc.x+scale*3, loc.y-1*scale),PLAYER_SHADE);
+	drawLine(makePoint(loc.x-scale*6, loc.y+1*scale),makePoint(loc.x+scale*6, loc.y+1*scale),PLAYER_SHADE);
+	
+	
+	
+	
+		if(getSetting() >= 1) {
+		drawFilledPolygon(myUFO, 8, PLAYER_SHADE);
+	} else {
+		drawPolygon(myUFO, 8, PLAYER_SHADE);
+	}
+}
+
 rockagon drawRock(point loc, unsigned short version, unsigned short size) {
 	point myRock[ROCK_VERTICIES]; int i = 0;
 	rockagon outRock;
@@ -182,6 +214,20 @@ void drawSprite(unsigned char sprite[], point pos,
 		}
 	}
 }
+
+void drawBoom(point loc, short scale){
+	point myBoom[8];
+	myBoom[0] = makePoint(loc.x, loc.y-1*scale);
+	myBoom[1] = makePoint(loc.x+scale*1, loc.y-1*scale);
+	myBoom[2] = makePoint(loc.x+scale*1, loc.y*scale);
+	myBoom[3] = makePoint(loc.x+scale*1, loc.y+1*scale);
+	myBoom[4] = makePoint(loc.x, loc.y+1*scale);
+	myBoom[5] = makePoint(loc.x-scale*1, loc.y+1*scale);
+	myBoom[6] = makePoint(loc.x-scale*1, loc.y*scale);
+	myBoom[7] = makePoint(loc.x-scale*1, loc.y-1*scale);
+}
+
+
 void drawBullet(point pos) {
 	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
 }
