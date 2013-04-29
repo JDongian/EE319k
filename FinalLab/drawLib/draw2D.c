@@ -62,7 +62,6 @@ void drawPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char shade) {
 	int x, y;
 	box myBox;
-	drawPolygon(verticies, numberOfVerticies, shade);
 	if(getSetting() == 0) { return; }
 	myBox = getBox(verticies, numberOfVerticies);
 	for(y = myBox.topL.y; y <= myBox.botR.y; y++){
@@ -72,7 +71,7 @@ void drawFilledPolygon(point* verticies, int numberOfVerticies, unsigned char sh
 			}
 		}
 	}
-	drawPolygon(verticies, numberOfVerticies, shade);
+	drawPolygon(verticies, numberOfVerticies, 0xF);
 }
 void drawCircle(point center, int radius, unsigned char shade) {
 	int f = 1 - radius;
@@ -163,7 +162,7 @@ void drawRock(point pos, unsigned short version, unsigned short size) {
 													pos.y+size*rockShapes[version][i].y);
 	}
 	if(getSetting() >= 1) {
-		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE+randRange(0,1));
+		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	} else {
 		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE+randRange(0,1));
 	}

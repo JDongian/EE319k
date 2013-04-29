@@ -93,27 +93,51 @@ bool pointInRock(point pos,
 	point myRock[ROCK_VERTICIES];
 	type %= ROCK_TYPES;
 	//Avoid negative coordinates for simplicity.
-	pos = makePoint((pos.x%128)+128, (pos.y%96)+128);
-	test = makePoint((test.x%128)+128, (test.y%96)+128);
+	pos = makePoint((pos.x%128)+128, (pos.y%96)+96);
+	test = makePoint((test.x%128)+128, (test.y%96)+96);
 	for(i = 0; i < ROCK_VERTICIES; i++) {
 		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
 	}
+
+	//DEBUG CODE
+	drawRect(getBox(myRock, ROCK_VERTICIES).topL,
+					 getBox(myRock, ROCK_VERTICIES).botR, 0xF);
+	drawPoint(pos, 0xF);
+	drawPoint(test, 0xF);
+
+	
 	return pointInPolygon(myRock, ROCK_VERTICIES, test);
 
-/*
+/*	
 	hitBox[0] = getBox(myRock, ROCK_VERTICIES).topL;
 	hitBox[1] = makePoint(getBox(myRock, ROCK_VERTICIES).botR.x,
 												getBox(myRock, ROCK_VERTICIES).topL.y);
 	hitBox[2] = getBox(myRock, ROCK_VERTICIES).botR;
 	hitBox[3] = makePoint(getBox(myRock, ROCK_VERTICIES).topL.x,
 												getBox(myRock, ROCK_VERTICIES).botR.y);
-	//DEBUG CODE
-	drawRect(hitBox[0], hitBox[2], 0x8);
-	
 	//return True;
 	return pointInPolygon(hitBox, 4, test);
 */
+}
+bool pointInRockBox(point pos,
+										unsigned char type, unsigned char size,
+										point test) {
+	int i; box myBox;
+	point myRock[ROCK_VERTICIES];
+	type %= ROCK_TYPES;
+	//Avoid negative coordinates for simplicity.
+	pos = makePoint((pos.x%128)+128, (pos.y%96)+96);
+	test = makePoint((test.x%128)+128, (test.y%96)+96);
+	for(i = 0; i < ROCK_VERTICIES; i++) {
+		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
+													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
+	}
+	myBox = getBox(myRock, ROCK_VERTICIES);
+	if(isBetween(test.x, myBox.topL.x, myBox.botR.x) &&
+		 isBetween(test.x, myBox.topL.y, myBox.botR.y)) {
+		return True;
+	} return False;
 }
 
 

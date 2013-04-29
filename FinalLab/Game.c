@@ -11,7 +11,7 @@ bool selectStatus = False;
 
 void gameUpdate(void) {
 	point vertex, port, starboard, exhaust, playerPos;
-	point playerShip[4];
+	point playerShip[5];
 	int i, j;
 	//Level defaults to finished, changed when rocks or enemies are alive.
 	HWREGBITW(&gFlags, LEVEL_COMPLETE) = True;
@@ -36,6 +36,7 @@ void gameUpdate(void) {
 	playerShip[1] = port;
 	playerShip[2] = exhaust;
 	playerShip[3] = starboard;
+	playerShip[4] = makePoint((int)gPlayer.x, (int)gPlayer.y);
 	switch(gPlayer.status) {
 		case ALIVE:
 			////Button movement input
@@ -95,7 +96,7 @@ void gameUpdate(void) {
 				gRocks[i].y = floatMod(gRocks[i].y+gRocks[i].dy, 96);
 				//Check collisions with enemies, players and bullets.
 				//Player collision
-				for(j = 0; j < 4; j++) {
+				for(j = 0; j < 5; j++) {
 					if(pointInRock(makePoint(((int)gRocks[i].x),
 																	 ((int)gRocks[i].y)),
 												 gRocks[i].rockType,
@@ -107,12 +108,30 @@ void gameUpdate(void) {
 				//Bullet collision
 				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
 					if(gPlayerBullets[i].status == ALIVE) {
-						if(pointInRock(makePoint(((int)gRocks[i].x),
+						if(pointInRockBox(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x),
-																		 ((int)gPlayerBullets[j].y)))) {
+													 makePoint(((int)gPlayerBullets[j].x+1),
+																		 ((int)gPlayerBullets[j].y+1))) ||
+							 pointInRockBox(makePoint(((int)gRocks[i].x),
+																		 ((int)gRocks[i].y)),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gPlayerBullets[j].x+1),
+																		 ((int)gPlayerBullets[j].y-1))) ||
+							 pointInRockBox(makePoint(((int)gRocks[i].x),
+																		 ((int)gRocks[i].y)),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gPlayerBullets[j].x-1),
+																		 ((int)gPlayerBullets[j].y+1))) ||
+							 pointInRockBox(makePoint(((int)gRocks[i].x),
+																		 ((int)gRocks[i].y)),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gPlayerBullets[j].x-1),
+																		 ((int)gPlayerBullets[j].y-1)))) {
 							gRocks[i].status = HIT;
 							addExplosion(makePoint(gPlayerBullets[j].x,
 																		 gPlayerBullets[j].y), 1);
