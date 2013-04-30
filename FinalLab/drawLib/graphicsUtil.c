@@ -99,13 +99,13 @@ bool pointInRock(point pos,
 		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
 	}
-
+/*
 	//DEBUG CODE
 	drawRect(getBox(myRock, ROCK_VERTICIES).topL,
 					 getBox(myRock, ROCK_VERTICIES).botR, 0xF);
 	drawPoint(pos, 0xF);
 	drawPoint(test, 0xF);
-
+*/
 	
 	return pointInPolygon(myRock, ROCK_VERTICIES, test);
 

@@ -70,16 +70,19 @@ void gameUpdate(void) {
 			}
 			break;
 		case HIT:
-			addExplosion(makePoint(gPlayer.x, gPlayer.y), 4);
+			gPlayer.status = DEAD;
+			addExplosion(makePoint(gPlayer.x, gPlayer.y), 12);
 			gPlayer.dx = 0;
 			gPlayer.dy = 0;
-			gPlayer.status = DEAD;
+			killBullets();
+			killRocks();
 			break;
 		case DEAD:
 			//Wait for explosions to stop, then stop updating the game.
 			for(i = 0; i < MAX_EXPLOSIONS; i++) {
 				if(gExplosions[i].status == ALIVE) { break; }
 			}
+			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
 			return;
 	}
 	//Update bullets
@@ -92,6 +95,7 @@ void gameUpdate(void) {
 				}
 				gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
 				gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
+				break;
 			case HIT:
 				break;
 			case DEAD:
@@ -108,6 +112,7 @@ void gameUpdate(void) {
 				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
 				gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
 				gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
+				break;
 			case HIT:
 				break;
 			case DEAD:
@@ -135,6 +140,7 @@ void gameUpdate(void) {
 												 gRocks[i].rockSize,
 												 playerShip[j])) {
 						gPlayer.status = HIT;
+						return;
 					}
 				}
 				//Bullet collision
@@ -144,34 +150,16 @@ void gameUpdate(void) {
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
 													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x+1),
-																		 ((int)gPlayerBullets[j].y+1))) ||
-							 pointInRock(makePoint(((int)gRocks[i].x),
-																		 ((int)gRocks[i].y)),
-													 gRocks[i].rockType,
-													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x+1),
-																		 ((int)gPlayerBullets[j].y-1))) ||
-							 pointInRock(makePoint(((int)gRocks[i].x),
-																		 ((int)gRocks[i].y)),
-													 gRocks[i].rockType,
-													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x-1),
-																		 ((int)gPlayerBullets[j].y+1))) ||
-							 pointInRock(makePoint(((int)gRocks[i].x),
-																		 ((int)gRocks[i].y)),
-													 gRocks[i].rockType,
-													 gRocks[i].rockSize,
-													 makePoint(((int)gPlayerBullets[j].x-1),
-																		 ((int)gPlayerBullets[j].y-1)))) {
+													 makePoint(((int)gPlayerBullets[j].x),
+																		 ((int)gPlayerBullets[j].y)))) {
 							score += 2;
 							addExplosion(makePoint(gPlayerBullets[j].x,
-																		 gPlayerBullets[j].y), 1);
+																		 gPlayerBullets[j].y), 2);
 							gRocks[i].status = HIT;
 							gPlayerBullets[j].status = DEAD;
 						}
 					}
-				}
+				}/*
 				for(j = 0; j < MAX_ENEMY_BULLETS; j++) {
 					if(gEnemyBullets[i].status == ALIVE) {
 						if(pointInRock(makePoint(((int)gRocks[i].x),
@@ -186,17 +174,17 @@ void gameUpdate(void) {
 							gEnemyBullets[j].status = DEAD;
 						}
 					}
-				}
+				}*/
 				if(gRocks[i].status == ALIVE) { break; }
 			case HIT:
 				if(gRocks[i].rockSize > 1) {
-					addRock(makePoint((int)gRocks[i].x+2, (int)gRocks[i].y+2),
-									randRange(gRocks[i].dx*48+16,0)/64.,
-									randRange(gRocks[i].dy*48+16,0)/64.,
+					addRock(makePoint((int)gRocks[i].x+8, (int)gRocks[i].y+8),
+									randRange(gRocks[i].dx*-48-16, gRocks[i].dx*48+16)/64.,
+									randRange(gRocks[i].dy*-48-16, gRocks[i].dy*48+16)/64.,
 									gRocks[i].rockSize-1);
-					addRock(makePoint((int)gRocks[i].x-2, (int)gRocks[i].y-2),
-									randRange(gRocks[i].dx*48+16,0)/64.,
-									randRange(gRocks[i].dy*48+16,0)/64.,
+					addRock(makePoint((int)gRocks[i].x-8, (int)gRocks[i].y-8),
+									randRange(gRocks[i].dx*-48-16, gRocks[i].dx*48+16)/64.,
+									randRange(gRocks[i].dy*-48-16, gRocks[i].dy*48+16)/64.,
 									gRocks[i].rockSize-1);
 				}
 				gRocks[i].status = DEAD;
@@ -219,22 +207,19 @@ void gameUpdate(void) {
 void gameSet(short level) { //Gets the game ready for a new level.
 	//TODO: Can be updated to use addRock
 	int i;
-	centerPlayer();
-	killBullets();
-	killEnemies();
-	killExplosions();
+	gameInit();
 	if(level < 5) {
-		for(i = 0; i < level; i++) {
+		for(i = 0; i < level/2+3; i++) {
 			gRocks[i].x = randRange(-10, 10);
 			gRocks[i].y = randRange(-10, 10);
-			gRocks[i].dx = randRange(-64, 64)/64.;
-			gRocks[i].dy = randRange(-64, 64)/64.;
+			gRocks[i].dx = randRange(-64, 64)/80.;
+			gRocks[i].dy = randRange(-64, 64)/80.;
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, 0xF);
-			gRocks[i].rockSize = 3;//randRange(1,3);
+			gRocks[i].rockSize = randRange(1,3);
 			if(abs(gRocks[i].dx)-abs(gRocks[i].dy) < 1) {
-				gRocks[i].dx = randRange(10, 20)/20.;
-				gRocks[i].dy = randRange(10, 20)/20.;
+				gRocks[i].dx = randRange(16, 64)/80.;
+				gRocks[i].dy = randRange(16, 64)/80.;
 			}
 		}
 	}
@@ -246,13 +231,12 @@ void gameSet(short level) { //Gets the game ready for a new level.
 			gRocks[i].dy = randRange(abs(gRocks[i].dx)-1, 1-abs(gRocks[i].dx));
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, 0xF);
-			gRocks[i].rockSize = randRange(1,3);
+			gRocks[i].rockSize = randRange(2,3);
 			if(randRange(0, level) > 5) {
 				gRocks[i].rockSize = 3;
 			}
 		}
 	}
-	//DEBUG:addBullet(makePoint(128/2, 96/2), 2, 2, True);
 }
 void gameInit(void) {
 	centerPlayer();

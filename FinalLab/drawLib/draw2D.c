@@ -312,9 +312,9 @@ void drawUFO(point pos, short scale){
 void drawExplosion(point pos, short scale) {
 	int i;
 	point myExplosion[8];
-	scale = 5-scale;
-	myExplosion[0] = makePoint(pos.x+scale*randRange(0x0, 0x1), pos.y+randRange(0x0, 0x1)*scale);
-	myExplosion[1] = makePoint(pos.x+scale*randRange(0x0, 0x1), pos.y-randRange(0x0, 0x1)*scale);
+	scale += randRange(0,2);
+	myExplosion[0] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x1)*scale);
+	myExplosion[1] = makePoint(pos.x+scale*randRange(0x0, 0x2), pos.y-randRange(0x0, 0x1)*scale);
 	myExplosion[2] = makePoint(pos.x+scale*randRange(0x1, 0x2), pos.y+randRange(0x1, 0x2)*scale);
 	myExplosion[3] = makePoint(pos.x+scale*randRange(0x1, 0x2), pos.y-randRange(0x1, 0x2)*scale);
 	myExplosion[4] = makePoint(pos.x-scale*randRange(0x0, 0x2), pos.y+randRange(0x0, 0x2)*scale);
