@@ -178,13 +178,13 @@ void gameUpdate(void) {
 				if(gRocks[i].status == ALIVE) { break; }
 			case HIT:
 				if(gRocks[i].rockSize > 1) {
-					addRock(makePoint((int)gRocks[i].x+8, (int)gRocks[i].y+8),
-									randRange(gRocks[i].dx*-48-16, gRocks[i].dx*48+16)/64.,
-									randRange(gRocks[i].dy*-48-16, gRocks[i].dy*48+16)/64.,
+					addRock(makePoint((int)gRocks[i].x+1, (int)gRocks[i].y+1),
+									randRange(-64, -24)/64.,
+									randRange(-64, -24)/64.,
 									gRocks[i].rockSize-1);
-					addRock(makePoint((int)gRocks[i].x-8, (int)gRocks[i].y-8),
-									randRange(gRocks[i].dx*-48-16, gRocks[i].dx*48+16)/64.,
-									randRange(gRocks[i].dy*-48-16, gRocks[i].dy*48+16)/64.,
+					addRock(makePoint((int)gRocks[i].x-1, (int)gRocks[i].y-1),
+									randRange(64, 24)/64.,
+									randRange(64, 24)/64.,
 									gRocks[i].rockSize-1);
 				}
 				gRocks[i].status = DEAD;
@@ -210,13 +210,13 @@ void gameSet(short level) { //Gets the game ready for a new level.
 	gameInit();
 	if(level < 5) {
 		for(i = 0; i < level/2+3; i++) {
-			gRocks[i].x = randRange(-10, 10);
-			gRocks[i].y = randRange(-10, 10);
+			gRocks[i].x = randRange(-8, 8);
+			gRocks[i].y = randRange(-8, 8);
 			gRocks[i].dx = randRange(-64, 64)/80.;
 			gRocks[i].dy = randRange(-64, 64)/80.;
 			gRocks[i].status = ALIVE;
 			gRocks[i].rockType = randRange(0, ROCK_TYPES-1);
-			gRocks[i].rockSize = randRange(1,3);
+			gRocks[i].rockSize = 2;
 			if(abs(gRocks[i].dx)-abs(gRocks[i].dy) < 1) {
 				gRocks[i].dx = randRange(16, 64)/80.;
 				gRocks[i].dy = randRange(16, 64)/80.;
