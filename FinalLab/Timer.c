@@ -74,7 +74,6 @@ void Timer0A_Init(void(*task)(void), unsigned short period){
   NVIC_PRI4_R = (NVIC_PRI4_R&0x00FFFFFF)|0x40000000; // 8) priority 2
   NVIC_EN0_R |= NVIC_EN0_INT19;    // 9) enable interrupt 19 in NVIC
   TIMER0_CTL_R |= 0x00000001;      // 10) enable timer0A
-  EnableInterrupts();
 }
 void Timer0A_ChangePeriod(unsigned short period){
 	TIMER0_CTL_R &= ~0x00000001;     // 1) disable timer0A during setup

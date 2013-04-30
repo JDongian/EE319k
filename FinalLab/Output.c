@@ -164,7 +164,7 @@ int ferror(FILE *f){
 // Output: none
 void Output_Init(void){
   int i, j;
-  RIT128x96x4Init(1000000);   // initialize OLED
+  RIT128x96x4Init(5000000);   // initialize OLED
   for(i=0; i<TOTALCHARROWS; i=i+1){
     for(j=0; j<TOTALCHARCOLUMNS; j=j+1){
       CharBuffer[i][j] = 0;   // clear screen contents

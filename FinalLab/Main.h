@@ -12,7 +12,6 @@
 #include "Output.h"
 #include "PLL.h"
 #include "DAC.h"
-#include "Sound.h"
 
 #include "driverlib/adc.h"
 #include "driverlib/gpio.h"

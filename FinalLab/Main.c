@@ -12,7 +12,7 @@ int main(void){
 	PLL_Init();
 	//Sound init
 	DAC_Init();
-	Timer0A_Init(Sound_Update, 125);
+	Timer0A_Init(Sound_Update, 1000000/11025);
 	//Sound_Init();
 	//Sound_Song();
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
@@ -27,6 +27,7 @@ int main(void){
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
+	EnableInterrupts();
 	//Clear flags
 	gFlags = 0;
 	//Math rand set

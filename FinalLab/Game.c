@@ -42,11 +42,6 @@ void gameUpdate(void) {
 			////Button movement input
 			//Forward (up)
 			if ((GPIO_PORTG_DATA_R&0x08) == 0) {
-				/*if ((g_soundArray == 0) || (g_soundIndex > SND_MOVE_LENGTH/2)) {
-					g_soundArray = &g_soundMove;
-					g_soundIndex = 0;
-					g_soundMax = SND_MOVE_LENGTH; 
-				}*/
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -65,6 +60,9 @@ void gameUpdate(void) {
 			//Positive edge
 			if((selectStatus == False) && ((GPIO_PORTG_DATA_R&0x80) == 0)) {
 				selectStatus = True;
+				gSoundArray = &gSoundBullet;
+				gSoundIndex = 0;
+				gSoundMaxLength = SND_BULLET_LENGTH;
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
