@@ -230,7 +230,7 @@ void gameSet(short level) { //Gets the game ready for a new level.
 			gRocks[i].dx = randRange(-1, 1);
 			gRocks[i].dy = randRange(abs(gRocks[i].dx)-1, 1-abs(gRocks[i].dx));
 			gRocks[i].status = ALIVE;
-			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockType = randRange(0, ROCK_TYPES-1);
 			gRocks[i].rockSize = randRange(2,3);
 			if(randRange(0, level) > 5) {
 				gRocks[i].rockSize = 3;
@@ -265,7 +265,7 @@ void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
 			gRocks[i].dx = dx;
 			gRocks[i].dy = dy;
 			gRocks[i].status = ALIVE;
-			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockType = randRange(0, ROCK_TYPES-1);
 			gRocks[i].rockSize = rockSize;
 			return;
 		}
