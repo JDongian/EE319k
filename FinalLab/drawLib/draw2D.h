@@ -22,4 +22,4 @@ void drawExplosion(point, short);
 void drawSprite(unsigned char[], point,
 								unsigned int, unsigned int);
 void drawBullet(point);
-void drawString(unsigned char*, point);
+void drawString(char*, point, unsigned char);

@@ -13,5 +13,7 @@ extern unsigned long gFlags;
 
 extern unsigned char gGraphicsSetting;
 
+extern int score;
+
 #include "lm3s1968.h"
 #endif // __GLOBALS_H__

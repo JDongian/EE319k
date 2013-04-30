@@ -166,9 +166,10 @@ void gameUpdate(void) {
 													 gRocks[i].rockSize,
 													 makePoint(((int)gPlayerBullets[j].x-1),
 																		 ((int)gPlayerBullets[j].y-1)))) {
-							gRocks[i].status = HIT;
+							score += 2;
 							addExplosion(makePoint(gPlayerBullets[j].x,
 																		 gPlayerBullets[j].y), 1);
+							gRocks[i].status = HIT;
 							gPlayerBullets[j].status = DEAD;
 						}
 					}

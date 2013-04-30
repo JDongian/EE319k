@@ -3,14 +3,12 @@
 
 unsigned long gFlags;
 short gameLevel;
-unsigned char score[3]; 
+int score;
 
 int main(void){
 	int i = 0;
 	//Score set
-	score[0] = 48;
-	score[0] = 49;
-	score[0] = 0;
+	score = 0;
 	PLL_Init();
 	//Sound init
 	DAC_Init();
