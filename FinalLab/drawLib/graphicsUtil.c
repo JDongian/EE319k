@@ -93,8 +93,8 @@ bool pointInRock(point pos,
 	point myRock[ROCK_VERTICIES];
 	type %= ROCK_TYPES;
 	//Avoid negative coordinates for simplicity.
-	pos = makePoint((pos.x%128)+128, (pos.y%96)+96);
-	test = makePoint((test.x%128)+128, (test.y%96)+96);
+	pos = makePoint((pos.x%128), (pos.y%96)+96);
+	test = makePoint((test.x%128), (test.y%96)+96);
 	for(i = 0; i < ROCK_VERTICIES; i++) {
 		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);

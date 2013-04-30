@@ -215,7 +215,7 @@ void gameSet(short level) { //Gets the game ready for a new level.
 			gRocks[i].dx = randRange(-64, 64)/80.;
 			gRocks[i].dy = randRange(-64, 64)/80.;
 			gRocks[i].status = ALIVE;
-			gRocks[i].rockType = randRange(0, 0xF);
+			gRocks[i].rockType = randRange(0, ROCK_TYPES-1);
 			gRocks[i].rockSize = randRange(1,3);
 			if(abs(gRocks[i].dx)-abs(gRocks[i].dy) < 1) {
 				gRocks[i].dx = randRange(16, 64)/80.;
@@ -318,11 +318,11 @@ void killRocks(void) {
 	for(i = 0; i < MAX_ROCKS; i++) {
 		gRocks[i].x = 0;
 		gRocks[i].y = 0;
-		gRocks[i].dx = randRange(-2, 2);
-		gRocks[i].dy = randRange(abs(gRocks[i].dx)-2, 2-abs(gRocks[i].dx));
+		gRocks[i].dx = 0;
+		gRocks[i].dy = 0;
 		gRocks[i].status = DEAD;
-		gRocks[i].rockType = randRange(0, 0xF);
-		gRocks[i].rockSize = randRange(1,3);
+		gRocks[i].rockType = 0;
+		gRocks[i].rockSize = 1;
 	}
 }
 void killBullets(void) {

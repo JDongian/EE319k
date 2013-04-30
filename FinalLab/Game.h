@@ -12,7 +12,6 @@
 #define SPEED_DECAY							0.92
 #define MAX_BULLET_SPEED				3
 #define BULLET_LIFETICKS				60
-#define MAX_STARS								30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4
 #define	MAX_UFOS								4
@@ -71,25 +70,17 @@ typedef struct explosionState {
 	short current;
 } explosionState;
 
-/*
-typedef struct starState {
-	point pos;
-	short dirY;
-	unsigned char shade;
-}*/
 #endif //__GAMETYPES__
 
 
 extern short gameLevel;
 
-//extern unsigned char g_boomSprite[][];
 extern playerState gPlayer;
 extern rockState gRocks[MAX_ROCKS];
 extern bulletState gPlayerBullets[MAX_PLAYER_BULLETS];
 extern bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 extern agentState gUFOs[MAX_UFOS];
 extern agentState gSatellites[MAX_SATELLITES*3];
-//extern starState gStars[MAX_STARS];
 extern explosionState gExplosions[MAX_EXPLOSIONS];
 
 void gameInit(void); 	//Begin the game.
