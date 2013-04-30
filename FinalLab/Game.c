@@ -145,7 +145,7 @@ void gameUpdate(void) {
 				}
 				//Bullet collision
 				for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
-					if(gPlayerBullets[i].status == ALIVE) {
+					if(gPlayerBullets[j].status == ALIVE) {
 						if(pointInRock(makePoint(((int)gRocks[i].x),
 																		 ((int)gRocks[i].y)),
 													 gRocks[i].rockType,
