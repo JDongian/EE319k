@@ -11,7 +11,7 @@ bool isControlActivated(short ctrlKey){
 		return True;
 	} return False;
 }
-void portG_Init(void){
+void portD_Init(void){
 	int timingop = 1;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	timingop = 0;
