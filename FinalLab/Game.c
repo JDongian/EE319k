@@ -50,15 +50,19 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if ((GPIO_PORTG_DATA_R&0x20) == 0) { gPlayer.angle += PLAYER_TURN_RATE; }
+			if(isControlActivated(ANALOG_LEFT)) {// ((GPIO_PORTG_DATA_R&0x20) == 0) {
+				gPlayer.angle += PLAYER_TURN_RATE;
+			}
 			//Right
-			if ((GPIO_PORTG_DATA_R&0x40) == 0) { gPlayer.angle -= PLAYER_TURN_RATE; }
-			//Selecte
-			if((GPIO_PORTG_DATA_R&0x80) != 0) {
+			if(isControlActivated(ANALOG_LEFT)) {// ((GPIO_PORTG_DATA_R&0x40) == 0) {
+				gPlayer.angle -= PLAYER_TURN_RATE;
+			}
+			//Select
+			if(!isControlActivated(ANALOG_LEFT)) { //(GPIO_PORTG_DATA_R&0x80) != 0) {
 				selectStatus = False;
 			}
 			//Positive edge
-			if((selectStatus == False) && ((GPIO_PORTG_DATA_R&0x80) == 0)) {
+			if((selectStatus == False) && (isControlActivated(ANALOG_LEFT))) {//(GPIO_PORTG_DATA_R&0x80) == 0)) {
 				selectStatus = True;
 				gSoundArray = &gSoundBullet;
 				gSoundIndex = 0;
