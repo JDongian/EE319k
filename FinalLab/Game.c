@@ -89,6 +89,107 @@ void gameUpdate(void) {
 			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
 			return;
 	}
+	
+	//Update UFOS
+	
+	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
+		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
+			case ALIVE:
+				if(gPlayerBullets[i].life++ > BULLET_LIFETICKS) {
+					gPlayerBullets[i].status = DEAD;
+					break;
+				}
+				gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
+				gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
+				break;
+			case HIT:
+				break;
+			case DEAD:
+				break;
+		}
+	}
+	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
+		switch(gEnemyBullets[i].status) {		//Only update visible bullets.
+			case ALIVE:
+				if(gEnemyBullets[i].life++ > BULLET_LIFETICKS) {
+					gEnemyBullets[i].status = DEAD;
+					break;
+				}
+				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
+				gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
+				gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
+				break;
+			case HIT:
+				break;
+			case DEAD:
+				break;
+		}
+	}
+	//Update rocks
+	for(i = 0; i < MAX_UFOS; i++) {
+		switch(gUFOs[i].status) {
+			case ALIVE:		//Only update visible rocks.
+				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
+				//Update rock position
+				if(gUFOs[i].dx < 0.1 && gUFOs[i].dy < 0.1) {
+					gUFOs[i].dx = (randRange(32,64)*-1+randRange(32,64)*1)/64.;
+					gUFOs[i].dy = randRange(0,256)/256;
+				}
+				gUFOs[i].pos.x = floatMod(gRocks[i].x+gUFOs[i].dx, 128);
+				gUFOs[i].pos.y = floatMod(gRocks[i].y+gUFOs[i].dy, 96);
+				//Check collisions with enemies, players and bullets.
+				//Player collision
+				/*for(j = 0; j < 5; j++) {
+					if(pointInRock(makePoint(((int)gRocks[i].x),
+																	 ((int)gRocks[i].y)),
+												 gRocks[i].rockType,
+												 gRocks[i].rockSize,
+												 playerShip[j])) {
+						gPlayer.status = HIT;
+						return;
+					}
+				}*/
+				//Bullet collision
+				/*for(j = 0; j < MAX_PLAYER_BULLETS; j++) {
+					if(gPlayerBullets[j].status == ALIVE) {
+						if(pointInRock(makePoint(((int)gRocks[i].x),
+																		 ((int)gRocks[i].y)),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gPlayerBullets[j].x),
+																		 ((int)gPlayerBullets[j].y)))) {
+							score += 2;
+							addExplosion(makePoint(gPlayerBullets[j].x,
+																		 gPlayerBullets[j].y), 2);
+							gRocks[i].status = HIT;
+							gPlayerBullets[j].status = DEAD;
+						}
+					}
+				}*/
+				/*
+				for(j = 0; j < MAX_ENEMY_BULLETS; j++) {
+					if(gEnemyBullets[i].status == ALIVE) {
+						if(pointInRock(makePoint(((int)gRocks[i].x),
+																		 ((int)gRocks[i].y)),
+													 gRocks[i].rockType,
+													 gRocks[i].rockSize,
+													 makePoint(((int)gEnemyBullets[j].x)%128,
+																		 ((int)gEnemyBullets[j].y)%96))) {
+							gRocks[i].status = HIT;
+							addExplosion(makePoint(gEnemyBullets[j].x,
+																		 gEnemyBullets[j].y), 2);																	 
+							gEnemyBullets[j].status = DEAD;
+						}
+					}
+				}*/
+				if(gUFOs[i].status == ALIVE) { break; }
+			case HIT:
+				gUFOs[i].status = DEAD;
+				break;
+			case DEAD:
+				break;
+		}
+	}
 	//Update bullets
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
