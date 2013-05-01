@@ -10,4 +10,5 @@ extern volatile unsigned int ADCStatus0;
 extern volatile unsigned int ADCStatus1;
 extern volatile unsigned long ADCValue0;
 extern volatile unsigned long ADCValue1;
+
 #endif // __ADCDRIVER_H__

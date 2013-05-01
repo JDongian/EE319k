@@ -199,6 +199,7 @@ void Timer0B_Handler(void){
 	ADCStatus0 = 1;
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
+
 void Timer1B_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
@@ -212,4 +213,9 @@ void ADC_Init(void){
 	//Timer1B_Init10HzInt();                // set up Timer0A for 10 Hz interrupts
 }
 
-
+unsigned long getADC0Value(void) {
+	return ADCValue0;
+}
+unsigned long getADC1Value(void) {
+	return ADCValue1;
+}
