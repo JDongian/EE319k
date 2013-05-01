@@ -90,7 +90,6 @@ void gameUpdate(void) {
 			return;
 	}
 	
-	//Update UFOS
 	
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
