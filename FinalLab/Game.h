@@ -12,7 +12,7 @@
 #define MAX_PLAYER_SPEED				1.4
 #define SPEED_DECAY							0.92
 #define MAX_BULLET_SPEED				3
-#define BULLET_LIFETICKS				60
+#define BULLET_LIFETICKS				30
 #define MAX_PLAYER_BULLETS			5
 #define MAX_ENEMY_BULLETS				4
 #define	MAX_UFOS								4

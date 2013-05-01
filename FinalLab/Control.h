@@ -4,7 +4,7 @@
 #include "lm3s1968.h"
 #include "Delay.h"
 
-#define ANALOG_THRESHOLD		32
+#define ANALOG_THRESHOLD		1
 #define SELECT_SAMPLES			16
 
 #define SELECT					4
@@ -15,6 +15,7 @@ void GPIOPortG_Handler(void);
 bool isControlActivated(short);
 void setControl(bool, short);
 void setXYAvg(void);
+void updateXAxis(void);
 void updateControls(void);
 
 

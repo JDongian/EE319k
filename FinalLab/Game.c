@@ -7,7 +7,6 @@ bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 agentState gUFOs[MAX_UFOS];
 agentState gSatellites[MAX_SATELLITES*3];
 explosionState gExplosions[MAX_EXPLOSIONS];
-bool selectStatus = False;
 
 void gameUpdate(void) {
 	point vertex, port, starboard, exhaust, playerPos;
@@ -41,7 +40,7 @@ void gameUpdate(void) {
 		case ALIVE:
 			////Button movement input
 			//Forward (up)
-			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// || isControlActivated(ANALOG_UP)) {
+			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// HWREGBITW(&gFlags, ANALOG_UP)) {
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -50,25 +49,20 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if(/*(GPIO_PORTG_DATA_R&0x20) == 0 || */isControlActivated(ANALOG_LEFT)) {
+			if((GPIO_PORTG_DATA_R&0x20) == 0) {//HWREGBITW(&gFlags, ANALOG_LEFT)) {
 				gPlayer.angle += PLAYER_TURN_RATE;
 			}
 			//Right
-			if(/*(GPIO_PORTG_DATA_R&0x40) == 0 ||*/ isControlActivated(ANALOG_RIGHT)) {
+			if((GPIO_PORTG_DATA_R&0x40) == 0 ){//HWREGBITW(&gFlags, ANALOG_RIGHT)) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
-			//Select
-			if (HWREGBITW(&gFlags, SELECT_DOWN) == 0) {
-				selectStatus = False;
-			}
-			//Positive edge
-			if (HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
-				selectStatus = True;
+			//Select (positive edge)
+			if(HWREGBITW(&gFlags, SELECT_DOWN) == 1 || ((GPIO_PORTG_DATA_R & 0x80) == 0)) {
+				HWREGBITW(&gFlags, SELECT_DOWN) = 0;	//reset flag
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									True);
-				HWREGBITW(&gFlags, SELECT_DOWN) = 0;
 			}
 			break;
 		case HIT:

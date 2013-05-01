@@ -30,6 +30,8 @@ int main(void){
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
+	updateXAxis();
+	setXYAvg();
 	EnableInterrupts();
 	//Clear flags
 	gFlags = 0;
