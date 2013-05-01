@@ -248,7 +248,7 @@ void gameUpdate(void) {
 		switch(gUFOs[i].status) {
 			case ALIVE:		//Only update visible rocks.
 				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
-				//Update rock position
+				//Update UFO position
 				if(gUFOs[i].dx < 0.1 && gUFOs[i].dy < 0.1) {
 					gUFOs[i].dx = (randRange(32,64)*-1+randRange(32,64)*1)/64.;
 					gUFOs[i].dy = randRange(0,256)/256;
