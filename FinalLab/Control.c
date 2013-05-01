@@ -14,10 +14,16 @@ bool isControlActivated(short ctrlKey){
 void portD_Init(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	doNothing();
-	GPIO_PORTD_DIR_R &= 0x00;
+	GPIO_PORTD_DIR_R &= ~0x01;
 	GPIO_PORTD_AFSEL_R |= 0x00;
 	GPIO_PORTD_PUR_R |= 0x00;
-	GPIO_PORTD_DEN_R |= 0xFF;
+	GPIO_PORTD_DEN_R |= 0x01;
+}
+char get_portD(char bit){
+	char ans = GPIO_PORTD_DATA_R;
+	ans = (ans>>bit);
+	ans &= 0x01;
+	return ans;
 }
 void setControl(bool status, short ctrlKey) {
 	if(status == True) {
