@@ -1,5 +1,6 @@
 #include "ADC.h"
 #include "hw_types.h"
+#include "lm3s1968.h"
 
 #define ANALOG_THRESHOLD		32
 #define SELECT_SAMPLES			16

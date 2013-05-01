@@ -253,8 +253,8 @@ void gameUpdate(void) {
 					gUFOs[i].dx = (randRange(32,64)*-1+randRange(32,64)*1)/64.;
 					gUFOs[i].dy = randRange(0,256)/256;
 				}
-				gUFOs[i].pos.x = floatMod(gRocks[i].x+gUFOs[i].dx, 128);
-				gUFOs[i].pos.y = floatMod(gRocks[i].y+gUFOs[i].dy, 96);
+				gUFOs[i].pos.x = floatMod(gUFOs[i].pos.x+gUFOs[i].dx, 128);
+				gUFOs[i].pos.y = floatMod(gUFOs[i].pos.y+gUFOs[i].dy, 96);
 				
 				if(gUFOs[i].status == ALIVE) { break; }
 			case HIT:

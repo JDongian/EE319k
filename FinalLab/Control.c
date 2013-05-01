@@ -11,6 +11,16 @@ bool isControlActivated(short ctrlKey){
 		return True;
 	} return False;
 }
+void portG_Init(void){
+	int timingop = 1;
+	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
+	timingop = 0;
+	timingop += 1;
+	GPIO_PORTD_DIR_R &= 0x00;
+	GPIO_PORTD_AFSEL_R |= 0x00;
+	GPIO_PORTD_PUR_R |= 0x00;
+	GPIO_PORTD_DEN_R |= 0xFF;
+}
 void setControl(bool status, short ctrlKey) {
 	if(status == True) {
 		controlStatus |= 1<<ctrlKey;
