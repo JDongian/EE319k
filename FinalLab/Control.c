@@ -14,13 +14,13 @@ bool isControlActivated(short ctrlKey){
 void portD_Init(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	doNothing();
-	GPIO_PORTD_DIR_R &= ~0x01;
-  GPIO_PORTD_DEN_R |= 0x01;
-  GPIO_PORTD_IS_R &= ~0x01;
-  GPIO_PORTD_IBE_R &= ~0x01;
-  GPIO_PORTD_IEV_R |= ~0x01;
-  GPIO_PORTD_ICR_R = 0x01;
-  GPIO_PORTD_IM_R |= 0x01;
+	GPIO_PORTD_DIR_R &= ~0x0F;
+  GPIO_PORTD_DEN_R |= 0x0F;
+  GPIO_PORTD_IS_R &= ~0x0F;
+  GPIO_PORTD_IBE_R &= ~0x0F;
+  GPIO_PORTD_IEV_R |= ~0x0F;
+  GPIO_PORTD_ICR_R = 0x0F;
+  GPIO_PORTD_IM_R |= 0x0F;
 	NVIC_PRI0_R = (NVIC_PRI0_R&0x0FFFFFFF)|0x20000000; // bits 29-31
   NVIC_EN0_R |= NVIC_EN0_INT3;
 }
@@ -99,5 +99,5 @@ void updateYAxis(void) {
 }
 void GPIOPortD_Handler(void) {
 	HWREGBITW(&gFlags, SELECT_DOWN) = 1;
-	GPIO_PORTD_ICR_R = 0x01;
+	GPIO_PORTD_ICR_R = 0x0F;
 }

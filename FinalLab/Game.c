@@ -58,16 +58,17 @@ void gameUpdate(void) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select
-			if((GPIO_PORTG_DATA_R&0x80) != 0) {// || HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
+			if (HWREGBITW(&gFlags, SELECT_DOWN) == 0) {
 				selectStatus = False;
 			}
 			//Positive edge
-			if(selectStatus == False && GPIO_PORTG_DATA_R&0x80 == 0) { //!= 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1)) {
+			if (HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
 				selectStatus = True;
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									True);
+				HWREGBITW(&gFlags, SELECT_DOWN) = 0;
 			}
 			break;
 		case HIT:
