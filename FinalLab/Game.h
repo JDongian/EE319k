@@ -1,6 +1,7 @@
 #include "drawLib\math2.h"
 #include "lm3s1968.h"
 #include "globals.h"
+#include "Control.h" 
 #include "sound.h"
 #include "drawLib\graphicsUtil.h"
 

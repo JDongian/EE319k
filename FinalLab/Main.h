@@ -13,7 +13,7 @@
 #include "PLL.h"
 #include "DAC.h"
 
-#include "driverlib/adc.h"
+#include "ADC.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 
