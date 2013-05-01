@@ -19,6 +19,7 @@ unsigned char* getBuffer(void);   //Returns the current frameBuffer.
 void clearBuffer(void);   //Sets frameBuffer to black.
 void setBuffer(unsigned char);   //Sets frameBuffer to shade.
 void setPx(point, unsigned char);   //Writes to the frameBuffer.
+void editBuffer(int, unsigned char);   //Sets frameBuffer to shade.
 //Graphics modifier
 void setGraphics(unsigned char setting); 
 	//0 = line

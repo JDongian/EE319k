@@ -20,25 +20,13 @@ void portD_Init(void){
   GPIO_PORTD_IM_R |= 0x0F;
 	NVIC_PRI0_R = (NVIC_PRI0_R&0x0FFFFFFF)|0x20000000; // bits 29-31
   NVIC_EN0_R |= NVIC_EN0_INT3;
-}/*
-bool isControlActivated(short ctrlKey){
-	updateXAxis();
-	if(HWREGBITW(&gFlags, ctrlKey) == 1) {
-		return True;
-	} return False;
-}*/
-/*
-bool isControlActivated(short ctrlKey){
-	if(controlStatus & 1<<ctrlKey == True) {
-		return True;
-	} return False;
-}*/
+}
 void setControl(bool status, short ctrlKey) {
 	HWREGBITW(&gFlags, ctrlKey) = status;
 }
 void setXYAvg(void) {
 	avgX = currX;
-	//avgY = currY;
+	avgY = currY;
 }
 void updateXAxis(void) {
 	if(ADCStatus0 == 0) {

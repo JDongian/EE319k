@@ -6,6 +6,7 @@ short gameLevel;
 int score;
 
 int main(void){
+	unsigned char* myMsg = "Hello Valvano.";
 	int i = 0;
 	//Score set
 	score = 0;
@@ -84,6 +85,7 @@ int main(void){
 			
 			//
 			//drawString(score, makePoint(0,0));
+			drawString(myMsg, makePoint(5, 5));
 			gameUpdate();
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}

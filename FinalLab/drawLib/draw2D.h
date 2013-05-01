@@ -21,5 +21,7 @@ void drawExplosion(point, short);
 //Sprite draw
 void drawSprite(unsigned char[], point,
 								unsigned int, unsigned int);
+void drawByteSprite(unsigned char[], point, unsigned int, unsigned int);
+void drawSpriteShip(point);
 void drawBullet(point);
-void drawString(char*, point, unsigned char);
+void drawString(unsigned char*, point);

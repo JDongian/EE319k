@@ -9,6 +9,27 @@ unsigned char bulletSprite[9] = {
 	0x00, 0x04, 0x00
 };
 
+unsigned char shipSprite2[1][168] = {
+	 {0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+		0x10, 0x00, 0x0F, 0xF0, 0x00, 0x01,
+		0x10, 0x00, 0x03, 0x50, 0x00, 0x01,
+		0x10, 0x05, 0x53, 0x55, 0x50, 0x01,
+		0x10, 0x05, 0x53, 0x55, 0x50, 0x01,
+		0x10, 0x00, 0x03, 0x50, 0x00, 0x01,
+		0x10, 0x00, 0xA3, 0x5A, 0x00, 0x01,
+		0x1F, 0xF0, 0xA3, 0x5A, 0x0F, 0xF1,
+		0x1F, 0xFA, 0xA3, 0x5A, 0xAF, 0xF1,
+		0x1F, 0xFA, 0xA3, 0x5A, 0xAF, 0xF1,
+		0x1F, 0xFA, 0xA0, 0x0A, 0xAF, 0xF1,
+		0x1F, 0xF0, 0x0A, 0xA0, 0x0F, 0xF1,
+		0x10, 0x00, 0x00, 0x00, 0x00, 0x01,
+		0x11, 0x11, 0x11, 0x11, 0x11, 0x11},
+};
+
+
+
+
+
 //Copypasta
 const unsigned char valvanoFont[96][5] = {
 	{ 0x00, 0x00, 0x00, 0x00, 0x00 }, // " "
@@ -111,9 +132,11 @@ const unsigned char valvanoFont[96][5] = {
 
 bool isExhaustOn = False;
 
+
 void drawPoint(point myPoint, unsigned char shade) {
 	setPx(makePoint(myPoint.x%128, myPoint.y%96), shade);
 }
+//Vector drawing
 void drawLine(point a, point b, unsigned char shade) {
 	int dx = abs(b.x-a.x), sx = a.x<b.x ? 1 : -1;
 	int dy = abs(b.y-a.y), sy = a.y<b.y ? 1 : -1; 
@@ -257,7 +280,6 @@ void drawPlayerExhaust(point pos, short angle) {
 }
 void drawRock(point pos, unsigned short version, unsigned short size) {
 	point myRock[ROCK_VERTICIES]; int i = 0;
-//	rockagon outRock;
 	version %= ROCK_TYPES;
 	for(i = 0; i < ROCK_VERTICIES; i++) {
 		myRock[i] = makePoint(pos.x+size*rockShapes[version][i].x,
@@ -267,17 +289,6 @@ void drawRock(point pos, unsigned short version, unsigned short size) {
 		drawFilledPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE);
 	} else {
 		drawPolygon(myRock, ROCK_VERTICIES, ROCK_SHADE+randRange(0,1));
-	}
-//	for(i = 0; i < ROCK_VERTICIES; i++) { outRock.verticies[i] = myRock[i]; }
-//	return outRock;
-}
-void drawSprite(unsigned char sprite[], point pos,
-								unsigned int width, unsigned int height) {
-	int i,j;
-	for (j = 0; j < height; j++) {
-		for (i = 0; i < width; i++) {
-			drawPoint(makePoint(pos.x+i, pos.y+j), sprite[i+j*width]);
-		}
 	}
 }
 void drawUFO(point pos, short scale){
@@ -326,10 +337,67 @@ void drawExplosion(point pos, short scale) {
 //		drawPoint(pos, randRange(0x8, 0xF)));
 	}
 }
+//Raster drawing
+void drawSprite(unsigned char sprite[], point pos,
+								unsigned int width, unsigned int height) {
+	int i,j;
+	for(j = 0; j < height; j++) {
+		for(i = 0; i < width; i++) {
+			drawPoint(makePoint(pos.x+i, pos.y+j), sprite[i+j*width]);
+		}
+	}
+}
+void drawByteSprite(unsigned char sprite[], point pos,
+										unsigned int width, unsigned int height) {
+											//width param is number of chars the sprite is across
+	int x,y;
+	//ASSERT(width%2 == 0);
+	for(y = 0; y < height; y++) {
+		for(x = 0; x < width/2; x++) {
+			editBuffer((pos.y+y)*64+pos.x/2+x, sprite[y*width/2+x]);
+			//drawPoint(makePoint(pos.x+i*2, pos.y+j), (sprite[i+j*width] & 0x0F));
+			//drawPoint(makePoint(pos.x+(i*2)+1, pos.y+j), (sprite[i+j*width] & 0xF0));
+		}
+	}
+}
+void drawSpriteShip(point pos) {
+	drawByteSprite(shipSprite2[0], pos, 12, 12);
+	//drawByteSprite(shipSprite2[1], pos, 12, 12);
+}
 void drawBullet(point pos) {
 	drawSprite(bulletSprite, makePoint(pos.x-1, pos.y-1), 3, 3);
 }
 
+void drawString(unsigned char* pcStr, point pos) {
+	unsigned long ulIdx1, ulIdx2;
+	unsigned char ucTemp;
+	unsigned char charBuffer[8];
+	while(*pcStr != 0) {
+		ucTemp = *pcStr++ & 0x7f;
+		if(ucTemp < ' ') {
+			ucTemp = 0;
+		} else {
+			ucTemp -= ' ';
+		}
+		// Build and display the character buffer.
+		for(ulIdx1 = 0; ulIdx1 < 6; ulIdx1 += 2) {
+			// Convert two columns of 1-bit font data into a single data
+			// byte column of 4-bit font data.
+			for(ulIdx2 = 0; ulIdx2 < 8; ulIdx2++) {
+				charBuffer[ulIdx2] = 0;
+				if(valvanoFont[ucTemp][ulIdx1] & (1 << ulIdx2)) {
+					charBuffer[ulIdx2] = 0xf0;
+				}
+				if((ulIdx1 < 4) && (valvanoFont[ucTemp][ulIdx1 + 1] & (1 << ulIdx2))) {
+					charBuffer[ulIdx2] |= 0x0f;
+				}
+			}
+			drawByteSprite(charBuffer, pos, 2, 8);
+			pos.x += 2;
+		}
+	}
+}
+/*
 void drawString(char *pcStr, point pos, unsigned char shade) {
 	unsigned long ulIdx1, ulIdx2;
 	unsigned char ucTemp;
@@ -382,4 +450,4 @@ void drawString(char *pcStr, point pos, unsigned char shade) {
 			}
 		}
 	}
-}
+*/

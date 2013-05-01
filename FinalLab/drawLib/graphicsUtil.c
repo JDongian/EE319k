@@ -42,6 +42,9 @@ void setPx(point px, unsigned char shade) {
 			shade | (frameBuffer[(px.x>>1)+(px.y*64)] & 0xF<<4);
 	}
 }
+void editBuffer(int index, unsigned char value) {
+	frameBuffer[index] = value;
+}
 ////Graphics settings
 void setGraphics(unsigned char setting) {
 	gGraphicsSetting = setting;
@@ -93,8 +96,8 @@ bool pointInRock(point pos,
 	point myRock[ROCK_VERTICIES];
 	type %= ROCK_TYPES;
 	//Avoid negative coordinates for simplicity.
-	pos = makePoint((pos.x%128), (pos.y%96)+96);
-	test = makePoint((test.x%128), (test.y%96)+96);
+	pos = makePoint((pos.x%128), (pos.y%96));
+	test = makePoint((test.x%128), (test.y%96));
 	for(i = 0; i < ROCK_VERTICIES; i++) {
 		myRock[i] = makePoint(size*rockShapes[type%ROCK_TYPES][i].x+pos.x,
 													size*rockShapes[type%ROCK_TYPES][i].y+pos.y);
