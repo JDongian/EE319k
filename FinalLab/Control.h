@@ -1,5 +1,6 @@
 #include "ADC.h"
 #include "hw_types.h"
+#include "globals.h"
 #include "lm3s1968.h"
 #include "Delay.h"
 

@@ -12,7 +12,6 @@ bool isControlActivated(short ctrlKey){
 	} return False;
 }
 void portD_Init(void){
-	int timingop = 1;
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	doNothing();
 	GPIO_PORTD_DIR_R &= 0x00;
@@ -30,16 +29,16 @@ void setControl(bool status, short ctrlKey) {
 void setXYAvg(void) {
 	avgX = currX;
 	avgY = currY;
-}
+}/*
 bool isControlActivated(short ctrlKey){
 	if(controlStatus & 1<<ctrlKey == True) {
 		return True;
 	} return False;
-}
+}*/
 void updateXAxis(void) {
 	short sum=0, i=0;
-	if(!ADCMail0) { return; }
-	currX = (currX*63+ADC0Value)/64;
+	//if(ADCStatus0 == 0) { return; }
+	//currX = (currX*63+ADC_In0())/64;
 	if(currX < avgX-ANALOG_THRESHOLD) {
 		setControl(True, ANALOG_LEFT);
 		setControl(False, ANALOG_RIGHT);
@@ -66,8 +65,8 @@ void updateXAxis(void) {
 }
 void updateYAxis(void) {
 	short sum=0, i=0;
-	if(!ADCMail1) { return; }
-	currY = (currY*63+ADC1Value)/64;
+	//if(ADCStatus1 == 0) { return; }
+	//currY = (currY*63+ADC_In1())/64;
 	//Y axis
 	if(currY < avgY-ANALOG_THRESHOLD) {
 		setControl(True, ANALOG_DOWN);
@@ -93,4 +92,9 @@ void updateYAxis(void) {
 		setControl(True, SELECT);
 	}
 }
-
+void portD_Handler(void) {
+	HWREGBITW(&gFlags, SELECT_DOWN) = 0;
+	if ((GPIO_PORTD_MIS_R & 0x01)) {
+		HWREGBITW(&gFlags, SELECT_DOWN) = 1;
+	}
+}

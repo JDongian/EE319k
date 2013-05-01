@@ -4,9 +4,6 @@
 #include "globals.h"
 #include "ADC.h"
 
-//#define ADCStatus								(*((volatile unsigned long *)0x00000000))
-//#define ADCMail									(*((volatile unsigned long *)0x00000000))
-
 #define ADC_ACTSS_R             (*((volatile unsigned long *)0x40038000))
 #define ADC0_RIS_R              (*((volatile unsigned long *)0x40038004))
 #define ADC0_IM_R               (*((volatile unsigned long *)0x40038008))
@@ -52,8 +49,10 @@
 // SS3 1st sample source: programmable using variable 'channelNum' [0:3]
 // SS3 interrupts: enabled but not promoted to controller
 
-volatile unsigned int ADCStatus;
-volatile unsigned long ADCMail;
+volatile unsigned int ADCStatus0=0;
+volatile unsigned long ADCMail0=0;
+volatile unsigned int ADCStatus1=0;
+volatile unsigned long ADCMail1=0;
 
 void ADC_InitSWTriggerSeq3(unsigned char channelNum){
   // channelNum must be 0-3 (inclusive) corresponding to ADC0 through ADC3
@@ -89,7 +88,15 @@ void ADC_InitSWTriggerSeq3(unsigned char channelNum){
 // the result in the lower 10 bits of the return value.  It
 // assumes that the hardware has already been initialized
 // using ADC_InitSWTriggerSeq3().
-unsigned long ADC_In(void){
+unsigned long ADC_In0(void){
+  unsigned long result;
+  ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
+  while((ADC0_RIS_R&ADC_RIS_INR3)==0){};			// wait for conversion done
+  result = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
+  ADC0_ISC_R = ADC_ISC_IN3;										// acknowledge completion of current conversion
+  return result;
+}
+unsigned long ADC_In1(void){
   unsigned long result;
   ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
   while((ADC0_RIS_R&ADC_RIS_INR3)==0){};			// wait for conversion done
@@ -164,8 +171,15 @@ void Timer0B_Init10HzInt(void){
 void Timer0B_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
-  ADCvalue = ADC_In();
-	ADCStatus = 1;
+  ADCvalue = ADC_In0();
+	ADCStatus0 = 1;
+  //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
+}
+void Timer1B_Handler(void){
+  TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
+  //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
+  ADCvalue = ADC_In1();
+	ADCStatus1 = 1;
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 void ADC_Init(void){

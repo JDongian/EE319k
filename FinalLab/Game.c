@@ -41,7 +41,7 @@ void gameUpdate(void) {
 		case ALIVE:
 			////Button movement input
 			//Forward (up)
-			if (isControlActivated(ANALOG_UP)) {//(GPIO_PORTG_DATA_R&0x08) == 0) {
+			if ((GPIO_PORTG_DATA_R&0x08) == 0 || isControlActivated(ANALOG_UP)) {
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -50,19 +50,19 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if(isControlActivated(ANALOG_LEFT)) {// ((GPIO_PORTG_DATA_R&0x20) == 0) {
+			if((GPIO_PORTG_DATA_R&0x20) == 0 || isControlActivated(ANALOG_LEFT)) {
 				gPlayer.angle += PLAYER_TURN_RATE;
 			}
 			//Right
-			if(isControlActivated(ANALOG_LEFT)) {// ((GPIO_PORTG_DATA_R&0x40) == 0) {
+			if((GPIO_PORTG_DATA_R&0x40) == 0 || isControlActivated(ANALOG_RIGHT)) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select
-			if(!isControlActivated(ANALOG_LEFT)) { //(GPIO_PORTG_DATA_R&0x80) != 0) {
+			if((GPIO_PORTG_DATA_R&0x80) != 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
 				selectStatus = False;
 			}
 			//Positive edge
-			if((selectStatus == False) && (isControlActivated(ANALOG_LEFT))) {//(GPIO_PORTG_DATA_R&0x80) == 0)) {
+			if((selectStatus == False) && ((GPIO_PORTG_DATA_R&0x80) != 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1)) {
 				selectStatus = True;
 				gSoundArray = &gSoundBullet;
 				gSoundIndex = 0;

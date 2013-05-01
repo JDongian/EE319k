@@ -13,6 +13,8 @@ int main(void){
 	//Sound init
 	DAC_Init();
 	Timer0A_Init(Sound_Update, 1000000/11025);
+//	Timer0B_Init(updateXAxis, 1000000/11025);
+//	Timer1B_Init(updateYAxis, 1000000/11025);
 	//Input
 	ADC_Init();
 	portD_Init();
