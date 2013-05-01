@@ -15,6 +15,7 @@ int main(void){
 	Timer0A_Init(Sound_Update, 1000000/11025);
 	//Input
 	ADC_Init();
+	portD_Init();
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
 												GPIOPinTypeGPIOInput(GPIO_PORTG_BASE,
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7));
