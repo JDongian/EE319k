@@ -6,11 +6,6 @@ int avgY=0, currY=0;
 bool selectSamples[SELECT_SAMPLES];
 short currSelectIndex = 0;
 
-bool isControlActivated(short ctrlKey){
-	if(controlStatus & 1<<ctrlKey == True) {
-		return True;
-	} return False;
-}
 void portD_Init(void) {
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	doNothing();
@@ -30,13 +25,15 @@ void setXYAvg(void) {
 	avgX = currX;
 	avgY = currY;
 }
-void updateControls(void) {
+bool isControlActivated(short ctrlKey){
+	if(controlStatus & 1<<ctrlKey == True) {
+		return True;
+	} return False;
+}
+void updateXAxis(void) {
 	short sum=0, i=0;
-	currX = (currX*63+getADC0Value())/64;
-	currY = (currY*63+getADC0Value())/64;
-	currSelectIndex = (currSelectIndex+1)%SELECT_SAMPLES;
-//	selectSamples[currSelectIndex] = port D;
-	//X axis
+	if(!ADCMail0) { return; }
+	currX = (currX*63+ADC0Value)/64;
 	if(currX < avgX-ANALOG_THRESHOLD) {
 		setControl(True, ANALOG_LEFT);
 		setControl(False, ANALOG_RIGHT);
@@ -47,6 +44,24 @@ void updateControls(void) {
 		setControl(False, ANALOG_LEFT);
 		setControl(False, ANALOG_RIGHT);
 	}
+	//Select button
+	//	selectSamples[currSelectIndex] = port D;
+	currSelectIndex = (currSelectIndex+1)%SELECT_SAMPLES;
+	for(i = 0; i < SELECT_SAMPLES; i++) {
+		if(selectSamples[i] == True) {
+			sum++;
+		}
+	}
+	if(sum > SELECT_SAMPLES/2) {
+		setControl(True, SELECT);
+	} else {
+		setControl(True, SELECT);
+	}
+}
+void updateYAxis(void) {
+	short sum=0, i=0;
+	if(!ADCMail1) { return; }
+	currY = (currY*63+ADC1Value)/64;
 	//Y axis
 	if(currY < avgY-ANALOG_THRESHOLD) {
 		setControl(True, ANALOG_DOWN);
@@ -59,6 +74,8 @@ void updateControls(void) {
 		setControl(False, ANALOG_UP);
 	}
 	//Select button
+	//	selectSamples[currSelectIndex] = port D;
+	currSelectIndex = (currSelectIndex+1)%SELECT_SAMPLES;
 	for(i = 0; i < SELECT_SAMPLES; i++) {
 		if(selectSamples[i] == True) {
 			sum++;
