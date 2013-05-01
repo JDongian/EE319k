@@ -50,9 +50,9 @@
 // SS3 interrupts: enabled but not promoted to controller
 
 volatile unsigned int ADCStatus0=0;
-volatile unsigned long ADCMail0=0;
+volatile unsigned long ADCValue0=0;
 volatile unsigned int ADCStatus1=0;
-volatile unsigned long ADCMail1=0;
+volatile unsigned long ADCValue1=0;
 
 void ADC_InitSWTriggerSeq3(unsigned char channelNum){
   // channelNum must be 0-3 (inclusive) corresponding to ADC0 through ADC3
@@ -83,6 +83,7 @@ void ADC_InitSWTriggerSeq3(unsigned char channelNum){
   ADC0_IM_R &= ~ADC_IM_MASK3;               // disable SS3 interrupts (default setting)
   ADC_ACTSS_R |= ADC_ACTSS_ASEN3;           // enable sample sequencer 3
 }
+
 // This function triggers an ADC conversion using sample
 // sequencer 3, waits for the conversion to finish, and returns
 // the result in the lower 10 bits of the return value.  It
@@ -143,7 +144,6 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 
-volatile unsigned long ADCvalue;
 // This debug function initializes Timer0A to request interrupts
 // at a 10 Hz frequency.  It is similar to FreqMeasure.c.
 void Timer0B_Init10HzInt(void){
@@ -152,43 +152,64 @@ void Timer0B_Init10HzInt(void){
   // **** general initialization ****
   SYSCTL_RCGC1_R |= SYSCTL_RCGC1_TIMER0;// activate timer0
   delay = SYSCTL_RCGC1_R;          // allow time to finish activating
-  TIMER0_CTL_R &= ~TIMER_CTL_TAEN; // disable timer0A during setup
+  TIMER0_CTL_R &= ~TIMER_CTL_TBEN; // disable timer0A during setup
   TIMER0_CFG_R = TIMER_CFG_16_BIT; // configure for 16-bit timer mode
   // **** timer0A initialization ****
                                    // configure for periodic mode
-  TIMER0_TAMR_R = TIMER_TAMR_TAMR_PERIOD;
-  TIMER0_TAPR_R = 9;               // prescale value for 10 Hz interrupts
-  TIMER0_TAILR_R = 60000;          // start value for 10 Hz interrupts
-  TIMER0_IMR_R |= TIMER_IMR_TATOIM;// enable timeout (rollover) interrupt
-  TIMER0_ICR_R = TIMER_ICR_TATOCINT;// clear timer0A timeout flag
-  TIMER0_CTL_R |= TIMER_CTL_TAEN;  // enable timer0A 16-b, periodic, interrupts
+  TIMER0_TBMR_R = TIMER_TBMR_TBMR_PERIOD;
+  TIMER0_TBPR_R = 9;               // prescale value for 10 Hz interrupts
+  TIMER0_TBILR_R = 60000;          // start value for 10 Hz interrupts
+  TIMER0_IMR_R |= TIMER_IMR_TBTOIM;// enable timeout (rollover) interrupt
+  TIMER0_ICR_R = TIMER_ICR_TBTOCINT;// clear timer0A timeout flag
+  TIMER0_CTL_R |= TIMER_CTL_TBEN;  // enable timer0A 16-b, periodic, interrupts
   // **** interrupt initialization ****
                                    // Timer0A=priority 2
-  NVIC_PRI4_R = (NVIC_PRI4_R&0x00FFFFFF)|0x40000000; // top 3 bits
-  NVIC_EN0_R |= NVIC_EN0_INT19;    // enable interrupt 19 in NVIC
+  NVIC_PRI5_R = (NVIC_PRI5_R&0xFFFFFF0F)|0x00000020; // top 3 bits
+  NVIC_EN0_R |= NVIC_EN0_INT20;    // enable interrupt 19 in NVIC
   EnableInterrupts();
 }
+
+void Timer1B_Init10HzInt(void){
+  volatile unsigned long delay;
+  DisableInterrupts();
+  // **** general initialization ****
+  SYSCTL_RCGC1_R |= SYSCTL_RCGC1_TIMER0;// activate timer0
+  delay = SYSCTL_RCGC1_R;          // allow time to finish activating
+  TIMER0_CTL_R &= ~TIMER_CTL_TBEN; // disable timer0A during setup
+  TIMER0_CFG_R = TIMER_CFG_16_BIT; // configure for 16-bit timer mode
+  // **** timer0A initialization ****
+                                   // configure for periodic mode
+  TIMER0_TBMR_R = TIMER_TBMR_TBMR_PERIOD;
+  TIMER0_TBPR_R = 9;               // prescale value for 10 Hz interrupts
+  TIMER0_TBILR_R = 60000;          // start value for 10 Hz interrupts
+  TIMER0_IMR_R |= TIMER_IMR_TBTOIM;// enable timeout (rollover) interrupt
+  TIMER0_ICR_R = TIMER_ICR_TBTOCINT;// clear timer0A timeout flag
+  TIMER0_CTL_R |= TIMER_CTL_TBEN;  // enable timer0A 16-b, periodic, interrupts
+  // **** interrupt initialization ****
+                                   // Timer0A=priority 2
+  NVIC_PRI5_R = (NVIC_PRI5_R&0xFF0FFFFF)|0x00200000; // top 3 bits
+  NVIC_EN0_R |= NVIC_EN0_INT22;    // enable interrupt 19 in NVIC
+  EnableInterrupts();
+}
+
 void Timer0B_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
-  ADCvalue = ADC_In0();
+  ADCValue0 = ADC_In0();
 	ADCStatus0 = 1;
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 void Timer1B_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
-  ADCvalue = ADC_In1();
+  ADCValue1 = ADC_In1();
 	ADCStatus1 = 1;
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 void ADC_Init(void){
-  ADC_InitSWTriggerSeq3(0);             // allow time to finish activating
+  ADC_InitSWTriggerSeq3(2);             // allow time to finish activating
   Timer0B_Init10HzInt();                // set up Timer0A for 10 Hz interrupts
+	//Timer1B_Init10HzInt();                // set up Timer0A for 10 Hz interrupts
 }
-unsigned long getADC0Value(void) {
-	return ADCvalue;
-}
-
 
 

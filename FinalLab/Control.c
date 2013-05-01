@@ -42,7 +42,12 @@ bool isControlActivated(short ctrlKey){
 }*/
 void updateXAxis(void) {
 	short sum=0, i=0;
-	//if(ADCStatus0 == 0) { return; }
+	if(ADCStatus0 == 0) {
+		return;
+	}
+	// YOU MAY NEED SOME CALCULATION HERE
+	currX = ADCValue0;
+	ADCStatus0 = 0;
 	//currX = (currX*63+ADC_In0())/64;
 	if(currX < avgX-ANALOG_THRESHOLD) {
 		setControl(True, ANALOG_LEFT);
