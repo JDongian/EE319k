@@ -89,42 +89,6 @@ void gameUpdate(void) {
 			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
 			return;
 	}
-	
-	
-	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
-		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
-			case ALIVE:
-				if(gPlayerBullets[i].life++ > BULLET_LIFETICKS) {
-					gPlayerBullets[i].status = DEAD;
-					break;
-				}
-				gPlayerBullets[i].x = gPlayerBullets[i].x+gPlayerBullets[i].dx;
-				gPlayerBullets[i].y = gPlayerBullets[i].y+gPlayerBullets[i].dy;
-				break;
-			case HIT:
-				break;
-			case DEAD:
-				break;
-		}
-	}
-	for(i = 0; i < MAX_ENEMY_BULLETS; i++) {
-		switch(gEnemyBullets[i].status) {		//Only update visible bullets.
-			case ALIVE:
-				if(gEnemyBullets[i].life++ > BULLET_LIFETICKS) {
-					gEnemyBullets[i].status = DEAD;
-					break;
-				}
-				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
-				gEnemyBullets[i].x = gEnemyBullets[i].x+gEnemyBullets[i].dx;
-				gEnemyBullets[i].y = gEnemyBullets[i].y+gEnemyBullets[i].dy;
-				break;
-			case HIT:
-				break;
-			case DEAD:
-				break;
-		}
-	}
-	
 	//Update bullets
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 		switch(gPlayerBullets[i].status) {		//Only update visible bullets.
@@ -248,7 +212,7 @@ void gameUpdate(void) {
 		switch(gUFOs[i].status) {
 			case ALIVE:		//Only update visible rocks.
 				HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
-				//Update UFO position
+				//Update rock position
 				if(gUFOs[i].dx < 0.1 && gUFOs[i].dy < 0.1) {
 					gUFOs[i].dx = (randRange(32,64)*-1+randRange(32,64)*1)/64.;
 					gUFOs[i].dy = randRange(0,256)/256;
