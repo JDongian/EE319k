@@ -41,7 +41,7 @@ void gameUpdate(void) {
 		case ALIVE:
 			////Button movement input
 			//Forward (up)
-			if ((GPIO_PORTG_DATA_R&0x08) == 0 || isControlActivated(ANALOG_UP)) {
+			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// || isControlActivated(ANALOG_UP)) {
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -50,11 +50,11 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if((GPIO_PORTG_DATA_R&0x20) == 0 || isControlActivated(ANALOG_LEFT)) {
+			if(/*(GPIO_PORTG_DATA_R&0x20) == 0 || */isControlActivated(ANALOG_LEFT)) {
 				gPlayer.angle += PLAYER_TURN_RATE;
 			}
 			//Right
-			if((GPIO_PORTG_DATA_R&0x40) == 0 || isControlActivated(ANALOG_RIGHT)) {
+			if(/*(GPIO_PORTG_DATA_R&0x40) == 0 ||*/ isControlActivated(ANALOG_RIGHT)) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select
