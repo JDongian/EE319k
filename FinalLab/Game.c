@@ -58,15 +58,12 @@ void gameUpdate(void) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select
-			if((GPIO_PORTG_DATA_R&0x80) != 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
+			if((GPIO_PORTG_DATA_R&0x80) != 0) {// || HWREGBITW(&gFlags, SELECT_DOWN) == 1) {
 				selectStatus = False;
 			}
 			//Positive edge
-			if((selectStatus == False) && ((GPIO_PORTG_DATA_R&0x80) != 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1)) {
+			if(selectStatus == False && GPIO_PORTG_DATA_R&0x80 == 0) { //!= 0 || HWREGBITW(&gFlags, SELECT_DOWN) == 1)) {
 				selectStatus = True;
-				gSoundArray = &gSoundBullet;
-				gSoundIndex = 0;
-				gSoundMaxLength = SND_BULLET_LENGTH;
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
 									-1*(sinDeg(gPlayer.angle)*MAX_BULLET_SPEED),
@@ -296,11 +293,16 @@ void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
 		}
 	}
 }
-void addBullet(point bulletPos, int dx, int dy, bool isAllied) {
+void addBullet(point bulletPos, float dx, float dy, bool isAllied) {
 	int i;
 	if(isAllied) {
 		for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
 			if(gPlayerBullets[i].status == DEAD) {
+				//Play the bullet sound
+				gSoundArray = &gSoundBullet;
+				gSoundIndex = 0;
+				gSoundMaxLength = SND_BULLET_LENGTH;
+				//init the bullet
 				gPlayerBullets[i].x = bulletPos.x;
 				gPlayerBullets[i].y = bulletPos.y;
 				gPlayerBullets[i].dx = dx;

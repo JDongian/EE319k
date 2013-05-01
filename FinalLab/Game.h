@@ -88,7 +88,7 @@ void gameInit(void); 	//Begin the game.
 void gameUpdate(void); 	//Begin the game.
 void gameSet(short);
 void addRock(point, int, int, unsigned char);
-void addBullet(point, int, int, bool);
+void addBullet(point, float, float, bool);
 	//True = player bullet
 	//False = enemy bullet
 void addExplosion(point, short);

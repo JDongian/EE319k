@@ -16,8 +16,8 @@ int main(void){
 //	Timer0B_Init(updateXAxis, 1000000/11025);
 //	Timer1B_Init(updateYAxis, 1000000/11025);
 	//Input
-	ADC_Init();
-	portD_Init();
+	//ADC_Init();
+	//portD_Init();
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
 												GPIOPinTypeGPIOInput(GPIO_PORTG_BASE,
 												(GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7));
