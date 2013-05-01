@@ -15,6 +15,7 @@
 
 
 void portD_Init(void);
+void GPIOPortG_Handler(void);
 bool isControlActivated(short);
 void setControl(bool, short);
 void setXYAvg(void);
