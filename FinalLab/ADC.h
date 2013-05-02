@@ -1,5 +1,7 @@
-#ifndef __ADCDRIVER_H__
+#ifndef __ADCDRIVER_H_
+#define	ADC_SAMPLE_NUMBER		256
 #define __ADCDRIVER_H__
+
 
 extern void ADC_Init(void);
 extern unsigned long ADC_In(void);

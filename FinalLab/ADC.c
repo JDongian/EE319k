@@ -1,8 +1,8 @@
+#include "ADC.h"
+#include "globals.h"
 #include "inc/hw_types.h"
 #include "inc/lm3s1968.h"
-
-#include "globals.h"
-#include "ADC.h"
+#include "Control.h"
 
 #define ADC_ACTSS_R             (*((volatile unsigned long *)0x40038000))
 #define ADC0_RIS_R              (*((volatile unsigned long *)0x40038004))
@@ -51,8 +51,12 @@
 
 volatile unsigned int ADCStatus0=0;
 volatile unsigned long ADCValue0=0;
+volatile unsigned long ADCSum0=0;
+volatile unsigned int sampleNumber0=0;
 volatile unsigned int ADCStatus1=0;
 volatile unsigned long ADCValue1=0;
+volatile unsigned long ADCSum1=0;
+volatile unsigned int sampleNumber1=0;
 
 void ADC_InitSWTriggerSeq3(unsigned char channelNum){
   // channelNum must be 0-3 (inclusive) corresponding to ADC0 through ADC3
@@ -90,20 +94,25 @@ void ADC_InitSWTriggerSeq3(unsigned char channelNum){
 // assumes that the hardware has already been initialized
 // using ADC_InitSWTriggerSeq3().
 unsigned long ADC_In0(void){
-  unsigned long result;
-  ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
+  unsigned long currentADC;
+	ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
   while((ADC0_RIS_R&ADC_RIS_INR3)==0){};			// wait for conversion done
-  result = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
+  currentADC = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
   ADC0_ISC_R = ADC_ISC_IN3;										// acknowledge completion of current conversion
-  return result;
+//	if(sampleNumber0++ == ADC_SAMPLE_NUMBER) {
+//		ADCValue0 = ADCSum0/ADC_SAMPLE_NUMBER;
+//		ADCSum0 = 0; sampleNumber0 = 0;
+//		HWREGBITW(&gFlags, ADC_X_READY) = 1;
+//	}
+	return currentADC;
 }
 unsigned long ADC_In1(void){
-  unsigned long result;
-  ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
+  unsigned long currentADC;
+	ADC0_PSSI_R = ADC_PSSI_SS3;									// initiate SS3
   while((ADC0_RIS_R&ADC_RIS_INR3)==0){};			// wait for conversion done
-  result = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
+  currentADC = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
   ADC0_ISC_R = ADC_ISC_IN3;										// acknowledge completion of current conversion
-  return result;
+  return currentADC;
 }
 
 //debug cohis program periodically samples ADC channel 0 and stores the
@@ -197,14 +206,18 @@ void Timer0B_Handler(void){
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
   ADCValue0 = ADC_In0();
 	ADCStatus0 = 1;
+  ADCValue1 = ADC_In1();
+	ADCStatus1 = 1;
+	updateXAxis();
+	updateYAxis();
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 
 void Timer1B_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TBTOCINT;			// acknowledge timer0B timeout
   //GPIO_PORTG_DATA_R |= 0x40;            // turn on LED
-  ADCValue1 = ADC_In1();
-	ADCStatus1 = 1;
+//  ADCValue1 = ADC_In1();
+//	ADCStatus1 = 1;
   //GPIO_PORTG_DATA_R &= ~0x40;           // turn off LED
 }
 void ADC_Init(void){

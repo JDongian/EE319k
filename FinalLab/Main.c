@@ -44,7 +44,6 @@ int main(void){
 	setGraphics(1);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
 	gameSet(0);
-	setXYAvg();
 	while(1) {
 		//Only draw to buffer when it has been output to the screen
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == False) {

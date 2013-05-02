@@ -7,6 +7,7 @@ bulletState gEnemyBullets[MAX_ENEMY_BULLETS];
 agentState gUFOs[MAX_UFOS];
 agentState gSatellites[MAX_SATELLITES*3];
 explosionState gExplosions[MAX_EXPLOSIONS];
+bool selectNotPressed = True;
 
 void gameUpdate(void) {
 	point vertex, port, starboard, exhaust, playerPos;
@@ -41,7 +42,6 @@ void gameUpdate(void) {
 			////Button movement input
 			//Forward (up)
 			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// HWREGBITW(&gFlags, ANALOG_UP)) {
-				HWREGBITW(&gFlags, TITLE_SCREEN) = False;
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -50,16 +50,24 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if((GPIO_PORTG_DATA_R&0x20) == 0 || HWREGBITW(&gFlags, ANALOG_LEFT)) {
+			if((GPIO_PORTG_DATA_R&0x20) == 0) {//|| HWREGBITW(&gFlags, ANALOG_LEFT)) {
 				gPlayer.angle += PLAYER_TURN_RATE;
 			}
 			//Right
-			if((GPIO_PORTG_DATA_R&0x40) == 0 || HWREGBITW(&gFlags, ANALOG_RIGHT)) {
+			if((GPIO_PORTG_DATA_R&0x40) == 0) {// || HWREGBITW(&gFlags, ANALOG_RIGHT)) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select (positive edge)
-			if(HWREGBITW(&gFlags, SELECT_DOWN) == 1 || ((GPIO_PORTG_DATA_R & 0x80) == 0)) {
-				HWREGBITW(&gFlags, TITLE_SCREEN) = False;
+			if((GPIO_PORTG_DATA_R & 0x80) != 0) {
+				selectNotPressed = True;
+			}
+			if(HWREGBITW(&gFlags, SELECT_DOWN) == 1 ||
+				(selectNotPressed == True && (GPIO_PORTG_DATA_R & 0x80) == 0)) {
+				selectNotPressed = False;
+				if(HWREGBITW(&gFlags, TITLE_SCREEN) == True) {
+					HWREGBITW(&gFlags, TITLE_SCREEN) = False;
+					setXYAvg();
+				}
 				HWREGBITW(&gFlags, SELECT_DOWN) = 0;	//reset flag
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),

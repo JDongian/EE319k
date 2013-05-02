@@ -13,8 +13,14 @@ extern unsigned long gFlags;
 #define SELECT_DOWN							2				//
 #define ANALOG_LEFT							3				//
 #define ANALOG_RIGHT						4				//
-#define GAME_OVER								5				//Game is over?
-#define TITLE_SCREEN						6				//ASTEROIDS
+#define ANALOG_UP								5				//
+#define ANALOG_DOWN							6				//
+#define GAME_OVER								7				//Game is over?
+#define TITLE_SCREEN						8				//ASTEROIDS
+//#define ADC_X_READY							7				//
+//#define ADC_X_READY							7				//
+
+
 
 extern unsigned char gGraphicsSetting;
 

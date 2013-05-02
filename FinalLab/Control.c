@@ -20,22 +20,16 @@ void portD_Init(void){
 	NVIC_PRI0_R = (NVIC_PRI0_R&0x0FFFFFFF)|0x20000000; // bits 29-31
   NVIC_EN0_R |= NVIC_EN0_INT3;
 }
-
-
-void setControl(bool status, short ctrlKey) {
-	HWREGBITW(&gFlags, ctrlKey) = status;
-}
 void setXYAvg(void) {
-	avgX = 439;//currX;
+	avgX = currX;
 	avgY = currY;
 }
+//
 void updateXAxis(void) {
-	if(ADCStatus0 == 0) {
-		return;
-	}
-	//MAY NEED CALCULATION
+	if(ADCStatus0 == 0) { return; }
 	currX = ((X_SAMPLES-1)*currX+ADCValue0)/X_SAMPLES;
 	ADCStatus0 = 0;
+	//X axis
 	if(currX < avgX-ANALOG_THRESHOLD) {
 		HWREGBITW(&gFlags, ANALOG_LEFT) = True;
 		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
@@ -47,22 +41,22 @@ void updateXAxis(void) {
 		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
 	}
 }
-/*
 void updateYAxis(void) {
-	//if(ADCStatus1 == 0) { return; }
-	//currY = (currY*63+ADC_In1())/64;
+	if(ADCStatus1 == 0) { return; }
+	currY = ((Y_SAMPLES-1)*currX+ADCValue1)/Y_SAMPLES;
+	ADCStatus1 == 0;
 	//Y axis
 	if(currY < avgY-ANALOG_THRESHOLD) {
-		setControl(True, ANALOG_DOWN);
-		setControl(False, ANALOG_UP);
+		HWREGBITW(&gFlags, ANALOG_UP) = True;
+		HWREGBITW(&gFlags, ANALOG_DOWN) = False;
 	} else if(avgY+ANALOG_THRESHOLD < currY) {
-		setControl(True, ANALOG_UP);
-		setControl(False, ANALOG_DOWN);
+		HWREGBITW(&gFlags, ANALOG_UP) = False;
+		HWREGBITW(&gFlags, ANALOG_DOWN) = True;
 	} else {
-		setControl(False, ANALOG_DOWN);
-		setControl(False, ANALOG_UP);
+		HWREGBITW(&gFlags, ANALOG_UP) = False;
+		HWREGBITW(&gFlags, ANALOG_DOWN) = False;
 	}
-}*/
+}
 void GPIOPortD_Handler(void) {
 	HWREGBITW(&gFlags, SELECT_DOWN) = 1;
 	GPIO_PORTD_ICR_R = 0x0F;
