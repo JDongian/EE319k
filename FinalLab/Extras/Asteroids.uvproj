@@ -406,11 +406,6 @@
               <FilePath>.\rit128x96x4.c</FilePath>
             </File>
             <File>
-              <FileName>FIFO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\FIFO.c</FilePath>
-            </File>
-            <File>
               <FileName>Delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Delay.c</FilePath>
@@ -431,54 +426,9 @@
               <FilePath>.\Output.c</FilePath>
             </File>
             <File>
-              <FileName>Delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Delay.h</FilePath>
-            </File>
-            <File>
-              <FileName>FIFO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\FIFO.h</FilePath>
-            </File>
-            <File>
-              <FileName>globals.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\globals.h</FilePath>
-            </File>
-            <File>
-              <FileName>hw_types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\hw_types.h</FilePath>
-            </File>
-            <File>
-              <FileName>lm3s1968.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\lm3s1968.h</FilePath>
-            </File>
-            <File>
-              <FileName>Main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Main.h</FilePath>
-            </File>
-            <File>
-              <FileName>Output.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Output.h</FilePath>
-            </File>
-            <File>
-              <FileName>PLL.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\PLL.h</FilePath>
-            </File>
-            <File>
-              <FileName>rit128x96x4.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\rit128x96x4.h</FilePath>
-            </File>
-            <File>
-              <FileName>SysTickInts.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\SysTickInts.h</FilePath>
+              <FileName>Sound.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sound.c</FilePath>
             </File>
             <File>
               <FileName>DAC.c</FileName>
@@ -486,14 +436,24 @@
               <FilePath>.\DAC.c</FilePath>
             </File>
             <File>
-              <FileName>Sound.c</FileName>
+              <FileName>Game.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Sound.c</FilePath>
+              <FilePath>.\Game.c</FilePath>
             </File>
             <File>
-              <FileName>DAC.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\DAC.h</FilePath>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Timer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -511,16 +471,6 @@
           <GroupName>DrawLib</GroupName>
           <Files>
             <File>
-              <FileName>draw2D.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drawLib\draw2D.h</FilePath>
-            </File>
-            <File>
-              <FileName>graphicsUtil.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drawLib\graphicsUtil.h</FilePath>
-            </File>
-            <File>
               <FileName>draw2D.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\drawLib\draw2D.c</FilePath>
@@ -529,6 +479,11 @@
               <FileName>graphicsUtil.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\drawLib\graphicsUtil.c</FilePath>
+            </File>
+            <File>
+              <FileName>math2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drawLib\math2.c</FilePath>
             </File>
           </Files>
         </Group>
