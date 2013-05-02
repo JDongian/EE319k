@@ -1,8 +1,8 @@
 #include "Control.h"
 
 int controlStatus = 0;
-float avgX=0, currX=0;
-float avgY=0, currY=0;
+int avgX=0, currX=0;
+int avgY=0, currY=0;
 short currSelectIndex = 0;
 
 //SELECT BUTTON
@@ -22,7 +22,7 @@ void portD_Init(void){
 }
 void setXYAvg(void) {
 	avgX = currX;
-	avgY = currY;
+	avgY = 0x256;//currY;
 }
 //
 void updateXAxis(void) {
@@ -30,6 +30,7 @@ void updateXAxis(void) {
 	currX = ((X_SAMPLES-1)*currX+ADCValue0)/X_SAMPLES;
 	ADCStatus0 = 0;
 	//X axis
+/*
 	if(currX < avgX-ANALOG_THRESHOLD) {
 		HWREGBITW(&gFlags, ANALOG_LEFT) = True;
 		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
@@ -37,21 +38,21 @@ void updateXAxis(void) {
 		HWREGBITW(&gFlags, ANALOG_LEFT) = False;
 		HWREGBITW(&gFlags, ANALOG_RIGHT) = True;
 	} else {
-		HWREGBITW(&gFlags, ANALOG_LEFT) = False;
+*/		HWREGBITW(&gFlags, ANALOG_LEFT) = False;
 		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
-	}
+	//}
 }
 void updateYAxis(void) {
 	if(ADCStatus1 == 0) { return; }
-	currY = ((Y_SAMPLES-1)*currX+ADCValue1)/Y_SAMPLES;
+	currY = ADCValue1;//((Y_SAMPLES-1)*currY+ADCValue1)/Y_SAMPLES;
 	ADCStatus1 == 0;
 	//Y axis
 	if(currY < avgY-ANALOG_THRESHOLD) {
-		HWREGBITW(&gFlags, ANALOG_UP) = True;
-		HWREGBITW(&gFlags, ANALOG_DOWN) = False;
-	} else if(avgY+ANALOG_THRESHOLD < currY) {
 		HWREGBITW(&gFlags, ANALOG_UP) = False;
 		HWREGBITW(&gFlags, ANALOG_DOWN) = True;
+	} else if(avgY+ANALOG_THRESHOLD < currY) {
+		HWREGBITW(&gFlags, ANALOG_UP) = True;
+		HWREGBITW(&gFlags, ANALOG_DOWN) = False;
 	} else {
 		HWREGBITW(&gFlags, ANALOG_UP) = False;
 		HWREGBITW(&gFlags, ANALOG_DOWN) = False;

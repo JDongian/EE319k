@@ -4,9 +4,9 @@
 #include "lm3s1968.h"
 #include "Delay.h"
 
-#define ANALOG_THRESHOLD		200
-#define X_SAMPLES						256
-#define Y_SAMPLES						256
+#define ANALOG_THRESHOLD		0x100
+#define X_SAMPLES						2
+#define Y_SAMPLES						2
 
 void portD_Init(void);
 void GPIOPortG_Handler(void);

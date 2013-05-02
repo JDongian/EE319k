@@ -41,7 +41,7 @@ void gameUpdate(void) {
 		case ALIVE:
 			////Button movement input
 			//Forward (up)
-			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// HWREGBITW(&gFlags, ANALOG_UP)) {
+			if ((GPIO_PORTG_DATA_R&0x08) == 0 || HWREGBITW(&gFlags, ANALOG_UP)) {
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;

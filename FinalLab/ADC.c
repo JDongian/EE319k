@@ -99,11 +99,6 @@ unsigned long ADC_In0(void){
   while((ADC0_RIS_R&ADC_RIS_INR3)==0){};			// wait for conversion done
   currentADC = ADC0_SSFIFO3_R&ADC_SSFIFO3_DATA_M;
   ADC0_ISC_R = ADC_ISC_IN3;										// acknowledge completion of current conversion
-//	if(sampleNumber0++ == ADC_SAMPLE_NUMBER) {
-//		ADCValue0 = ADCSum0/ADC_SAMPLE_NUMBER;
-//		ADCSum0 = 0; sampleNumber0 = 0;
-//		HWREGBITW(&gFlags, ADC_X_READY) = 1;
-//	}
 	return currentADC;
 }
 unsigned long ADC_In1(void){
