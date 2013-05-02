@@ -175,8 +175,8 @@ void gameUpdate(void) {
 			case HIT:
 				if(gRocks[i].rockSize > 1) {
 					addRock(makePoint((int)gRocks[i].x+1, (int)gRocks[i].y+1),
-									randRange(-64, -24)/64.,
-									randRange(-64, -24)/64.,
+									randRange(24, 64)/-64.,
+									randRange(24, 64)/-64.,
 									gRocks[i].rockSize-1);
 					addRock(makePoint((int)gRocks[i].x-1, (int)gRocks[i].y-1),
 									randRange(64, 24)/64.,
@@ -273,7 +273,7 @@ void centerPlayer()	{
 	gPlayer.exhaustOn = False;
 }
 //Object adding functions
-void addRock(point rockPos, int dx, int dy, unsigned char rockSize) {
+void addRock(point rockPos, float dx, float dy, unsigned char rockSize) {
 	int i;
 	for(i = 0; i < MAX_ROCKS; i++) {
 		if(gRocks[i].status == DEAD) {

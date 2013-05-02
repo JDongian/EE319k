@@ -1,5 +1,6 @@
 #include "graphicsUtil.h"
 
+
 extern point rocks[5][ROCK_VERTICIES];
 
 extern bool isExhaustOn;
@@ -25,3 +26,5 @@ void drawByteSprite(unsigned char[], point, unsigned int, unsigned int);
 void drawSpriteShip(point);
 void drawBullet(point);
 void drawString(unsigned char*, point);
+void drawNumber(int, point);
+void decToString(int, unsigned char*);

@@ -397,57 +397,18 @@ void drawString(unsigned char* pcStr, point pos) {
 		}
 	}
 }
-/*
-void drawString(char *pcStr, point pos, unsigned char shade) {
-	unsigned long ulIdx1, ulIdx2;
-	unsigned char ucTemp;
-	unsigned char g_pucBuffer[48];
-	int cX, cY;
-	pos.x %= 128;
-	pos.y %= 96;
-	shade &= 0xF;
-	// Loop while there are more characters in the string.
-	while(*pcStr != 0) {
-		// Get a working copy of the current character and convert to an
-		// index into the character bit-map array.
-		ucTemp = *pcStr++ & 0x7f;
-		if(ucTemp < ' ') {
-			ucTemp = 0;
-		} else {
-			ucTemp -= ' ';
-		}
-		// Build and display the character buffer.
-		for(ulIdx1 = 0; ulIdx1 < 6; ulIdx1 += 2) {
-			// Convert two columns of 1-bit font data into a single data
-			// byte column of 4-bit font data.
-			for(ulIdx2 = 0; ulIdx2 < 8; ulIdx2++) {
-				//Overwrite with black
-				g_pucBuffer[ulIdx2] = 0;
-				////if(valvanoFont[ucTemp][ulIdx1]) {
-				////	drawPoint(makePoint(pos.x+ulIdx1, pos.y+ulIdx2), shade);
-				////} else {
-				////	drawPoint(makePoint(pos.x+ulIdx1+1, pos.y+ulIdx2), shade);
-				////}
-				if(valvanoFont[ucTemp][ulIdx1] & (1 << ulIdx2)) {//odd
-					g_pucBuffer[ulIdx2] = (shade << 4) & 0xf0;
-				}
-				if((ulIdx1 < 4) &&
-					 (valvanoFont[ucTemp][ulIdx1 + 1] & (1 << ulIdx2))) {//even
-					 g_pucBuffer[ulIdx2] |= (shade << 0) & 0x0f;
-				}
-			}
-			// Send this byte column to the display.
-			//RITWriteData(g_pucBuffer, 8);
-			for(cX = 0; cX < 8; cX++) {
-				for(cY = 0; cY < 6; cY++) {
-					drawPoint(makePoint(cX, cY), g_pucBuffer[ulIdx2*6+ulIdx1]);
-				}
-			}
-			pos.x += 2;
-			// Return if the right side of the display has been reached.
-			if(pos.x == 128) {
-					return;
-			}
-		}
+void drawNumber(int n, point p) {
+	unsigned char elScore[3];
+	decToString(n, elScore);
+	drawString(elScore, p);
+}
+void decToString(int number, unsigned char buffer[]) {
+	int i = 0;
+	for(i = 0; i < 3; i++) {
+		buffer[i] = 0;
 	}
-*/
+	buffer[2] = (number/1)%10+48;
+	buffer[1] = (number/10)%10+48;
+	buffer[0] = (number/100)%10+48;
+}
+	

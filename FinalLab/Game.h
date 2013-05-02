@@ -87,7 +87,7 @@ extern explosionState gExplosions[MAX_EXPLOSIONS];
 void gameInit(void); 	//Begin the game.
 void gameUpdate(void); 	//Begin the game.
 void gameSet(short);
-void addRock(point, int, int, unsigned char);
+void addRock(point, float, float, unsigned char);
 void addBullet(point, float, float, bool);
 	//True = player bullet
 	//False = enemy bullet

@@ -84,8 +84,9 @@ int main(void){
 			}
 			
 			//
-			//drawString(score, makePoint(0,0));
-			drawString(myMsg, makePoint(5, 5));
+			drawNumber(score, makePoint(2,2));
+			drawNumber(gameLevel, makePoint(128/2-6,2));
+			//drawString(myMsg, makePoint(5, 5));
 			gameUpdate();
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}

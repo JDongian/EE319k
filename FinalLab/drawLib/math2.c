@@ -40,6 +40,13 @@ float floatMod(float f, int m) {
 	while(f > m) { f -= m; }
 	return f;
 }
+int easyPow(int n, int exp) {
+	int out = 1;
+	while(exp-- > 0) {
+		out *= n;
+	}
+	return out;
+}
 //Vector functions
 int crossP(point v1, point v2) {		//Cross product with respect to the origin
 	short angle;
