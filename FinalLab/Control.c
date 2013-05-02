@@ -1,12 +1,11 @@
 #include "Control.h"
 
 int controlStatus = 0;
-int avgX=0, currX=0;
-int avgY=0, currY=0;
-bool selectSamples[SELECT_SAMPLES];
+float avgX=0, currX=0;
+float avgY=0, currY=0;
 short currSelectIndex = 0;
 
-
+//SELECT BUTTON
 void portD_Init(void){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOD;
 	doNothing();
@@ -21,11 +20,13 @@ void portD_Init(void){
 	NVIC_PRI0_R = (NVIC_PRI0_R&0x0FFFFFFF)|0x20000000; // bits 29-31
   NVIC_EN0_R |= NVIC_EN0_INT3;
 }
+
+
 void setControl(bool status, short ctrlKey) {
 	HWREGBITW(&gFlags, ctrlKey) = status;
 }
 void setXYAvg(void) {
-	avgX = currX;
+	avgX = 439;//currX;
 	avgY = currY;
 }
 void updateXAxis(void) {
@@ -33,17 +34,17 @@ void updateXAxis(void) {
 		return;
 	}
 	//MAY NEED CALCULATION
-	currX = ADCValue0;//(15*currX+ADCValue0)/16;
+	currX = ((X_SAMPLES-1)*currX+ADCValue0)/X_SAMPLES;
 	ADCStatus0 = 0;
 	if(currX < avgX-ANALOG_THRESHOLD) {
-		setControl(True, ANALOG_LEFT);
-		setControl(False, ANALOG_RIGHT);
+		HWREGBITW(&gFlags, ANALOG_LEFT) = True;
+		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
 	} else if(avgX+ANALOG_THRESHOLD < currX) {
-		setControl(True, ANALOG_RIGHT);
-		setControl(False, ANALOG_LEFT);
+		HWREGBITW(&gFlags, ANALOG_LEFT) = False;
+		HWREGBITW(&gFlags, ANALOG_RIGHT) = True;
 	} else {
-		setControl(False, ANALOG_LEFT);
-		setControl(False, ANALOG_RIGHT);
+		HWREGBITW(&gFlags, ANALOG_LEFT) = False;
+		HWREGBITW(&gFlags, ANALOG_RIGHT) = False;
 	}
 }
 /*

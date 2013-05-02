@@ -6,7 +6,6 @@ short gameLevel;
 int score;
 
 int main(void){
-	unsigned char* myMsg = "Hello Valvano.";
 	int i = 0;
 	//Score set
 	score = 0;
@@ -31,23 +30,32 @@ int main(void){
 	Output_Init();
 	Output_Color(15);
 	SysTick_IntEnable();
-	updateXAxis();
-	setXYAvg();
 	EnableInterrupts();
-	//Clear flags
+	//Set flags
 	gFlags = 0;
-	//Math rand set
-	while ((GPIO_PORTG_DATA_R & 0x80) != 0) { }
-	while ((GPIO_PORTG_DATA_R & 0x80) == 0) { }
+	HWREGBITW(&gFlags, TITLE_SCREEN) = True;	
+	//Math rand set seed
+	while(HWREGBITW(&gFlags, SELECT_DOWN) == 0 &&
+				((GPIO_PORTG_DATA_R & 0x80) != 0)) { }
+	while(HWREGBITW(&gFlags, SELECT_DOWN) == 1 ||
+				((GPIO_PORTG_DATA_R & 0x80) == 0)) { }
 	setSeed(NVIC_ST_CURRENT_R);
 	//Game set
-	setGraphics(0);//the lm3s can't handle more than 2 rocks at graphics level 3.
+	setGraphics(1);//the lm3s can't handle more than 2 rocks at graphics level 3.
 	gameInit();
-	gameSet(1);
+	gameSet(0);
 	setXYAvg();
 	while(1) {
 		//Only draw to buffer when it has been output to the screen
 		if(HWREGBITW(&gFlags, FRAME_BUFFER_READY) == False) {
+			/*if(gameLevel == -2) {
+				drawString(myMsgs[1], makePoint(50, 40));
+				while ((GPIO_PORTG_DATA_R & 0x80) != 0 &&
+							 HWREGBITW(&gFlags, SELECT_DOWN) == False) { }
+				while ((GPIO_PORTG_DATA_R & 0x80) == 0 &&
+							 HWREGBITW(&gFlags, SELECT_DOWN) == True) { }
+				//Reset game
+			*/
 			//Check for level completion, aka all rocks and enemies are 
 			//TODO: enemies
 			if(HWREGBITW(&gFlags, LEVEL_COMPLETE) == True) { gameSet(++gameLevel); }
@@ -86,7 +94,18 @@ int main(void){
 			//
 			drawNumber(score, makePoint(2,2));
 			drawNumber(gameLevel, makePoint(128/2-6,2));
-			//drawString(myMsg, makePoint(5, 5));
+			
+			if(HWREGBITW(&gFlags, GAME_OVER) == True) {
+				drawString("GAME OVER", makePoint(40, 38));
+				if((GPIO_PORTG_DATA_R & 0x80)) {
+					//reset game
+				}
+				gameUpdate();
+			} else if(HWREGBITW(&gFlags, TITLE_SCREEN) == True) {
+				drawString("ASTEROIDS", makePoint(40, 38));
+				gameLevel = 0;
+			}
+			updateXAxis();
 			gameUpdate();
 			HWREGBITW(&gFlags, FRAME_BUFFER_READY) = True;
 		}

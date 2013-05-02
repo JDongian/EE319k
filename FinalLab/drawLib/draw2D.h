@@ -27,4 +27,5 @@ void drawSpriteShip(point);
 void drawBullet(point);
 void drawString(unsigned char*, point);
 void drawNumber(int, point);
-void decToString(int, unsigned char*);
+	//Warning: draws 999 max
+	

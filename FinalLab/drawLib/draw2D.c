@@ -310,15 +310,15 @@ void drawUFO(point pos, short scale){
 	myUFO[5] = botL;
 	myUFO[6] = midBL;
 	myUFO[7] = midTL;
-	drawLine(makePoint(pos.x-scale*3, pos.y-1*scale),
-					 makePoint(pos.x+scale*3, pos.y-1*scale),	0xF);
-	drawLine(makePoint(pos.x-scale*6, pos.y+1*scale),
-					 makePoint(pos.x+scale*6, pos.y+1*scale), 0xF);
 	if(getSetting() >= 1) {
 		drawFilledPolygon(myUFO, 8, PLAYER_SHADE);
 	} else {
 		drawPolygon(myUFO, 8, PLAYER_SHADE);
 	}
+	drawLine(makePoint(pos.x-scale*3, pos.y-1*scale),
+					 makePoint(pos.x+scale*3, pos.y-1*scale),	0xF);
+	drawLine(makePoint(pos.x-scale*6, pos.y+1*scale),
+					 makePoint(pos.x+scale*6, pos.y+1*scale), 0xF);
 }
 void drawExplosion(point pos, short scale) {
 	int i;
@@ -398,17 +398,14 @@ void drawString(unsigned char* pcStr, point pos) {
 	}
 }
 void drawNumber(int n, point p) {
-	unsigned char elScore[3];
-	decToString(n, elScore);
-	drawString(elScore, p);
-}
-void decToString(int number, unsigned char buffer[]) {
-	int i = 0;
+	unsigned char buffer[3];
+	int i;
+	n = abs(n);
 	for(i = 0; i < 3; i++) {
 		buffer[i] = 0;
 	}
-	buffer[2] = (number/1)%10+48;
-	buffer[1] = (number/10)%10+48;
-	buffer[0] = (number/100)%10+48;
+	buffer[2] = (n/1)%10+48;
+	buffer[1] = (n/10)%10+48;
+	buffer[0] = (n/100)%10+48;
+	drawString(buffer, p);
 }
-	

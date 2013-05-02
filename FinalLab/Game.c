@@ -41,6 +41,7 @@ void gameUpdate(void) {
 			////Button movement input
 			//Forward (up)
 			if ((GPIO_PORTG_DATA_R&0x08) == 0) {// HWREGBITW(&gFlags, ANALOG_UP)) {
+				HWREGBITW(&gFlags, TITLE_SCREEN) = False;
 				if((gPlayer.dx*gPlayer.dx + gPlayer.dy*gPlayer.dy) <
 					 MAX_PLAYER_SPEED*MAX_PLAYER_SPEED) {
 					gPlayer.dx += cosDeg(gPlayer.angle)*PLAYER_ACCEL;
@@ -49,15 +50,16 @@ void gameUpdate(void) {
 				gPlayer.exhaustOn = True;
 			}
 			//Left
-			if((GPIO_PORTG_DATA_R&0x20) == 0) {//HWREGBITW(&gFlags, ANALOG_LEFT)) {
+			if((GPIO_PORTG_DATA_R&0x20) == 0 || HWREGBITW(&gFlags, ANALOG_LEFT)) {
 				gPlayer.angle += PLAYER_TURN_RATE;
 			}
 			//Right
-			if((GPIO_PORTG_DATA_R&0x40) == 0 ){//HWREGBITW(&gFlags, ANALOG_RIGHT)) {
+			if((GPIO_PORTG_DATA_R&0x40) == 0 || HWREGBITW(&gFlags, ANALOG_RIGHT)) {
 				gPlayer.angle -= PLAYER_TURN_RATE;
 			}
 			//Select (positive edge)
 			if(HWREGBITW(&gFlags, SELECT_DOWN) == 1 || ((GPIO_PORTG_DATA_R & 0x80) == 0)) {
+				HWREGBITW(&gFlags, TITLE_SCREEN) = False;
 				HWREGBITW(&gFlags, SELECT_DOWN) = 0;	//reset flag
 				addBullet(makePoint((int)gPlayer.x, (int)gPlayer.y),
 									(cosDeg(gPlayer.angle)*MAX_BULLET_SPEED),
@@ -79,7 +81,14 @@ void gameUpdate(void) {
 				if(gExplosions[i].status == ALIVE) { break; }
 			}
 			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
+			HWREGBITW(&gFlags, GAME_OVER) = True;
+			killRocks();
+			killBullets();
+			killEnemies();
 			return;
+	}
+	if(HWREGBITW(&gFlags, TITLE_SCREEN) == True) {
+		return;
 	}
 	//Update bullets
 	for(i = 0; i < MAX_PLAYER_BULLETS; i++) {
@@ -148,7 +157,7 @@ void gameUpdate(void) {
 													 gRocks[i].rockSize,
 													 makePoint(((int)gPlayerBullets[j].x),
 																		 ((int)gPlayerBullets[j].y)))) {
-							score += 2;
+							score += 1;
 							addExplosion(makePoint(gPlayerBullets[j].x,
 																		 gPlayerBullets[j].y), 2);
 							gRocks[i].status = HIT;
@@ -189,16 +198,6 @@ void gameUpdate(void) {
 				break;
 		}
 	}
-	//Update explosions
-	for(i = 0; i < MAX_EXPLOSIONS; i++) {
-		if(gExplosions[i].status == ALIVE) {
-			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
-			if(gExplosions[i].current++ > gExplosions[i].lifetime) {
-				gExplosions[i].status = DEAD;
-				continue;
-			}
-		}
-	}
 	//Update UFOs
 	for(i = 0; i < MAX_UFOS; i++) {
 		switch(gUFOs[i].status) {
@@ -218,6 +217,16 @@ void gameUpdate(void) {
 				break;
 			case DEAD:
 				break;
+		}
+	}
+	//Update explosions
+	for(i = 0; i < MAX_EXPLOSIONS; i++) {
+		if(gExplosions[i].status == ALIVE) {
+			HWREGBITW(&gFlags, LEVEL_COMPLETE) = False;
+			if(gExplosions[i].current++ > gExplosions[i].lifetime) {
+				gExplosions[i].status = DEAD;
+				continue;
+			}
 		}
 	}
 }
